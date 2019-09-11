@@ -1,0 +1,29 @@
+RewriteEngine On
+RewriteRule ^/?$ 								        index.php
+RewriteRule ^trang-chu/?$ 								index.php
+RewriteRule ^lien-he/?$ 								index.php?com=contact
+RewriteRule ^blog/?$   									index.php?com=contents&viewtype=block
+
+RewriteRule ^gallery/?$                                 index.php?com=gallery [QSA]
+RewriteRule ^gallery/([0-9]*)/([0-9a-zA-Z\-]+).html?$   index.php?com=gallery&viewtype=block&id=$1&code=$2 [QSA]
+
+
+# Contents
+RewriteRule ^tim-kiem/?$ 	                            index.php?com=contents&viewtype=search [QSA]
+RewriteRule ^search/?$ 	                            	index.php?com=contents&viewtype=search [QSA]
+RewriteRule ^tag/([a-zA-Z0-9\-\+]+)?$ 					index.php?com=contents&viewtype=tag&code=$1 [QSA]
+RewriteRule ^([0-9a-zA-Z\-]+)/?$                        index.php?com=contents&viewtype=list&code=$1 [QSA]
+RewriteRule ^([0-9a-zA-Z\-]+)/([0-9a-zA-Z\-]+).html?$   index.php?com=contents&viewtype=article&par_code=$1&code=$2
+
+php_value memory_limit -1
+php_value post_max_size 1024M
+php_value upload_max_filesize 1024M
+
+php_value max_input_time 3000
+php_value max_execution_time 3000
+
+php_flag display_startup_errors on
+php_flag display_errors on
+php_flag html_errors on
+php_flag  log_errors on
+php_value error_log  /edu/tmp/errors.log

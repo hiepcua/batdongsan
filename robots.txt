@@ -1,0 +1,5 @@
+User-agent:*
+Disallow:/
+Disallow:/global/
+Disallow:/admin/
+Crawl-delay: 30
