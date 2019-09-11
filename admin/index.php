@@ -35,7 +35,7 @@ global $UserLogin;
 	<script src="<?php echo ROOTHOST;?>global/js/bootstrap-datetimepicker.min.js"></script>
 	<script src="<?php echo ROOTHOST_ADMIN;?>js/script.min.js"></script>
 	<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-  	<script>tinymce.init({selector:'textarea'});</script>
+	<script>tinymce.init({selector:'textarea'});</script>
 
 	<script>	
 		var _w=0;
@@ -90,8 +90,16 @@ global $UserLogin;
 					<?php 
 					$com=isset($_GET['com'])?$_GET['com']:'frontpage';
 					if(!is_file(COM_PATH.'com_'.$com.'/layout.php')){$com='frontpage';}
-					include_once(COM_PATH.'com_'.$com.'/layout.php');
 					?>
+					<div class="component">
+						<div class="page-content-wrapper">
+							<div class="page-content">
+								<?php
+								include_once(COM_PATH.'com_'.$com.'/layout.php');
+								?>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="clearfix"></div>

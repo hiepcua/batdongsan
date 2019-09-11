@@ -5,22 +5,15 @@ require_once("../../../global/libs/gfconfig.php");
 require_once("../../libs/cls.mysql.php");
 
 $objmysql =  new CLS_MYSQL;
-
-if(isset($_POST['identify'])) {
-	$identify = $_POST['identify'];
-	$sql = "SELECT * FROM tbl_user  WHERE identify='$identify'";
-	$objmysql->Query($sql);	
-	$r=$objmysql->Fetch_Assoc();
-	$id=$r['id'];
-	$json = "[";
-	if ($objmysql->Num_rows() > 0)  {
-		$json.= "{\"rep\":\"yes\", \"id\": \"$id\"}";
-	} 
-	else {
-		$json.= "{\"rep\":\"no\", \"id\": \"\"}";
+if(isset($_POST['username'])) {
+	$username = addslashes(trim($_POST['username']));
+	$sql = "SELECT * FROM tbl_user  WHERE username='$username'";
+	$objmysql->Query($sql);
+	if($objmysql->Num_rows() > 0){
+		echo '1';
+	}else{
+		echo '0';
 	}
-	echo $json."]";
-	
 } else if (isset($_POST['userID'])) {
 	$userID = $_POST['userID'];
 	$sql = "SELECT * FROM tbl_user  WHERE id=$userID";
@@ -40,13 +33,13 @@ if(isset($_POST['identify'])) {
 	$json = "[";
 	if ($objmysql->Num_rows() > 0)  {
 		$json.= "{\"rep\":\"yes\", 
-				\"id\": \"$id\",
-				\"avatar\": \"$avatar\",
-				\"name\": \"$name\",
-				\"identify\": \"$identify\",
-				\"gender\": \"$gender\",
-				\"phone\": \"$phone\",
-				\"address\": \"$address\"}";
+		\"id\": \"$id\",
+		\"avatar\": \"$avatar\",
+		\"name\": \"$name\",
+		\"identify\": \"$identify\",
+		\"gender\": \"$gender\",
+		\"phone\": \"$phone\",
+		\"address\": \"$address\"}";
 	} 
 	else {
 		$json.= "{\"rep\":\"no\", \"id\": \"\"}";

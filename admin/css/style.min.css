@@ -776,19 +776,85 @@ fieldset legend.title>span{
 }
 .list_search .box-search>button{
 	border-radius: 0;
-    border-left: 0;
-    background-color: #eee;
+	border-left: 0;
+	background-color: #eee;
 }
 .com_header .breadcrumb {
-    padding: 0;
-    margin-bottom: 0;
-    list-style: none;
-    background-color: inherit;
-    border-radius: 0;
+	padding: 0;
+	margin-bottom: 0;
+	list-style: none;
+	background-color: inherit;
+	border-radius: 0;
 }
 .com_header .breadcrumb>li{
 	font-size: 13px;
 }
 .com_header .breadcrumb>li>i{
 	margin-right: 8px;
+}
+
+.page-content-wrapper .page-content {
+    margin-top: 0px;
+    min-height: 600px;
+    padding: 15px 20px 10px 0px;
+}
+.breadcrumb{
+    border-radius: 0;
+    border-bottom: 1px solid #EEE;
+}
+.form-control {
+    border-radius: 0;
+    box-shadow: none;
+    border-color: #d2d6de;
+}
+.btn {
+    border-radius: 0;
+}
+.btn-success {
+    background-color: #00a65a;
+    border-color: #008d4c;
+}
+.table-bordered>thead>tr>th, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>tbody>tr>td, .table-bordered>tfoot>tr>td{
+	border: 1px solid #f4f4f4;
+}
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+	padding: 8px;
+	line-height: 1.42857143;
+	vertical-align: top;
+}
+.table>caption+thead>tr:first-child>td, .table>caption+thead>tr:first-child>th, .table>colgroup+thead>tr:first-child>td, .table>colgroup+thead>tr:first-child>th, .table>thead:first-child>tr:first-child>td, .table>thead:first-child>tr:first-child>th {
+    border-top: 0;
+}
+.table-bordered>thead>tr>th, .table-bordered>thead>tr>td {
+    border-bottom-width: 2px;
+}
+.table-bordered>thead>tr>th, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>tbody>tr>td, .table-bordered>tfoot>tr>td {
+    border: 1px solid #f4f4f4;
+}
+.table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+}
+td.tbl_actions {
+    min-width: 150px;
+}
+.tbl_actions a {
+    color: #333;
+    font-size: 13px;
+    display: inline-block;
+    padding: 2px 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #FFF;
+}
+.tbl_actions a i {
+    margin-right: 3px;
+}
+.green {
+    color: #5cb85c;
+}
+.blue {
+    color: #337ab7;
+}
+.red {
+    color: #d9534f;
 }
