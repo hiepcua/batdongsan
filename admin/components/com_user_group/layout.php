@@ -1,9 +1,9 @@
 <?php
 defined('ISHOME') or die('Can not acess this page, please come back!');
 define('COMS','category');
-require_once('libs/cls.category.php');
+require_once('libs/cls.user_group.php');
 $objmysql = new CLS_MYSQL();
-$obj = new CLS_CATEGORY();
+$obj = new CLS_USER_GROUP();
 
 if(isset($_POST['cmdsave'])){
 	$Par_Id=addslashes($_POST['cbo_cate']);
@@ -17,7 +17,7 @@ if(isset($_POST['cmdsave'])){
 	if(isset($_POST['txtid'])){
 		$ID=(int)$_POST['txtid'];
 
-		$sql = "UPDATE tbl_categories SET 
+		$sql = "UPDATE tbl_user_group SET 
         `par_id`='".$Par_Id."',
         `name`='".$Name."',
         `code`='".$Code."',
@@ -27,7 +27,7 @@ if(isset($_POST['cmdsave'])){
         WHERE id='".$ID."'";
         $objmysql->Exec($sql);
 	}else{
-		$sql="INSERT INTO `tbl_categories`(`par_id`,`name`,`code`,`thumb`,`intro`,`isactive`) VALUES ('".$Par_Id."','".$Name."','".$Code."','".$Thumb."','".$Intro."','".$isActive."')";
+		$sql="INSERT INTO `tbl_user_group`(`par_id`,`name`,`code`,`thumb`,`intro`,`isactive`) VALUES ('".$Par_Id."','".$Name."','".$Code."','".$Thumb."','".$Intro."','".$isActive."')";
 		$objmysql->Exec($sql);
 	}
 	echo "<script language=\"javascript\">window.location.href='".ROOTHOST_ADMIN.COMS."'</script>";
@@ -40,15 +40,15 @@ if(isset($_POST["txtaction"]) && $_POST["txtaction"]!=""){
 	$ids=str_replace(",","','",$ids);
 	switch ($_POST["txtaction"]){
 		case "public": 
-			$sql_active = "UPDATE `tbl_categories` SET `isactive`='1' WHERE `id` in ('$ids')";
+			$sql_active = "UPDATE `tbl_user_group` SET `isactive`='1' WHERE `id` in ('$ids')";
 			$objmysql->Exec($sql_active);
 			break;
 		case "unpublic":
-			$sql_unactive = "UPDATE `tbl_categories` SET `isactive`='0' WHERE `id` in ('$ids')";
+			$sql_unactive = "UPDATE `tbl_user_group` SET `isactive`='0' WHERE `id` in ('$ids')";
 			$objmysql->Exec($sql_unactive);
 			break;
 		case "delete":
-			$sql_del = "DELETE FROM `tbl_categories` WHERE `id` in ('$ids')";
+			$sql_del = "DELETE FROM `tbl_user_group` WHERE `id` in ('$ids')";
 	        $objmysql->Exec($sql_del);
 	        break;
 		case 'order':
@@ -56,7 +56,7 @@ if(isset($_POST["txtaction"]) && $_POST["txtaction"]!=""){
 			$ids = explode(',',$_POST['txtids']);
 			$n = count($ids);
 			for($i=0;$i<$n;$i++){
-				$sql_order = "UPDATE `tbl_categories` SET `order`='".$sls[$i]."' WHERE `id` = '".$ids[$i]."' ";
+				$sql_order = "UPDATE `tbl_user_group` SET `order`='".$sls[$i]."' WHERE `id` = '".$ids[$i]."' ";
 				$objmysql->Exec($sql_order);
 			}
 	}

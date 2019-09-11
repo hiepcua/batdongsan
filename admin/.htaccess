@@ -24,7 +24,7 @@ RewriteRule ^feedback/edit/([0-9]+)?$ 				index.php?com=feedback&task=edit&id=$1
 RewriteRule ^feedback/delete/([0-9]+)?$ 			index.php?com=feedback&task=delete&id=$1
 
 #Category
-RewriteRule ^category/?$ 							index.php?com=category
+RewriteRule ^category/?$ 							index.php?com=category 	[QSA]
 RewriteRule ^category/add?$ 						index.php?com=category&task=add
 RewriteRule ^category/edit/([0-9]+)?$ 				index.php?com=category&task=edit&id=$1
 RewriteRule ^category/delete/([0-9]+)?$ 			index.php?com=category&task=delete&id=$1

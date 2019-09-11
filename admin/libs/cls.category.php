@@ -89,7 +89,7 @@ class CLS_CATEGORY{
             echo "<td width=\"30\" align=\"center\"><label>";
             echo "<input type=\"checkbox\" name=\"chk\" id=\"chk\"   onclick=\"docheckonce('chk');\" value=\"$ids\" />";
             echo "</label></td>";
-			echo "<td align='center' width='10'><a href='".ROOTHOST_ADMIN.COMS."/delete/$ids' onclick=\" return confirm('Bạn có chắc muốn xóa ?')\"><i class='fa fa-trash cgray' aria-hidden='true'></i></a></td>";
+			echo "<td align='center' width='10'><a href='".ROOTHOST_ADMIN.COMS."/delete/$ids' onclick=\" return confirm('Bạn có chắc muốn xóa ?')\"><i class='fa fa-trash cgray red' aria-hidden='true'></i></a></td>";
             echo "<td title=''>$str_space$title</td>";
             $order=$rows['order'];
             echo "<td width=\"50\" align=\"center\"><input type=\"text\" name=\"txt_order\" id=\"txt_order\" value=\"$order\" size=\"4\" class=\"order\"></td>";
@@ -113,42 +113,8 @@ class CLS_CATEGORY{
         $row=$objdata->Fetch_Assoc();
         return $row['name'];
     }
-    public function Add_new(){
-        $sql=" INSERT INTO `tbl_categories`(`par_id`,`name`,`code`,`thumb`,`intro`,`isactive`) VALUES";
-        $sql.="('".$this->Par_Id."','".$this->Name."','".$this->Code."','".$this->Thumb."','".$this->Intro."','".$this->isActive."')";
-        //echo $sql;die;
-		return $this->objmysql->Exec($sql);
-    }
-    public function Update(){
-        $sql = "UPDATE tbl_categories SET 
-        `par_id`='".$this->Par_Id."',
-        `name`='".$this->Name."',
-        `code`='".$this->Code."',
-        `thumb`='".$this->Thumb."',
-        `intro`='".$this->Intro."',
-        `isactive`='".$this->pro["isActive"]."' 
-        WHERE id='".$this->ID."'";
-        return $this->objmysql->Exec($sql);
-    }
-    public function Delete($id){
-        $sql="DELETE FROM `tbl_categories` WHERE `id` in ('$id')";
-        return $this->objmysql->Exec($sql);
-    }
-    public function setActive($ids,$status=''){
-        $sql="UPDATE `tbl_categories` SET `isactive`='$status' WHERE `id` in ('$ids')";
-        if($status=='')
-            $sql="UPDATE `tbl_categories` SET `isactive`=if(`isactive`=1,0,1) WHERE `id` in ('$ids')";
-        return $this->objmysql->Exec($sql);
-    }
-    public function Order($arr_id,$arr_quan){
-        $n=count($arr_id);
-        for($i=0;$i<$n;$i++){
-            $sql="UPDATE `tbl_categories` SET `order`='".$arr_quan[$i]."' WHERE `id` = '".$arr_id[$i]."' ";
-            $this->objmysql->Exec($sql);
-        }
-    }
     /* combo box*/
-    function getListCbItem($getId='', $swhere=''){
+    public function getListCbItem($getId='', $swhere=''){
         $sql="SELECT id, name, code FROM tbl_categories ".$swhere." ORDER BY `name` ASC";
         $objdata=new CLS_MYSQL();
         $objdata->Query($sql);
@@ -207,7 +173,6 @@ class CLS_CATEGORY{
         $objdata->Query($sql);
 		$r=$objdata->Fetch_Assoc();
 		return $r['total']+0;
-		
 	}
 }
 ?>

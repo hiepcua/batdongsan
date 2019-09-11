@@ -79,30 +79,31 @@ $cur_page=(int)$_SESSION['CUR_PAGE_CONTENTS']>0 ? $_SESSION['CUR_PAGE_CONTENTS']
 </div><br>
 <div class='user_list'>
 	<div class="table-responsive">
-    <table class="table table-bordered">
-        <tr class="header">
-            <th width="30" align="center">STT</th>
-            <th width="30" align="center"><input type="checkbox" name="chkall" id="chkall" value="" onclick="docheckall('chk',this.checked);" /></th>
-            <th>Nhóm tin</th>
-            <th>Bài tin</th>
-            <th align="center" width="100">Ngày đăng</th>
-            <th align="center" width="70">Lượt xem</th>
-            <th width="70" align="center" style="text-align: center;">Sắp xếp
-                <a href="javascript:saveOrder()"><i class="fa fa-floppy-o" aria-hidden="true"></i></a>
-            </th>
-            <th colspan="3"></th>
-        </tr>
-        <tbody class="list"><?php $obj->listTable($strwhere,$cur_page);?></tbody>
-    </table>
-    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="Footer_list">
-        <tr>
-            <td align="center">
-                <?php 
-                paging($total_rows,MAX_ROWS_ADMIN,$cur_page);
-                ?>
-            </td>
-        </tr>
-    </table></div>
+        <table class="table table-bordered">
+            <tr class="header">
+                <th width="30" align="center">STT</th>
+                <th width="30" align="center"><input type="checkbox" name="chkall" id="chkall" value="" onclick="docheckall('chk',this.checked);" /></th>
+                <th>Nhóm tin</th>
+                <th>Bài tin</th>
+                <th align="center" width="100">Ngày đăng</th>
+                <th align="center" width="70">Lượt xem</th>
+                <th width="70" align="center" style="text-align: center;">Sắp xếp
+                    <a href="javascript:saveOrder()"><i class="fa fa-floppy-o" aria-hidden="true"></i></a>
+                </th>
+                <th colspan="3"></th>
+            </tr>
+            <tbody class="list"><?php $obj->listTable($strwhere,$cur_page);?></tbody>
+        </table>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="Footer_list">
+            <tr>
+                <td align="center">
+                    <?php 
+                    paging($total_rows,MAX_ROWS_ADMIN,$cur_page);
+                    ?>
+                </td>
+            </tr>
+        </table>
+    </div>
 </div>
 <?php //----------------------------------------------?>
 <script type="text/javascript">

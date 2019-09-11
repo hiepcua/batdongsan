@@ -68,6 +68,12 @@ body{
 .sort .fa-sort-down{bottom:0; left:0; position:absolute}
 /* END SORT */	
 
+.mes-error {
+    font-weight: 400;
+    padding-left: 20px;
+    color: red;
+    font-size: 12px;
+}
 .row-flex {
 	display: -webkit-box;
 	display: -moz-box;
@@ -80,8 +86,21 @@ body{
 	font-size: 16px;
 	font-weight:bold;
 	line-height: 42px;
-	background:#ddd;
-	padding:0px 10px;
+}
+#site_body .com_header{
+	width: 100%;
+	display: inline-block;	
+	margin-bottom: 20px;
+}
+#site_body .com_header h1{
+	color: #333333;
+	float: left;
+	margin: 0px;
+	font-size: 26px;
+}
+#site_body .com_header .btn{
+	padding-left: 20px;
+	padding-right: 20px;
 }
 #site_body .list_search{display:block;padding:5px 0px; }
 #left_sidebar{
@@ -796,7 +815,7 @@ fieldset legend.title>span{
 .page-content-wrapper .page-content {
     margin-top: 0px;
     min-height: 600px;
-    padding: 15px 20px 10px 0px;
+    padding: 10px 0px 10px 0px;
 }
 .breadcrumb{
     border-radius: 0;
@@ -857,4 +876,7 @@ td.tbl_actions {
 }
 .red {
     color: #d9534f;
+}
+.toolbar .btn{
+	padding: 10px 50px;
 }
