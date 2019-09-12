@@ -1,19 +1,12 @@
 <?php
-$objpart = new CLS_PARTNER();
-$objpart->getList(" AND isactive=1 ");
-if($objpart->Num_rows()>0) { ?>
-	<div id="owl4" class="owl-carousel owl-theme">
-		<?php while($partner = $objpart->Fetch_Assoc()) { 
-			$title = stripslashes($partner["name"]);
-			$link = $partner['link']!=''?$partner['link']:"javascript:void(0)";
-			$img = getThumb($partner['images'],'img-responsive',$title);?>
-			<div class="item">
-				<div class="ow-client-logo">
-					<div class="client-logo">
-						<?php echo $img;?>
-					</div>
-				</div>
-			</div>
-		<?php } ?>
-	</div>
-<?php } ?>
+$MOD = 'partner';
+$theme = 'default';
+if($r['theme']!='') $theme = $r['theme']; ?>
+<div class="module <?php echo " ".$r['class'];?>">
+	<?php if($r['viewtitle']==1){?>
+	<div class="main-title"><?php echo $r['title'];?></div>
+	<div class="space-line"></div>
+	<?php } ?>
+	<?php include(MOD_PATH."mod_$MOD/brow/".$theme.".php");?>
+</div>
+<?php unset($obj); unset($r);?>

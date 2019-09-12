@@ -1,25 +1,12 @@
 <?php
-$objmysql = new CLS_MYSQL();
-$sql="SELECT * FROM tbl_slider WHERE isactive=1 ORDER BY `order` ASC,id ASC";
-$objmysql->Query($sql);
-$id_div = "slider-main";
-$total = $objmysql->Num_rows();
-?>
-<div id="main-banner" class="owl-carousel owl-theme">
-	<?php
-	while($row = $objmysql->Fetch_Assoc()) {
-		$slogan = stripcslashes($row['slogan']);
-		$intro = stripcslashes($row['intro']);
-		$link = stripcslashes($row['link']);
-		$thumb = stripcslashes($row['thumb']);
-		?>
-		<div class="item">
-			<div class="bn-mask"></div>
-			<img src="<?= $thumb ?>" class="img">
-			<div class="content">
-				<div class="title"><?php echo $slogan;?></div>
-				<div class="intro"><?php echo $intro;?></div>
-			</div>
-		</div>
+$MOD = 'slide';
+$theme = 'default';
+if($r['theme']!='') $theme = $r['theme']; ?>
+<div class="module <?php echo " ".$r['class'];?>">
+	<?php if($r['viewtitle']==1){?>
+	<div class="main-title"><?php echo $r['title'];?></div>
+	<div class="space-line"></div>
 	<?php } ?>
+	<?php include(MOD_PATH."mod_$MOD/brow/".$theme.".php");?>
 </div>
+<?php unset($obj); unset($r);?>

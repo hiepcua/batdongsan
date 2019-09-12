@@ -79,7 +79,7 @@ class CLS_MENUITEM{
 		}
 		return $level;
 	}
-	public function listTableItemMenu($strwhere="",$par_id,$level){
+	public function listTableItemMenu($strwhere="", $par_id, $level, $rowcount){
 		$sql="SELECT * FROM `tbl_mnuitems` WHERE `par_id`='$par_id' ".$strwhere." ORDER BY `order` ASC, id ASC";
 		$objdata=new CLS_MYSQL;
 		$objdata->Query($sql);
@@ -90,7 +90,7 @@ class CLS_MENUITEM{
 			$str_space.="|---";
 		}
 		while($rows=$objdata->Fetch_Assoc()){
-			$this->rowcount++;
+			$rowcount++;
 			$mnuids=$rows['id'];
 			$par_id=$rows['par_id'];
 			$code=$rows['code'];
@@ -102,6 +102,7 @@ class CLS_MENUITEM{
 			else $icon_active='<i class="fa fa-times-circle-o cred" aria-hidden="true"></i>';
 
 			echo "<tr name='trow'>";
+			echo "<td width='30' align='center'>".$rowcount."<label>";
 			echo "<td width='30' align='center'><label>";
 			echo "<input type='checkbox' name='chk' id='chk' onclick=\"docheckonce('chk');\" value='$mnuids' />";
 			echo "</label></td>";
@@ -127,7 +128,7 @@ class CLS_MENUITEM{
 			echo "</td>";
 			echo "</tr>";
 			$nextlevel=$level+1;
-			$this->listTableItemMenu($strwhere,$mnuids,$nextlevel);
+			$this->listTableItemMenu($strwhere, $mnuids, $nextlevel, $rowcount);
 		}
 	}
 	public function getChildID($parid) {

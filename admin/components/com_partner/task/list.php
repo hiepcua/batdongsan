@@ -1,43 +1,37 @@
 <?php
 defined('ISHOME') or die('Can not acess this page, please come back!');
-define('OBJ_PAGE','CATEGORY');
-$keyword='';$strwhere='';$action='';
+define('OBJ_PAGE','PARTNER');
+$strwhere='';
 
 // Khai báo SESSION
-if(isset($_POST['txtkeyword'])){
-  $keyword=trim($_POST['txtkeyword']);
-  $_SESSION['KEY_'.OBJ_PAGE]=$keyword;
-}
-if(isset($_POST['cbo_active']))
-    $_SESSION['ACT'.OBJ_PAGE]=addslashes($_POST['cbo_active']);
-if(isset($_SESSION['KEY_'.OBJ_PAGE]))
-    $keyword=$_SESSION['KEY_'.OBJ_PAGE];
-else
-    $keyword='';
-$action=isset($_SESSION['ACT'.OBJ_PAGE]) ? $_SESSION['ACT'.OBJ_PAGE]:'';
+$keyword = isset($_GET['q']) ? addslashes(trim($_GET['q'])) : '';
+$action = isset($_GET['cbo_action']) ? addslashes(trim($_GET['cbo_action'])) : '';
 
 // Gán strwhere
-if($keyword!='')
+if($keyword !== ''){
     $strwhere.=" AND ( `name` like '%$keyword%' )";
-if($action!='' && $action!='all' ){
+}
+if($action !== '' && $action !== 'all' ){
     $strwhere.=" AND `isactive` = '$action'";
 }
-if(isset($_POST['txtkeyword'])){
-    $keyword=trim($_POST['txtkeyword']);
-    $_SESSION['KEY_'.OBJ_PAGE]=$keyword;
+
+// Begin pagging
+if(!isset($_SESSION['CUR_PAGE_'.OBJ_PAGE])){
+    $_SESSION['CUR_PAGE_'.OBJ_PAGE] = 1;
+}
+if(isset($_POST['txtCurnpage'])){
+    $_SESSION['CUR_PAGE_'.OBJ_PAGE] = (int)$_POST['txtCurnpage'];
 }
 
-// Pagging
-if(!isset($_SESSION['CUR_PAGE_'.OBJ_PAGE]))
-    $_SESSION['CUR_PAGE_'.OBJ_PAGE]=1;
-if(isset($_POST['txtCurnpage'])){
-    $_SESSION['CUR_PAGE_'.OBJ_PAGE]=(int)$_POST['txtCurnpage'];
+$sql="SELECT COUNT(*) AS count FROM tbl_partner WHERE 1=1 ".$strwhere;
+$objmysql->Query($sql);
+$row_count = $objmysql->Fetch_Assoc();
+$total_rows = $row_count['count'];
+
+if($_SESSION['CUR_PAGE_'.OBJ_PAGE] > ceil($total_rows/MAX_ROWS_ADMIN)){
+    $_SESSION['CUR_PAGE_'.OBJ_PAGE] = ceil($total_rows/MAX_ROWS_ADMIN);
 }
-$obj->getList($strwhere,'');
-$total_rows=$obj->Num_rows();
-if($_SESSION['CUR_PAGE_'.OBJ_PAGE]>ceil($total_rows/MAX_ROWS))
-    $_SESSION['CUR_PAGE_'.OBJ_PAGE]=ceil($total_rows/MAX_ROWS);
-$cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAGE]:1;
+$cur_page = (int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAGE] : 1;
 // End pagging
 ?>
 <script language="javascript">
@@ -50,7 +44,7 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
 		return true;
 	}
 </script>
- <div class=''>
+<div class=''>
     <div class="com_header color">
         <i class="fa fa-list" aria-hidden="true"></i> Danh sách đối tác
         <div class="pull-right">
@@ -76,17 +70,49 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
 			<tr class="header">
                 <th width="30" align="center">#</th>
                 <th width="30" align="center"><input type="checkbox" name="chkall" id="chkall" value="" onclick="docheckall('chk',this.checked);" /></th>
-                <th width="50" align="center">Xóa</th>
-				<th align="center">Đối tác</th>
-				<th align="center">Logo</th>
+                <th align="center">Logo</th>
+                <th align="center">Đối tác</th>
                 <th width="70" align="center" style="text-align: center;">Sắp xếp
                     <a href="javascript:saveOrder()"><i class="fa fa-floppy-o" aria-hidden="true"></i></a>
                 </th>
                 <th width="50" align="center">Hiển thị</th>
                 <th width="50" align="center">Sửa</th>
+                <th width="50" align="center">Xóa</th>
             </tr>
             <?php
-            $obj->listTable($strwhere,$cur_page,0,0,0);
+            $star = ($cur_page - 1) * MAX_ROWS;
+            $leng = MAX_ROWS;
+            $sql = "SELECT * FROM tbl_partner ".$strwhere." ORDER BY `order` ASC LIMIT ".$star.", ".$leng;
+            $objmysql->Query($sql);  $i=0;
+            while($rows = $objmysql->Fetch_Assoc()){
+                $i++;
+                $ids=$rows['id'];
+                $img=$rows['images']!=''?"<img src='".$rows['images']."' height='80'/>":'';
+                $title=Substring(stripslashes($rows['name']),0,10);
+                if($rows['isactive']==1) 
+                    $icon_active="<i class='fa fa-check cgreen' aria-hidden='true'></i>";
+                else $icon_active='<i class="fa fa-times-circle-o cred" aria-hidden="true"></i>';
+
+                echo "<tr name=\"trow\">";
+                echo "<td width=\"30\" align=\"center\">$i</td>";
+                echo "<td width=\"30\" align=\"center\"><label>";
+                echo "<input type=\"checkbox\" name=\"chk\" id=\"chk\"   onclick=\"docheckonce('chk');\" value=\"$ids\" />";
+                echo "</label></td>";
+                echo "<td>$img</td>";
+                echo "<td title=''>$title</td>";
+                $order=$rows['order'];
+                echo "<td align=\"center\"><input type=\"text\" name=\"txt_order\" id=\"txt_order\" value=\"$order\" size=\"4\" class=\"order\"></td>";
+                echo "<td align=\"center\">";
+                echo "<a href=\"".ROOTHOST_ADMIN.COMS."/active/$ids\">";
+                echo $icon_active;
+                echo "</a></td>";
+                echo "<td align=\"center\">";
+                echo "<a href=\"".ROOTHOST_ADMIN.COMS."/edit/$ids\">";
+                echo "<i class='fa fa-edit' aria-hidden='true'></i>";
+                echo "</a></td>";
+                echo "<td align='center' width='10'><a href='".ROOTHOST_ADMIN.COMS."/delete/$ids' onclick=\" return confirm('Bạn chắc chắn muốn xóa ?')\"><i class='fa fa-trash cgray' aria-hidden='true'></i></a></td>";
+                echo "</tr>";
+            }
             ?>
         </table>
     </form>

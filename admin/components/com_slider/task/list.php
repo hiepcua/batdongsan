@@ -21,9 +21,10 @@ if(isset($_POST['txtCurnpage'])){
     $_SESSION['CUR_PAGE_'.OBJ_PAGE] = (int)$_POST['txtCurnpage'];
 }
 
-$sql="SELECT COUNT(*) FROM tbl_slider WHERE 1=1 ".$strwhere;
+$sql="SELECT COUNT(*) AS count FROM tbl_slider WHERE 1=1 ".$strwhere;
 $objmysql->Query($sql);
-$total_rows=$objmysql->Num_rows();
+$row_count = $objmysql->Fetch_Assoc();
+$total_rows = $row_count['count'];
 
 if($_SESSION['CUR_PAGE_'.OBJ_PAGE] > ceil($total_rows/MAX_ROWS)){
     $_SESSION['CUR_PAGE_'.OBJ_PAGE] = ceil($total_rows/MAX_ROWS);

@@ -1,10 +1,14 @@
 <?php
-defined("ISHOME") or die("Can't acess this page, please come back!")
+defined("ISHOME") or die("Can't acess this page, please come back!");
+$viewtype = "mainmenu";
+if(isset($_POST["txt_type"])){
+    $viewtype = $_POST["txt_type"];
+}
 ?>
 <script language="javascript">
     function checkinput(){
         if($('#txttitle').val()=="") {
-            $("#txttitle_err").fadeTo(200,0.1,function(){ 
+            $("#err2").fadeTo(200,0.1,function(){ 
                 $(this).html('Mời bạn nhập tiêu đề Module').fadeTo(900,1);
             });
             $('#txttitle').focus();
@@ -12,7 +16,7 @@ defined("ISHOME") or die("Can't acess this page, please come back!")
         }
         if( $('#cbo_type').val()=="mainmenu") {
             if($('#cbo_menutype').val()=="") {
-                $("#menutype_err").fadeTo(200,0.1,function(){ 
+                $("#err3").fadeTo(200,0.1,function(){ 
                     $(this).html('Mời chọn kiểu Menu cần hiển thị').fadeTo(900,1);
                 });
                 $('#cbo_menutype').focus();
@@ -34,10 +38,9 @@ defined("ISHOME") or die("Can't acess this page, please come back!")
     $(document).ready(function() {
         $('#txttitle').blur(function(){
             if($(this).val()=="") {
-                $("#txttitle_err").fadeTo(200,0.1,function(){ 
+                $("#err2").fadeTo(200,0.1,function(){ 
                     $(this).html('Mời bạn nhập tiêu đề Module').fadeTo(900,1);
                 });
-                $('#txttitle').focus();
             }
         })
     });
@@ -68,20 +71,14 @@ defined("ISHOME") or die("Can't acess this page, please come back!")
 </div>
 <div class="clearfix"></div>
 
-<?php
-$viewtype="mainmenu";
-if(isset($_POST["txt_type"]))
-    $viewtype=$_POST["txt_type"];
-?>
-
 <form id="frm_type" name="frm_type" method="post" action="" style="display:none;">
     <input type="text" name="txt_type" id="txt_type" />
 </form>
 
-<form id="frm_action" class="form-horizontal col-xs-12" name="frm_action" method="post" action="">
-    <p>Những mục đánh dấu <font color="red">*</font> là yêu cầu bắt buộc.</p>
+<form id="frm_action" class="form-horizontal" name="frm_action" method="post" action="">
     <fieldset>
         <legend><strong>Chi tiết:</strong></legend>
+        <p>Những mục đánh dấu <font color="red">*</font> là yêu cầu bắt buộc.</p>
         <div class="form-group">
             <div class="col-md-6 col-sm-6">
                 <label>Kiểu hiển thị<small class="cred"> (*)</small><span id="err1" class="mes-error"></span></label>
@@ -107,7 +104,7 @@ if(isset($_POST["txt_type"]))
             <div class="form-group">
                 <div class="col-xs-12">
                     <label>Mô tả</label>
-                    <textarea name="txtintro" id="txtintro" class="form-control" rows="5"></textarea>
+                    <textarea name="txtintro" class="form-control" rows="5"></textarea>
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -150,25 +147,23 @@ if(isset($_POST["txt_type"]))
     </fieldset>
 
     <?php 
-    $arr_type = array('mainmenu','html','news','slide');
+    $arr_type = array('mainmenu','html','news','slide', 'partner', 'content');
     if(in_array($viewtype,$arr_type)){ ?>
         <fieldset>
             <legend><strong>Parameter:</strong></legend>
-            <?php if($viewtype == "mainmenu"){?>
-                <div class="col-md-9">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">Menu</label>
-                        <div class="col-sm-6">
-                            <select name="cbo_menutype" class="form-control" id="cbo_menutype">
-                                <option value="all">Select once menu</option>
-                                <?php echo $objmenu->getListmenu("option"); ?>
-                            </select>
-                            <span id="menutype_err" class="check_error"></span>
-                        </div>
-                        <div class="clearfix"></div>
+            <?php if($viewtype == "mainmenu"){ ?>
+                <div class="form-group">
+                    <div class="col-md-6 col-sm-6">
+                        <label>Menu<small class="cred"> (*)</small><span id="err3" class="mes-error"></span></label>
+                        <select name="cbo_menutype" class="form-control" id="cbo_menutype">
+                            <option value="all">Chọn một kiểu menu</option>
+                            <?php echo $objmenu->getListmenu("option"); ?>
+                        </select>
+                        <span id="menutype_err" class="check_error"></span>
                     </div>
                 </div>
-            <?php }else if($viewtype=="news"){?>
+
+            <?php }else if($viewtype=="news"){ ?>
                 <div class="form-group">
                     <div class="col-md-6 col-sm-6">
                         <label>Nhóm tin</label>
@@ -186,13 +181,37 @@ if(isset($_POST["txt_type"]))
                         </script>
                     </div>
                 </div>
+
+            <?php }else if($viewtype=="content"){ ?>
+                <div class="form-group">
+                    <div class="col-md-6 col-sm-6">
+                        <label>Bài tin</label>
+                        <select name="cbo_content" class="form-control" id="cbo_content" style="width: 100%;">
+                            <option value="0">Chọn một bài tin</option>
+                            <?php
+                            $sql_con = "SELECT * FROM tbl_contents WHERE isactive = 1";
+                            $objmysql->Query($sql_con);
+
+                            while ($row = $objmysql->Fetch_Assoc()) {
+                                echo '<option value="'.$row['id'].'">'.$row['title'].'</option>';
+                            }
+                            ?>
+                        </select>
+                        <script type="text/javascript">
+                            $(document).ready(function() {
+                                $("#cbo_content").select2();
+                            });
+                        </script>
+                    </div>
+                </div>
+                
             <?php }else if($viewtype=="html"){ ?>
                 <div class="form-group">
                     <div class="col-xs-12">
                         <textarea name="txtcontent" id="txtcontent" class="form-control"></textarea>
                     </div>
                 </div>
-            <?php } else {};?>
+            <?php } ?>
             <div class="clearfix"></div>
             <div class="form-group">
                 <div class="col-md-6 col-sm-6">

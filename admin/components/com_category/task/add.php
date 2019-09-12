@@ -8,7 +8,7 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
     function checkinput(){
         if($("#txt_name").val()==""){
             $("#txt_name_err").fadeTo(200,0.1,function(){
-                $(this).html('Vui lòng nhập tên bài viết').fadeTo(900,1);
+                $(this).html('Vui lòng nhập tên nhóm tin').fadeTo(900,1);
             });
             $("#txt_name").focus();
             return false;
@@ -16,6 +16,7 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
         return true;
     }
 </script>
+
 <div id="path">
     <ol class="breadcrumb">
         <li><a href="<?php echo ROOTHOST_ADMIN;?>">Admin</a></li>

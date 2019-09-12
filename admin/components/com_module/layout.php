@@ -19,18 +19,19 @@
 	
 	// End toolbar
 	if(isset($_POST['cmdsave'])){
-		$Cate 		= isset($_POST['cbo_menutype']) ? (int)$_POST['cbo_menutype'] : 0;
+		$Cate_ID 	= isset($_POST['cbo_cate']) ? (int)$_POST['cbo_cate'] : 0;
+		$Con_ID 	= isset($_POST['cbo_content']) ? (int)$_POST['cbo_content'] : 0;
 		$MnuID 		= isset($_POST['cbo_menutype']) ? (int)$_POST['cbo_menutype'] : 0;
 		$ViewTitle	= isset($_POST['optviewtitle']) ? (int)$_POST['optviewtitle'] : 0;
 		$isActive	= isset($_POST['optactive']) ? (int)$_POST['optactive'] : 0;
 
 		$Title 		= isset($_POST['txttitle']) ? addslashes($_POST['txttitle']) : '';
 		$Type 		= isset($_POST['cbo_type']) ? addslashes($_POST['cbo_type']) : '';
-		$Cate_ID 	= isset($_POST['txtintro']) ? addslashes($_POST['txtintro']) : '';
 		$Theme 		= isset($_POST['cbo_theme']) ? addslashes($_POST['cbo_theme']) : '';
 		$HTML 		= isset($_POST['txtcontent']) ? addslashes($_POST['txtcontent']) : '';
 		$Position	= isset($_POST['cbo_position']) ? addslashes($_POST['cbo_position']) : '';
 		$Class		= isset($_POST['txtclass']) ? addslashes($_POST['txtclass']) : '';
+		$Intro		= isset($_POST['txtintro']) ? addslashes($_POST['txtintro']) : '';
 		
 		if(isset($_POST['txtid'])){
 			$ID = (int)$_POST['txtid'];
@@ -42,17 +43,16 @@
 				`viewtitle`='".$ViewTitle."',
 				`menu_id`='".$MnuID."',
 				`category_id`='".$Cate_ID."',
+				`content_id`='".$Con_ID."',
 				`theme`='".$Theme."',
 				`position`='".$Position."',
 				`class`='".$Class."',
 				`isactive`='".$isActive."' 
 				WHERE `id`='".$ID."'";
-				echo $sql;
-			// $objmysql->Exec($sql);
+			$objmysql->Exec($sql);
 		}else{
-			$sql="INSERT INTO `tbl_modules` (`type`,`viewtitle`,`menu_id`,`category_id`,`theme`,`position`,`class`,`isactive`,`title`,`intro`,`content`) VALUES ('".$Type."','".$ViewTitle."','".$MnuID."','".$Cate_ID."','".$Theme."','".$Position."','".$Class."','".$isActive."','".$Title."','".$Intro."','".$HTML."')";
-			echo $sql;
-			// $objmysql->Exec($sql);
+			$sql="INSERT INTO `tbl_modules` (`type`,`viewtitle`,`menu_id`,`category_id`,`content_id`,`theme`,`position`,`class`,`isactive`,`title`,`intro`,`content`) VALUES ('".$Type."','".$ViewTitle."','".$MnuID."','".$Cate_ID."','".$Con_ID."','".$Theme."','".$Position."','".$Class."','".$isActive."','".$Title."','".$Intro."','".$HTML."')";
+			$objmysql->Exec($sql);
 		}
 		?>
 		<script language="javascript">window.location='<?php echo ROOTHOST_ADMIN.COMS;?>'</script>

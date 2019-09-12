@@ -53,8 +53,8 @@ RewriteRule ^menus/active/([0-9]+)?$ 				index.php?com=menus&task=active&id=$1
 RewriteRule ^menus/delete/([0-9]+)?$ 				index.php?com=menus&task=delete&id=$1
 
 # Menu
-RewriteRule ^mnuitem/?$ 							index.php?com=mnuitem
-RewriteRule ^mnuitem/([0-9]+)?$ 					index.php?com=mnuitem&task=list&mnuid=$1
+# RewriteRule ^mnuitem/?$ 							index.php?com=mnuitem
+RewriteRule ^mnuitem/([0-9]+)?$ 					index.php?com=mnuitem&task=list&mnuid=$1 	[QSA]
 RewriteRule ^mnuitem/add?$ 							index.php?com=mnuitem&task=add
 RewriteRule ^mnuitem/edit/([0-9]+)?$ 				index.php?com=mnuitem&task=edit&id=$1
 RewriteRule ^mnuitem/active/([0-9]+)?$ 				index.php?com=mnuitem&task=active&id=$1
@@ -69,7 +69,7 @@ RewriteRule ^video/hot/([0-9]+)?$ 					index.php?com=video&task=hot&id=$1
 RewriteRule ^video/delete/([0-9]+)?$ 				index.php?com=video&task=delete&id=$1
 
 # Partner
-RewriteRule ^partner/?$ 							index.php?com=partner
+RewriteRule ^partner/?$ 							index.php?com=partner 	[QSA]
 RewriteRule ^partner/add?$ 							index.php?com=partner&task=add
 RewriteRule ^partner/edit/([0-9]+)?$ 				index.php?com=partner&task=edit&id=$1
 RewriteRule ^partner/delete/([0-9]+)?$ 				index.php?com=partner&task=delete&id=$1
@@ -109,7 +109,7 @@ RewriteRule ^profile/pass/([0-9]+)?$ 			index.php?com=profile&task=pass&id=$1
 
 
 # Module
-RewriteRule ^module/?$ 								index.php?com=module
+RewriteRule ^module/?$ 								index.php?com=module 	[QSA]
 RewriteRule ^module/add?$ 							index.php?com=module&task=add
 RewriteRule ^module/edit/([0-9]+)?$ 				index.php?com=module&task=edit&id=$1
 RewriteRule ^module/active/([0-9]+)?$ 				index.php?com=module&task=active&id=$1

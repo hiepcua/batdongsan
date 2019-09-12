@@ -23,9 +23,10 @@ if(isset($_POST['txtCurnpage'])){
     $_SESSION['CUR_PAGE_'.OBJ_PAGE]=(int)$_POST['txtCurnpage'];
 }
 
-$sql="SELECT COUNT(*) FROM tbl_user_group WHERE 1=1 ".$strwhere;
+$sql="SELECT COUNT(*) AS count FROM tbl_user_group WHERE 1=1 ".$strwhere;
 $objmysql->Query($sql);
-$total_rows=$objmysql->Num_rows();
+$row_count = $objmysql->Fetch_Assoc();
+$total_rows = $row_count['count'];
 
 if($_SESSION['CUR_PAGE_'.OBJ_PAGE]>ceil($total_rows/MAX_ROWS_ADMIN)){
     $_SESSION['CUR_PAGE_'.OBJ_PAGE]=ceil($total_rows/MAX_ROWS_ADMIN);
@@ -84,36 +85,36 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
 </div>
 <br>
 <div class="clearfix"></div>
-<div class='user_list'>
-    <div class="table-responsive">
-        <table class="table table-bordered">
-            <tr class="header">
-                <th width="30" align="center">#</th>
-                <th width="30" align="center"><input type="checkbox" name="chkall" id="chkall" value="" onclick="docheckall('chk',this.checked);" /></th>
-                <th width="50" align="center">Xóa</th>
-                <th align="center">Tên nhóm 
-                    <div class="sort" sort-name="name">
-                        <i class="fa fa-sort-up" title="Giảm" sort="desc"></i>
-                        <i class="fa fa-sort-down" title="Tăng" sort="asc"></i>
-                    </div>
-                </th>
-                <th>Mô tả</th>
-                <th width="50" align="center">Hiển thị</th>
-                <th width="50" align="center">Sửa</th>
-            </tr>
-            <?php
-            $obj->listTable($strwhere, 0, 0, 0);
-            ?>
-        </table>
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="Footer_list">
-            <tr>
-                <td align="center">
-                    <?php 
-                    paging($total_rows,MAX_ROWS_ADMIN,$cur_page);
-                    ?>
-                </td>
-            </tr>
-        </table>
-    </div>
+
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <tr class="header">
+            <th width="30" align="center">#</th>
+            <th width="30" align="center"><input type="checkbox" name="chkall" id="chkall" value="" onclick="docheckall('chk',this.checked);" /></th>
+            <th width="50" align="center">Xóa</th>
+            <th align="center">Tên nhóm 
+                <div class="sort" sort-name="name">
+                    <i class="fa fa-sort-up" title="Giảm" sort="desc"></i>
+                    <i class="fa fa-sort-down" title="Tăng" sort="asc"></i>
+                </div>
+            </th>
+            <th>Mô tả</th>
+            <th width="50" align="center">Hiển thị</th>
+            <th width="50" align="center">Sửa</th>
+        </tr>
+        <?php
+        $obj->listTable($strwhere, 0, 0, 0);
+        ?>
+    </table>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="Footer_list">
+        <tr>
+            <td align="center">
+                <?php 
+                paging($total_rows,MAX_ROWS_ADMIN,$cur_page);
+                ?>
+            </td>
+        </tr>
+    </table>
 </div>
+
 <?php //----------------------------------------------?>

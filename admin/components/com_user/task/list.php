@@ -11,9 +11,10 @@
 		$strwhere.=" AND `isactive` = '$action'";
 	}
 
-	$sql="SELECT COUNT(*) FROM tbl_user ". $strwhere;
+	$sql="SELECT COUNT(*) AS count FROM tbl_user ". $strwhere;
 	$objmysql->Query($sql);
-	$total_rows = $objmysql->Num_rows();
+	$row_count = $objmysql->Fetch_Assoc();
+	$total_rows = $row_count['count'];
 
 	// Pagging
 	if(!isset($_SESSION['CUR_PAGE_USER']))
