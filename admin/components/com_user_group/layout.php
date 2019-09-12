@@ -1,33 +1,26 @@
 <?php
 defined('ISHOME') or die('Can not acess this page, please come back!');
-define('COMS','category');
+define('COMS','user_group');
 require_once('libs/cls.user_group.php');
 $objmysql = new CLS_MYSQL();
 $obj = new CLS_USER_GROUP();
 
 if(isset($_POST['cmdsave'])){
-	$Par_Id=addslashes($_POST['cbo_cate']);
-	$Name=addslashes($_POST['txt_name']);
-	$Code=un_unicode(addslashes($_POST['txt_name']));
-	$Intro=addslashes($_POST['txtintro']);
-	if(isset($_POST["txtthumb"]))
-		$Thumb=addslashes($_POST["txtthumb"]);
-	$isActive=1;
-	$Type=1;
+	$Par_Id = 	addslashes($_POST['cbo_parent']);
+	$Name 	=	addslashes($_POST['txt_name']);
+	$Intro 	= 	addslashes($_POST['txtintro']);
+
 	if(isset($_POST['txtid'])){
 		$ID=(int)$_POST['txtid'];
 
 		$sql = "UPDATE tbl_user_group SET 
         `par_id`='".$Par_Id."',
         `name`='".$Name."',
-        `code`='".$Code."',
-        `thumb`='".$Thumb."',
-        `intro`='".$Intro."',
-        `isactive`='".$pro["isActive"]."' 
+        `intro`='".$Intro."'
         WHERE id='".$ID."'";
         $objmysql->Exec($sql);
 	}else{
-		$sql="INSERT INTO `tbl_user_group`(`par_id`,`name`,`code`,`thumb`,`intro`,`isactive`) VALUES ('".$Par_Id."','".$Name."','".$Code."','".$Thumb."','".$Intro."','".$isActive."')";
+		$sql="INSERT INTO `tbl_user_group`(`par_id`,`name`,`intro`) VALUES ('".$Par_Id."','".$Name."','".$Intro."')";
 		$objmysql->Exec($sql);
 	}
 	echo "<script language=\"javascript\">window.location.href='".ROOTHOST_ADMIN.COMS."'</script>";

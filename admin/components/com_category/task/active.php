@@ -6,5 +6,5 @@ if(isset($_GET['id'])){
 }
 $sql = "UPDATE `tbl_categories` SET `isactive`=if(`isactive`=1,0,1) WHERE `id` in ('$id')";
 $objmysql->Exec($sql);
-echo "<script language=\"javascript\">window.location='".ROOTHOST_ADMIN."category'</script>";
+echo "<script language=\"javascript\">window.location='".ROOTHOST_ADMIN.COMS."'</script>";
 ?>

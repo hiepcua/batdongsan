@@ -54,47 +54,5 @@ class CLS_CONFIG{
 	public function Fetch_Assoc(){
 		return $this->objmysql->Fetch_Assoc();
 	}
-	public function Update(){
-		$sql = "UPDATE tbl_configsite SET ";
-		$sql .="title='".$this->Title."',";
-		$sql .="company_name='".$this->CompanyName."',";
-		$sql .="intro='".$this->Intro."',";
-		$sql .="address='".$this->Address."',";
-		$sql .="phone='".$this->Phone."',";
-		$sql .="fax='".$this->Fax."',";
-		$sql .="email='".$this->Email."',";
-
-		$sql .="meta_keyword='".$this->Meta_keyword."',";
-		$sql .="meta_descript='".$this->Meta_descript."',";
-
-		$sql .="lang_id='".$this->Langid."',";
-
-		$sql .="website='".$this->Website."',";
-		$sql .="banner='".$this->Banner."',";
-		$sql .="contact='".$this->Contact."',";
-		$sql .="logo='".$this->Logo."',";
-		$sql .="tem_id='".$this->Temid."',";
-		$sql .="nick_yahoo='".$this->Nickyahoo."',";
-		$sql .="name_yahoo='".$this->Nameyahoo."',";
-		$sql .="footer='".$this->Footer."' WHERE config_id=1";
-		return $this->objmysql->Query($sql);
-	}
-	public function Update2(){
-		$sql = "UPDATE tbl_configsite SET ";
-		$sql .="title='".$this->Title."',";
-		$sql .="company_name='".$this->CompanyName."',";
-		$sql .="phone='".$this->Phone."',";
-		$sql .="tel='".$this->Tel."',";
-		$sql .="fax='".$this->Fax."',";
-		$sql .="email='".$this->Email."',";
-		$sql .="address='".$this->Address."',";
-		$sql .="meta_keyword='".$this->Meta_keyword."',";
-		$sql .="twitter='".$this->Twitter."',";
-		$sql .="gplus='".$this->Gplus."',";
-		$sql .="facebook='".$this->Facebook."',";
-		$sql .="youtube='".$this->Youtube."',";
-		$sql .="meta_descript='".$this->Meta_descript."' WHERE config_id=1";
-		return $this->objmysql->Query($sql);
-	}
 }
 ?>

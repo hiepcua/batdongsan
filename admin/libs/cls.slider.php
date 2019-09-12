@@ -42,13 +42,15 @@ class CLS_SLIDER{
 	public function listTable($strwhere="",$page){
 		$star=($page-1)*MAX_ROWS;
 		$leng=MAX_ROWS;
-		$sql="SELECT tbl_slider.* FROM tbl_slider $strwhere LIMIT $star,$leng";
+		$sql="SELECT tbl_slider.* FROM tbl_slider $strwhere ORDER BY `order` ASC LIMIT $star,$leng";
 		$objdata=new CLS_MYSQL();
 		$objdata->Query($sql);	$i=0;
 		while($rows=$objdata->Fetch_Assoc()){
 			$i++;
 			$ids=$rows['id'];
             $link=$rows['link'];
+            $intro= Substring($rows['intro'], 0, 10);
+            $slogan= Substring($rows['slogan'], 0, 10);
             $img=$rows['thumb'];
             $order=$rows['order'];
 			if($rows['isactive']==1) 
@@ -61,6 +63,8 @@ class CLS_SLIDER{
 			echo "<td width=\"30\" align=\"center\"><input type=\"checkbox\" name=\"chk\" id=\"chk\" onclick=\"docheckonce('chk');\" value=\"$ids\"/></td>";
 
 			echo "<td><img src='$img' class='img-obj pull-left' width='250px'> $link</td>";
+			echo "<td>$slogan</td>";
+			echo "<td>$intro</td>";
             echo "<td width=\"50\" align=\"center\"><input type=\"text\" name=\"txt_order\" id=\"txt_order\" value=\"$order\" class=\"order\"></td>";
 			echo "<td align=\"center\">";
 			echo "<a href=\"index.php?com=".COMS."&amp;task=active&amp;id=$ids\">";
@@ -81,45 +85,8 @@ class CLS_SLIDER{
 			echo "</tr>";
 		}
 	}
-	public function Add_new(){
-		$sql="INSERT INTO `tbl_slider` ( `slogan`, `intro`, `type`,`thumb`,`link`, `isactive`) VALUES ";
-		$sql.="('".$this->Slogan."','".$this->Intro."','".$this->Type."','".$this->Thumb."','".$this->Link."','".$this->isActive."')";
-		return $this->objmysql->Exec($sql);
-	}
-	public function Update(){
-		$sql="UPDATE `tbl_slider` SET  
-				`slogan`='".$this->Slogan."',
-				`intro`='".$this->Intro."',
-				`thumb`='".$this->Thumb."',
-				`link`='".$this->Link."'
-		        WHERE `id`='".$this->ID."'";
-		return $this->objmysql->Exec($sql);
-	}
-	public function Delete($ids){
-		$sql="DELETE FROM `tbl_slider` WHERE `id` in ('$ids')";
-		return $this->objmysql->Exec($sql);
-	}
-	public function setHot($ids){
-		$sql="UPDATE `tbl_slider` SET `ishot`=if(`ishot`=1,0,1) WHERE `id` in ('$ids')";
-		return $this->objmysql->Exec($sql);
-	}
-	public function setActive($ids,$status=''){
-		$sql="UPDATE `tbl_slider` SET `isactive`='$status' WHERE `id` in ('$ids')";
-		if($status=='')
-			$sql="UPDATE `tbl_slider` SET `isactive`=if(`isactive`=1,0,1) WHERE `id` in ('$ids')";
-		return $this->objmysql->Exec($sql);
-	}
-	public function Order($ids,$order){
-		$sql="UPDATE tbl_slider SET `order`='".$order."' WHERE `id`='".$ids."'";	
-		return $this->objmysql->Exec($sql);
-	}
-	public function Orders($arids,$arods){
-		for($i=0;$i<count($arids);$i++){
-			$this->Order($arids[$i],$arods[$i]);
-		}
-	}
     /* combo box*/
-    function getListCbItem($getId='', $swhere='', $arrId=''){
+    public function getListCbItem($getId='', $swhere='', $arrId=''){
         $sql="SELECT id, name, code FROM tbl_slider WHERE ".$swhere." `isactive`='1' ORDER BY `name` ASC";
         $objdata=new CLS_MYSQL();
         $objdata->Query($sql);

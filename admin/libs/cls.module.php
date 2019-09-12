@@ -73,46 +73,15 @@ class CLS_MODULE{
 			echo "<option value=\"$id\">$title</option>";
 		}
 	}
-	public function Add_new(){
-		$sql='INSERT INTO `tbl_modules` (`type`,`viewtitle`,`menu_id`,`category_id`,`theme`,';
-		$sql.='`position`,`class`,`isactive`,`title`,`intro`,`content`) VALUES ';
-		$sql.="('".$this->pro['Type']."','".$this->pro['ViewTitle']."','".$this->pro['MnuID']."','";
-		$sql.=$this->pro['Cate_ID']."','".$this->pro['Theme']."','".$this->pro['Position']."','";
-		$sql.=$this->pro['Class']."','".$this->pro['isActive']."','".$this->pro['Title']."','";
-		$sql.=$this->pro['Intro']."','".$this->pro['HTML']."')";
-		// echo $sql;
-		return $this->objmysql->Exec($sql);
-	}
-	function Update(){
-		$sql="UPDATE `tbl_modules` SET 
-		`type`='".$this->pro['Type']."',
-		`title`='".$this->pro['Title']."',
-		`intro`='".$this->pro['Intro']."',
-		`content`='".$this->pro['HTML']."',
-		`viewtitle`='".$this->pro['ViewTitle']."',
-		`menu_id`='".$this->pro['MnuID']."',
-		`category_id`='".$this->pro['Cate_ID']."',
-		`theme`='".$this->pro['Theme']."',
-		`position`='".$this->pro['Position']."',
-		`class`='".$this->pro['Class']."',
-		`isactive`='".$this->pro['isActive']."' 
-		WHERE `id`='".$this->pro['ID']."'";
-		// echo $sql;die();
-		return $this->objmysql->Exec($sql);
-	}
-	function Order($arr_id,$arr_quan){
-		$n=count($arr_id); print_r($arr_id);
-		for($i=0;$i<$n;$i++){
-			$sql="UPDATE `tbl_modules` SET `order`='".$arr_quan[$i]."' WHERE `id` = '".$arr_id[$i]."' ";
-			$this->objmysql->Exec($sql);
-		}
-	}
-	function setActive($ids,$status=''){
-		$sql="UPDATE `tbl_modules` SET `isactive`='$status' WHERE `id` in ('$ids')";
-		if($status=='')
-			$sql="UPDATE `tbl_modules` SET `isactive`=if(`isactive`=1,0,1) WHERE `id` in ('$ids')";
-		return $this->objmysql->Exec($sql);
-	}
+
+	// function Order($arr_id,$arr_quan){
+	// 	$n=count($arr_id);
+	// 	for($i=0;$i<$n;$i++){
+	// 		$sql="UPDATE `tbl_modules` SET `order`='".$arr_quan[$i]."' WHERE `id` = '".$arr_id[$i]."' ";
+	// 		$this->objmysql->Exec($sql);
+	// 	}
+	// }
+
 	function Delete($ids){
 		$sql="DELETE FROM `tbl_modules` WHERE `id` in ('$ids')";
 		$this->objmysql->Exec('BEGIN');

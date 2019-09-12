@@ -19,7 +19,7 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
 <div id="path">
     <ol class="breadcrumb">
         <li><a href="<?php echo ROOTHOST_ADMIN;?>">Admin</a></li>
-        <li><a href="<?php echo ROOTHOST_ADMIN.'category';?>">Danh sách nhóm tin</a></li>
+        <li><a href="<?php echo ROOTHOST_ADMIN.COMS;?>">Danh sách nhóm tin</a></li>
         <li class="active">Thêm mới nhóm tin</li>
     </ol>
 </div>

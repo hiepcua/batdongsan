@@ -1,11 +1,12 @@
 <?php
 defined("ISHOME") or die("Can't acess this page, please come back!");
 $id="";
-if(isset($_GET["id"]))
-    $id=trim($_GET["id"]);
-$obj->getList(" WHERE `id`='".$id."'");
-$row=$obj->Fetch_Assoc();
+if(isset($_GET["id"]))  $id=trim($_GET["id"]);
+$sql = "SELECT * FROM `tbl_user_group` WHERE id=".$id." ORDER BY `name`";
+$objmysql->Query($sql);
+$row = $objmysql->Fetch_Assoc();
 ?>
+
 <style type="text/css">
     .form-horizontal .control-label{text-align: left;}
 </style>
@@ -13,7 +14,7 @@ $row=$obj->Fetch_Assoc();
     function checkinput(){
         if($("#txt_name").val()==""){
             $("#txt_name_err").fadeTo(200,0.1,function(){
-                $(this).html('Vui lòng nhập tên bài viết').fadeTo(900,1);
+                $(this).html('Vui lòng nhập tên nhóm người dùng').fadeTo(900,1);
             });
             $("#txt_name").focus();
             return false;
@@ -24,13 +25,13 @@ $row=$obj->Fetch_Assoc();
 <div id="path">
     <ol class="breadcrumb">
         <li><a href="<?php echo ROOTHOST_ADMIN;?>">Admin</a></li>
-        <li><a href="<?php echo ROOTHOST_ADMIN.'category';?>">Danh sách nhóm tin</a></li>
-        <li class="active">Sửa nhóm bài viết</li>
+        <li><a href="<?php echo ROOTHOST_ADMIN.'category';?>">Danh sách nhóm người dùng</a></li>
+        <li class="active">Sửa nhóm người dùng</li>
     </ol>
 </div>
 
 <div class="com_header color">
-    <h1>Sửa nhóm bài viết</h1>
+    <h1>Sửa nhóm người dùng</h1>
     <div class="pull-right">
         <form id="frm_menu" name="frm_menu" method="post" action="">
             <input type="hidden" name="txtorders" id="txtorders" />
@@ -51,34 +52,20 @@ $row=$obj->Fetch_Assoc();
     <div class="form-group">
         <div class="col-md-6 col-sm-6">
             <label>Tên nhóm<small class="cred"> (*)</small><span id="txt_name_err" class="mes-error"></span></label>
-            <input type="text" name="txt_name" class="form-control" id="txt_name" placeholder="Tên nhóm tin" value="<?php echo $row['name'];?>" required>
+            <input type="text" name="txt_name" class="form-control" id="txt_name" placeholder="Tên nhóm người dùng" value="<?php echo $row['name'];?>" required>
         </div>
         <div class="col-md-6 col-sm-6">
             <label>Nhóm cha</label>
-            <select name="cbo_cate" class="form-control" id="cbo_cate" style="width: 100%;">
+            <select name="cbo_parent" class="form-control" id="cbo_parent" style="width: 100%;">
                 <option value="0" title="Top">Root</option>
-                <?php $obj->getListCate(0,0); ?>
+                <?php $obj->getOption(0,0); ?>
             </select>
             <script type="text/javascript">
                 $(document).ready(function() {
-                    $("#cbo_cate").select2();
-                    cbo_Selected('cbo_cate','<?php echo $row['par_id'];?>');
+                    cbo_Selected('cbo_parent','<?php echo $row['par_id'];?>');
+                    $("#cbo_parent").select2();
                 });
             </script>
-        </div>
-    </div>
-    <div class='form-group'>
-        <div class="col-md-6 col-sm-6">
-            <label>Ảnh đại diện</label>
-            <div class="row">
-                <div class="col-sm-9 col-md-10">
-                    <input name="txtthumb" type="text" id="file-thumb" size="45" class='form-control' value="<?php echo $row['thumb'];?>" placeholder='' />
-                </div>
-                <div class="col-sm-3 col-md-2">
-                    <a class="btn btn-success" href="#" onclick="OpenPopup('<?php echo ROOTHOST_ADMIN;?>extensions/upload_image.php');"><b style="margin-top: 15px">Chọn</b></a>
-                </div>
-                <div id="txt_thumb_err" class="mes-error"></div>
-            </div>
         </div>
     </div>
     <div class="form-group">

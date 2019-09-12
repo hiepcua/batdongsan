@@ -12,7 +12,7 @@ RewriteRule ^changetpass/?$  						index.php?com=user&task=changetpass
 RewriteRule ^config/?$ 	index.php?com=config
 
 # Slider
-RewriteRule ^slider/?$ 								index.php?com=slider
+RewriteRule ^slider/?$ 								index.php?com=slider 	[QSA]
 RewriteRule ^slider/add?$ 							index.php?com=slider&task=add
 RewriteRule ^slider/edit/([0-9]+)?$ 				index.php?com=slider&task=edit&id=$1
 RewriteRule ^slider/delete/([0-9]+)?$ 				index.php?com=slider&task=delete&id=$1
@@ -122,6 +122,14 @@ RewriteRule ^user/edit/([0-9]+)?$ 					index.php?com=user&task=edit&id=$1
 RewriteRule ^user/active/([0-9]+)?$ 				index.php?com=user&task=active&id=$1
 RewriteRule ^user/delete/([0-9]+)?$ 				index.php?com=user&task=delete&id=$1
 RewriteRule ^user/changepass/([0-9]+)?$ 			index.php?com=user&task=changepass&id=$1
+
+# User group
+RewriteRule ^user_group/?$ 								index.php?com=user_group 	[QSA]
+RewriteRule ^user_group/add?$ 							index.php?com=user_group&task=add
+RewriteRule ^user_group/edit/([0-9]+)?$ 				index.php?com=user_group&task=edit&id=$1
+RewriteRule ^user_group/active/([0-9]+)?$ 				index.php?com=user_group&task=active&id=$1
+RewriteRule ^user_group/delete/([0-9]+)?$ 				index.php?com=user_group&task=delete&id=$1
+RewriteRule ^user_group/changepass/([0-9]+)?$ 			index.php?com=user_group&task=changepass&id=$1
 
 # Mail
 RewriteRule ^mail/?$ 								index.php?com=mail

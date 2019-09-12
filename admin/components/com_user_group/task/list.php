@@ -1,6 +1,6 @@
 <?php
 defined('ISHOME') or die('Can not acess this page, please come back!');
-define('OBJ_PAGE','CATEGORY');
+define('OBJ_PAGE','GUSER');
 $keyword='';$strwhere='';$action='';
 
 // Khai báo SESSION
@@ -23,7 +23,7 @@ if(isset($_POST['txtCurnpage'])){
     $_SESSION['CUR_PAGE_'.OBJ_PAGE]=(int)$_POST['txtCurnpage'];
 }
 
-$sql="SELECT COUNT(*) FROM tbl_categories WHERE 1=1 ".$strwhere;
+$sql="SELECT COUNT(*) FROM tbl_user_group WHERE 1=1 ".$strwhere;
 $objmysql->Query($sql);
 $total_rows=$objmysql->Num_rows();
 
@@ -46,11 +46,12 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
 <div id="path">
     <ol class="breadcrumb">
         <li><a href="<?php echo ROOTHOST_ADMIN;?>">Admin</a></li>
-        <li class="active">Danh sách nhóm tin</li>
+        <li class="active">Danh sách nhóm người dùng</li>
     </ol>
 </div>
+
 <div class="com_header color">
-    <form id="frm_list" method="get" action="<?php echo ROOTHOST_ADMIN;?>category">
+    <form id="frm_list" method="get" action="<?php echo ROOTHOST_ADMIN.COMS;?>">
         <div class="frm-search-box form-inline pull-left">
             <label class="mr-sm-2" for="">Từ khóa: </label>
             <input class="form-control" type="text" value="<?php echo $keyword?>" name="q" id="txtkeyword" placeholder="Từ khóa"/>&nbsp;
@@ -96,14 +97,12 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
                         <i class="fa fa-sort-down" title="Tăng" sort="asc"></i>
                     </div>
                 </th>
-                <th width="70" align="center" style="text-align: center;">Sắp xếp
-                    <a href="javascript:saveOrder()"><i class="fa fa-floppy-o" aria-hidden="true"></i></a>
-                </th>
+                <th>Mô tả</th>
                 <th width="50" align="center">Hiển thị</th>
                 <th width="50" align="center">Sửa</th>
             </tr>
             <?php
-            $obj->listTable($strwhere,0,0,0);
+            $obj->listTable($strwhere, 0, 0, 0);
             ?>
         </table>
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="Footer_list">

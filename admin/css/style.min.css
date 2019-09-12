@@ -96,7 +96,7 @@ body{
 	color: #333333;
 	float: left;
 	margin: 0px;
-	font-size: 26px;
+	font-size: 22px;
 }
 #site_body .com_header .btn{
 	padding-left: 20px;
@@ -879,4 +879,8 @@ td.tbl_actions {
 }
 .toolbar .btn{
 	padding: 10px 50px;
+}
+.select2-container--default .select2-selection--single{
+	height: 34px;
+	border-radius: 0px;
 }

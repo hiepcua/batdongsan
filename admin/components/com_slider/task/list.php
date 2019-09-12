@@ -1,20 +1,11 @@
 <?php
 defined('ISHOME') or die('Can not acess this page, please come back!');
 define('OBJ_PAGE','SLIDER');
-$keyword='';$strwhere='Where 1=1';$action='';
+$strwhere='';
 
-// Khai báo SESSION
-if(isset($_POST['txtkeyword'])){
-  $keyword=trim($_POST['txtkeyword']);
-  $_SESSION['KEY_SLIDER']=$keyword;
-}
-if(isset($_POST['cbo_active']))
-    $_SESSION['ACTSLIDER']=addslashes($_POST['cbo_active']);
-if(isset($_SESSION['KEY_SLIDER']))
-    $keyword=$_SESSION['KEY_SLIDER'];
-else
-    $keyword='';
-$action=isset($_SESSION['ACTSLIDER']) ? $_SESSION['ACTSLIDER']:'';
+// Khai báo 
+$keyword = isset($_GET['q']) ? addslashes(trim($_GET['q'])) : '';
+$action = isset($_GET['cbo_action']) ? addslashes(trim($_GET['cbo_action'])) : '';
 
 // Gán strwhere
 if($keyword!='')
@@ -24,83 +15,100 @@ if($action!='' && $action!='all' ){
 }
 
 // Pagging
-if(!isset($_SESSION['CUR_PAGE_SLIDER']))
-    $_SESSION['CUR_PAGE_SLIDER']=1;
+if(!isset($_SESSION['CUR_PAGE_'.OBJ_PAGE]))
+    $_SESSION['CUR_PAGE_'.OBJ_PAGE] = 1;
 if(isset($_POST['txtCurnpage'])){
-    $_SESSION['CUR_PAGE_SLIDER']=(int)$_POST['txtCurnpage'];
+    $_SESSION['CUR_PAGE_'.OBJ_PAGE] = (int)$_POST['txtCurnpage'];
 }
-$obj->getList($strwhere,'');
-$total_rows=$obj->Num_rows();
-if($_SESSION['CUR_PAGE_SLIDER']>ceil($total_rows/MAX_ROWS))
-    $_SESSION['CUR_PAGE_SLIDER']=ceil($total_rows/MAX_ROWS);
-$cur_page=(int)$_SESSION['CUR_PAGE_SLIDER']>0 ? (int)$_SESSION['CUR_PAGE_SLIDER']:1;
+
+$sql="SELECT COUNT(*) FROM tbl_slider WHERE 1=1 ".$strwhere;
+$objmysql->Query($sql);
+$total_rows=$objmysql->Num_rows();
+
+if($_SESSION['CUR_PAGE_'.OBJ_PAGE] > ceil($total_rows/MAX_ROWS)){
+    $_SESSION['CUR_PAGE_'.OBJ_PAGE] = ceil($total_rows/MAX_ROWS);
+}
+$cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE] > 0 ? (int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]:1;
 // End pagging
 ?>
-<div class="body">
-    <script language="javascript">
-        function checkinput(){
-            var strids=document.getElementById("txtids");
-            if(strids.value==""){
-                alert('You are select once record to action');
-                return false;
-            }
-            return true;
+<script language="javascript">
+    function checkinput(){
+        var strids=document.getElementById("txtids");
+        if(strids.value==""){
+            alert('Bạn chưa lựa chọn đối tượng nào.');
+            return false;
         }
-    </script>
-	<div class="com_header color">
-		<i class="fa fa-list" aria-hidden="true"></i> Danh sách slide
-		<div class="pull-right">
-			<?php require_once("../global/libs/toolbar.php"); ?>
-		</div>
-    </div><br>
-	<div class="col-md-12">
-    <form id="frm_list" name="frm_list" method="post" action="">
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="Header_list">
-            <tr>
-                <td><strong>Tìm kiếm:</strong>
-                    <input type="text" name="txtkeyword" id="txtkeyword" placeholder="Keyword" value="<?php echo $keyword;?>"/>
-                    <input type="submit" name="button" id="button" value="Tìm kiếm" class="button" size='30'/>
-                </td>
-                <td align="right">
-                    <select name="cbo_active" id="cbo_active" onchange="document.frm_list.submit();">
-                        <option value="all">Tất cả</option>
-                        <option value="1">Hiển thị</option>
-                        <option value="0">Ẩn</option>
-                        <script language="javascript">
-                            cbo_Selected('cbo_active','<?php echo $action;?>');
-                        </script>
-                    </select>
-                </td>
-            </tr>
-        </table>
-        <div style="clear:both;height:10px;"></div>
-        <table class="table table-bordered">
-            <tr class="header">
-                <th width="30" align="center">#</th>
-                <th width="30" align="center"><input type="checkbox" name="chkall" id="chkall" value="" onclick="docheckall('chk',this.checked);" /></th>
-                <th>Hình ảnh</th>
-                <th width="70" style="text-align: center;">Sắp xếp
-                    <a href="javascript:saveOrder()">
-                        <i class="fa fa-floppy-o" aria-hidden="true"></i>
-                    </a>
-                </th>
-                <th width="50" align="center">Hiển thị</th>
-                <th width="50" align="center">Sửa</th>
-                <th width="50" align="center">Xóa</th>
-            </tr>
-            <?php 
-            $obj->listTable($strwhere,$cur_page);
-            ?>
-        </table>
-    </form>
-    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="Footer_list">
-        <tr>
-            <td align="center">
-                <?php 
-                paging($total_rows,MAX_ROWS,$cur_page);
-                ?>
-            </td>
-        </tr>
-    </table></div>
+        return true;
+    }
+</script>
+
+<div id="path">
+    <ol class="breadcrumb">
+        <li><a href="<?php echo ROOTHOST_ADMIN;?>">Admin</a></li>
+        <li class="active">Danh sách banner</li>
+    </ol>
 </div>
+
+<div class="com_header color">
+    <form id="frm_list" method="get" action="<?php echo ROOTHOST_ADMIN.COMS;?>">
+        <div class="frm-search-box form-inline pull-left">
+            <label class="mr-sm-2" for="">Từ khóa: </label>
+            <input class="form-control" type="text" value="<?php echo $keyword?>" name="q" id="txtkeyword" placeholder="Từ khóa"/>&nbsp;
+            <button type="submit" id="_btnSearch" class="btn btn-success">Tìm kiếm</button>
+            <select name="cbo_action" class="form-control" id="cbo_action">
+                <option value="all">Tất cả</option>
+                <option value="1">Hiển thị</option>
+                <option value="0">Ẩn</option>
+                <script language="javascript">
+                    cbo_Selected('cbo_action','<?php echo $action;?>');
+                </script>
+            </select>
+        </div>
+    </form>
+    <div class="pull-right">
+        <div id="menus" class="toolbars">
+            <form id="frm_menu" name="frm_menu" method="post" action="">
+                <input type="hidden" name="txtorders" id="txtorders" />
+                <input type="hidden" name="txtids" id="txtids" />
+                <input type="hidden" name="txtaction" id="txtaction" />
+                <ul class="list-inline">
+                    <li><button class="btn btn-default" onclick="dosubmitAction('frm_menu','public');"><i class="fa fa-check-circle-o cgreen" aria-hidden="true"></i> Hiển thị</button></li>
+                    <li><button class="btn btn-default" onclick="dosubmitAction('frm_menu','unpublic');"><i class="fa fa-times-circle-o cred" aria-hidden="true"></i> Ẩn</button></li>
+                    <li><a class="addnew btn btn-default" href="<?php echo ROOTHOST_ADMIN.COMS;?>/add" title="Thêm mới"><i class="fa fa-plus-circle cgreen" aria-hidden="true"></i> Thêm mới</a></li>
+                    <li><a class="delete btn btn-default" href="#" onclick="javascript:if(confirm('Bạn có chắc chắn muốn xóa thông tin này không?')){dosubmitAction('frm_menu','delete'); }" title="Xóa"><i class="fa fa-times-circle cred" aria-hidden="true"></i> Xóa</a></li>
+                </ul>
+            </form>
+        </div>
+    </div>
+</div>
+
+<table class="table table-bordered">
+    <tr class="header">
+        <th width="30" align="center">#</th>
+        <th width="30" align="center"><input type="checkbox" name="chkall" id="chkall" value="" onclick="docheckall('chk',this.checked);" /></th>
+        <th>Hình ảnh</th>
+        <th>Slogan</th>
+        <th>Giới thiệu</th>
+        <th width="70" style="text-align: center;">Sắp xếp
+            <a href="javascript:saveOrder()">
+                <i class="fa fa-floppy-o" aria-hidden="true"></i>
+            </a>
+        </th>
+        <th width="50" align="center">Hiển thị</th>
+        <th width="50" align="center">Sửa</th>
+        <th width="50" align="center">Xóa</th>
+    </tr>
+    <?php 
+    $obj->listTable($strwhere,$cur_page);
+    ?>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="Footer_list">
+    <tr>
+        <td align="center">
+            <?php 
+            paging($total_rows,MAX_ROWS,$cur_page);
+            ?>
+        </td>
+    </tr>
+</table>
 <?php //----------------------------------------------?>

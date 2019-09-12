@@ -1,7 +1,7 @@
 <?php
 defined('ISHOME') or die('Can not acess this page, please come back!');
 define('OBJ_PAGE','CATEGORY');
-$keyword='';$strwhere='';$action='';
+$strwhere='';
 
 // Khai báo SESSION
 $keyword = isset($_GET['q']) ? addslashes(trim($_GET['q'])) : '';
@@ -37,7 +37,7 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
     function checkinput(){
         var strids=document.getElementById("txtids");
         if(strids.value==""){
-            alert('You are select once record to action');
+            alert('Bạn chưa lựa chọn đối tượng nào.');
             return false;
         }
         return true;
@@ -50,7 +50,7 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
     </ol>
 </div>
 <div class="com_header color">
-    <form id="frm_list" method="get" action="<?php echo ROOTHOST_ADMIN;?>category">
+    <form id="frm_list" method="get" action="<?php echo ROOTHOST_ADMIN.COMS;?>">
         <div class="frm-search-box form-inline pull-left">
             <label class="mr-sm-2" for="">Từ khóa: </label>
             <input class="form-control" type="text" value="<?php echo $keyword?>" name="q" id="txtkeyword" placeholder="Từ khóa"/>&nbsp;

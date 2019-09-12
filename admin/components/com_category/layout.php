@@ -1,6 +1,8 @@
 <?php
 defined('ISHOME') or die('Can not acess this page, please come back!');
 define('COMS','category');
+define('THIS_COM_PATH',COM_PATH.'com_'.COMS.'/');
+
 require_once('libs/cls.category.php');
 $objmysql = new CLS_MYSQL();
 $obj = new CLS_CATEGORY();
@@ -22,8 +24,7 @@ if(isset($_POST['cmdsave'])){
         `name`='".$Name."',
         `code`='".$Code."',
         `thumb`='".$Thumb."',
-        `intro`='".$Intro."',
-        `isactive`='".$pro["isActive"]."' 
+        `intro`='".$Intro."'
         WHERE id='".$ID."'";
         $objmysql->Exec($sql);
 	}else{
@@ -63,7 +64,7 @@ if(isset($_POST["txtaction"]) && $_POST["txtaction"]!=""){
 	echo "<script language=\"javascript\">window.location='".ROOTHOST_ADMIN.COMS."'</script>";
 }
 
-define('THIS_COM_PATH',COM_PATH.'com_'.COMS.'/');$task='';
+$task='';
 if(isset($_GET['task']))
 	$task=$_GET['task'];
 if(!is_file(THIS_COM_PATH.'task/'.$task.'.php')){

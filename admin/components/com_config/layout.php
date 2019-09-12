@@ -13,38 +13,54 @@
 </script>
 <?php
 define('COMS','config');
+$objmysql = new CLS_MYSQL();
 
 $check_permission = $UserLogin->Permission(COMS);
 if($check_permission==false) die($GLOBALS['MSG_PERMIS']);
 
 $title =''; $desc=''; $key='';$email_contact=''; $nickyahoo=''; $nameyahoo='';
 $footer=''; $contact=''; $banner=''; $gallery=''; $logo='';
-include_once('libs/cls.configsite.php');
-$obj = new CLS_CONFIG();
+
 if(isset($_POST['web_title']) && $_POST['web_title']!='') {
+	$CompanyName 	= isset($_POST['company_name']) ? addslashes($_POST['company_name']) : '';
+	$Title 			= isset($_POST['web_title']) ? addslashes($_POST['web_title']) : '';
+	$Meta_descript 	= isset($_POST['web_desc']) ? addslashes($_POST['web_desc']) : '';
+	$Meta_keyword 	= isset($_POST['web_keywords']) ? addslashes($_POST['web_keywords']) : '';
+	$Email 			= isset($_POST['email_contact']) ? addslashes($_POST['email_contact']) : '';
+	$Address 		= isset($_POST['address']) ? addslashes($_POST['address']) : '';
+	$Phone 			= isset($_POST['txtphone']) ? addslashes($_POST['txtphone']) : '';
+	$Tel 			= isset($_POST['txttel']) ? addslashes($_POST['txttel']) : '';
+	$Fax 			= isset($_POST['txtfax']) ? addslashes($_POST['txtfax']) : '';
+	$Twitter 		= isset($_POST['txttwitter']) ? addslashes($_POST['txttwitter']) : '';
+	$Gplus 			= isset($_POST['txtgplus']) ? addslashes($_POST['txtgplus']) : '';
+	$Facebook 		= isset($_POST['txtfacebook']) ? addslashes($_POST['txtfacebook']) : '';
+	$Youtube 		= isset($_POST['txtyoutube']) ? addslashes($_POST['txtyoutube']) : '';
 
-	if($_POST['company_name']!='')  $obj->CompanyName = addslashes($_POST['company_name']);
-	if($_POST['web_title']!='')     $obj->Title = addslashes($_POST['web_title']);
-	if($_POST['web_desc']!='')      $obj->Meta_descript = addslashes($_POST['web_desc']);
-	if($_POST['web_keywords']!='')  $obj->Meta_keyword = addslashes($_POST['web_keywords']);
-	if($_POST['email_contact']!='') $obj->Email = addslashes($_POST['email_contact']);
-	if($_POST['address']!='')       $obj->Address = addslashes($_POST['address']);
-	if($_POST['txtphone']!='')      $obj->Phone = addslashes($_POST['txtphone']);
-	if($_POST['txttel']!='')        $obj->Tel = addslashes($_POST['txttel']);
-	if($_POST['txtfax']!='')        $obj->Fax = addslashes($_POST['txtfax']);
-	if($_POST['txttwitter']!='')    $obj->Twitter = addslashes($_POST['txttwitter']);
-	if($_POST['txtgplus']!='')      $obj->Gplus = addslashes($_POST['txtgplus']);
-	if($_POST['txtfacebook']!='')   $obj->Facebook = addslashes($_POST['txtfacebook']);
-	if($_POST['txtyoutube']!='')    $obj->Youtube = addslashes($_POST['txtyoutube']);
+	$sql = "UPDATE tbl_configsite SET ";
+	$sql .="title='".$Title."',";
+	$sql .="company_name='".$CompanyName."',";
+	$sql .="phone='".$Phone."',";
+	$sql .="tel='".$Tel."',";
+	$sql .="fax='".$Fax."',";
+	$sql .="email='".$Email."',";
+	$sql .="address='".$Address."',";
+	$sql .="meta_keyword='".$Meta_keyword."',";
+	$sql .="twitter='".$Twitter."',";
+	$sql .="gplus='".$Gplus."',";
+	$sql .="facebook='".$Facebook."',";
+	$sql .="youtube='".$Youtube."',";
+	$sql .="meta_descript='".$Meta_descript."' WHERE config_id=1";
+	$objmysql->Query($sql);
+}
 
-	$obj->Update2();
-}    
-$obj->getList();
-if($obj->Num_rows()<=0) {
+$sql="SELECT * FROM `tbl_configsite` WHERE `config_id`=1";
+$objmysql->Query($sql);
+
+if($objmysql->Num_rows()<=0) {
 	echo 'Dữ liệu trống.';
 }
 else{
-	$row = $obj->Fetch_Assoc();
+	$row = $objmysql->Fetch_Assoc();
 	$title          = stripslashes($row['title']);
 	$company_name   = stripslashes($row['company_name']);
 	$desc           = stripslashes($row['meta_descript']);
@@ -59,7 +75,7 @@ else{
 	$gplus          = stripslashes($row['gplus']);
 	$twitter        = stripslashes($row['twitter']);
 }
-unset($obj);
+unset($objmysql);
 ?>
 <div class="com_header color">
 	<i class="fa fa-cog" aria-hidden="true"></i> THÔNG TIN CẤU HÌNH WEBSITE
@@ -70,7 +86,7 @@ unset($obj);
 			<input type="hidden" name="txtaction" id="txtaction" />
 
 			<ul class="list-inline">
-				<li><a class="save btn btn-default" href="#" onclick="dosubmitAction('frm_action','save');" title="Lưu"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</a></li>
+				<li><a class="save btn btn-success" href="#" onclick="dosubmitAction('frm_action','save');" title="Lưu"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</a></li>
 
 				<li><a class="btn btn-default"  href="<?php echo ROOTHOST_ADMIN;?>" title="Đóng"><i class="fa fa-sign-out" aria-hidden="true"></i> Đóng</a></li>
 			</ul>
@@ -186,5 +202,8 @@ unset($obj);
 			<div class="clearfix"></div>
 		</div>
 		<input type="submit" name="cmdsave" id="cmdsave" value="Submit" style="display:none;" />
+		<div class="text-center toolbar">
+	        <a class="save btn btn-success" href="#" onclick="dosubmitAction('frm_action','save');" title="Lưu thông tin"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu thông tin</a>
+	    </div>
 	</form>
 </div>

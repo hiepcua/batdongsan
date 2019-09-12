@@ -1,10 +1,10 @@
 <?php
 defined("ISHOME") or die("Can't acess this page, please come back!");
 $id="";
-if(isset($_GET["id"]))
-    $id=trim($_GET["id"]);
-$obj->getList(" WHERE `id`='".$id."'");
-$row=$obj->Fetch_Assoc();
+if(isset($_GET["id"]))  $id=trim($_GET["id"]);
+$sql = "SELECT * FROM `tbl_categories` WHERE id=".$id." ORDER BY `name`";
+$objmysql->Query($sql);
+$row = $objmysql->Fetch_Assoc();
 ?>
 <style type="text/css">
     .form-horizontal .control-label{text-align: left;}
@@ -61,8 +61,8 @@ $row=$obj->Fetch_Assoc();
             </select>
             <script type="text/javascript">
                 $(document).ready(function() {
-                    $("#cbo_cate").select2();
                     cbo_Selected('cbo_cate','<?php echo $row['par_id'];?>');
+                    $("#cbo_cate").select2();
                 });
             </script>
         </div>
