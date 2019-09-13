@@ -23,8 +23,8 @@ if(isset($_POST['txtCurnpage'])){
     $_SESSION['CUR_PAGE_'.OBJ_PAGE] = (int)$_POST['txtCurnpage'];
 }
 
-$sql="SELECT COUNT(*) AS count FROM tbl_categories WHERE 1=1 ".$strwhere;
-$objmysql->Query($sql);
+$sql_count = "SELECT COUNT(*) AS count FROM tbl_categories WHERE 1=1 ".$strwhere;
+$objmysql->Query($sql_count);
 $row_count = $objmysql->Fetch_Assoc();
 $total_rows = $row_count['count'];
 
@@ -88,7 +88,7 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
 
 <div class="table-responsive">
     <table class="table table-bordered">
-        <tr class="header">
+        <thead>
             <th width="30" align="center">#</th>
             <th width="30" align="center"><input type="checkbox" name="chkall" id="chkall" value="" onclick="docheckall('chk',this.checked);" /></th>
             <th width="50" align="center">Xóa</th>
@@ -103,10 +103,12 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
             </th>
             <th width="50" align="center">Hiển thị</th>
             <th width="50" align="center">Sửa</th>
-        </tr>
-        <?php
-        $obj->listTable($strwhere,0,0,0);
-        ?>
+        </thead>
+        <tbody>
+            <?php
+            $obj->listTable($strwhere,0,0,0);
+            ?>
+        </tbody>
     </table>
     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="Footer_list">
         <tr>

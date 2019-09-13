@@ -1,9 +1,6 @@
 <?php
 defined("ISHOME") or die("Can't acess this page, please come back!");
 ?>
-<style type="text/css">
-    .form-horizontal .control-label{text-align: left;}
-</style>
 <script language="javascript">
     function checkinput(){
         if($("#txt_name").val()==""){
@@ -83,6 +80,7 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
     </div>
     <input type="submit" name="cmdsave" id="cmdsave" value="Submit" style="display:none;" />
     <div class="text-center toolbar">
+        <div style="height: 20px;"></div>
         <a class="save btn btn-success" href="#" onclick="dosubmitAction('frm_action','save');" title="Lưu thông tin"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu thông tin</a>
     </div>
 </form>

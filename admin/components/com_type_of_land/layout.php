@@ -1,16 +1,13 @@
 <?php
 defined('ISHOME') or die('Can not acess this page, please come back!');
-define('COMS','feedback');
+define('COMS','type_of_land');
 define('THIS_COM_PATH',COM_PATH.'com_'.COMS.'/');
-
-include_once(EXT_PATH.'cls.upload.php');
-$objUpload = new CLS_UPLOAD();
 $objmysql = new CLS_MYSQL();
 
 if(isset($_POST["cmdsave"])){		
-	$Name 		= addslashes($_POST['txt_name']);
-	$Comment 	= addslashes($_POST['txt_comment']);
-	$Career 	= addslashes($_POST['txt_career']);
+	$Title 		= addslashes($_POST['txt_name']);
+	$Code 		= un_unicode($Title);
+	$Intro 		= addslashes($_POST['txt_comment']);
 	$isActive 	= '1';
 
     if(isset($_POST["txtthumb"]))
@@ -18,16 +15,15 @@ if(isset($_POST["cmdsave"])){
 
     if(isset($_POST['txtid'])){
 		$ID=$_POST['txtid'];
-		$sql="UPDATE `tbl_feedback` SET  
-		`name`='".$Name."',
-		`comment`='".$Comment."',
-		`career`='".$Career."',
-		`avatar`='".$Avatar."'
+		$sql="UPDATE `tbl_type_of_land` SET  
+		`title`='".$Title."',
+		`code`='".$Code."',
+		`intro`='".$Intro."'
 		WHERE `id`='".$ID."'";
 		$objmysql->Exec($sql);
 	}else{
-		$sql="INSERT INTO `tbl_feedback` ( `name`, `comment`, `career`, `avatar`, `isactive`) VALUES ";
-		$sql.="('".$Name."', '".$Comment."','".$Career."', '".$Avatar."', '".$isActive."')";
+		$sql="INSERT INTO `tbl_type_of_land` ( `title`, `code`, `intro`, `isactive`) VALUES ";
+		$sql.="('".$Title."', '".$Code."','".$Intro."', '".$isActive."')";
 		$objmysql->Exec($sql);
 	}
 	echo "<script language=\"javascript\">window.location='".ROOTHOST_ADMIN.COMS."'</script>";
@@ -40,15 +36,15 @@ if(isset($_POST["txtaction"]) && $_POST["txtaction"]!=""){
 	$ids=str_replace(",","','",$ids);
 	switch ($_POST["txtaction"]){
 		case "public": 
-			$sql_active = "UPDATE `tbl_feedback` SET `isactive`='1' WHERE `id` in ('$ids')";
+			$sql_active = "UPDATE `tbl_type_of_land` SET `isactive`='1' WHERE `id` in ('$ids')";
 			$objmysql->Exec($sql_active);
 			break;
 		case "unpublic":
-			$sql_unactive = "UPDATE `tbl_feedback` SET `isactive`='0' WHERE `id` in ('$ids')";
+			$sql_unactive = "UPDATE `tbl_type_of_land` SET `isactive`='0' WHERE `id` in ('$ids')";
 			$objmysql->Exec($sql_unactive);
 			break;
 		case "delete":
-			$sql_del = "DELETE FROM `tbl_feedback` WHERE `id` in ('$ids')";
+			$sql_del = "DELETE FROM `tbl_type_of_land` WHERE `id` in ('$ids')";
 	        $objmysql->Exec($sql_del);
 	        break;
 		case 'order':
@@ -56,7 +52,7 @@ if(isset($_POST["txtaction"]) && $_POST["txtaction"]!=""){
 			$ids = explode(',',$_POST['txtids']);
 			$n = count($ids);
 			for($i=0;$i<$n;$i++){
-				$sql_order = "UPDATE `tbl_feedback` SET `order`='".$sls[$i]."' WHERE `id` = '".$ids[$i]."' ";
+				$sql_order = "UPDATE `tbl_type_of_land` SET `order`='".$sls[$i]."' WHERE `id` = '".$ids[$i]."' ";
 				$objmysql->Exec($sql_order);
 			}
 	}

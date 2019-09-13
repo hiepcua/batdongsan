@@ -89,6 +89,7 @@ $row = $objmysql->Fetch_Assoc();
     </div>
     <input type="submit" name="cmdsave" id="cmdsave" value="Submit" style="display:none;" />
     <div class="text-center toolbar">
+        <div style="height: 20px;"></div>
         <a class="save btn btn-success" href="#" onclick="dosubmitAction('frm_action','save');" title="Lưu thông tin"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu thông tin</a>
     </div>
 </form>

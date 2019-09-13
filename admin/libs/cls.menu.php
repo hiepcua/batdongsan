@@ -49,27 +49,5 @@ class CLS_MENU{
 				$str.=$rows['name'];
 		}
 		return $str;
-	}
-	function Add_new(){
-		$sql="INSERT INTO `tbl_menus`(`name`,`code`,`desc`,`isactive`) VALUES ";
-		$sql.=" ('".$this->Name."','".$this->Code."','".$this->Desc."','".$this->isActive."') ";
-		return $this->objmysql->Exec($sql);
-	}
-	function Update(){
-		$sql="UPDATE `tbl_menus` SET `code`='".$this->Code."',
-		`desc`='".$this->Desc."',`name`='".$this->Name."',`isactive`='".$this->isActive."' ";
-		$sql.=" WHERE `id`='".$this->ID."'";
-		return $this->objmysql->Exec($sql);
-	}
-	function Delete($ids){
-		$sql="DELETE FROM `tbl_menus` WHERE `id` in ('$ids')";
-		return $this->objmysql->Exec($sql);
-	}
-	function setActive($ids,$status=''){
-		$sql="UPDATE `tbl_menus` SET `isactive`='$status' WHERE `id` in ('$ids')";
-		if($status=='')
-			$sql="UPDATE `tbl_menus` SET `isactive`=if(`isactive`=1,0,1) WHERE `id` in ('$ids')";
-		return $this->objmysql->Exec($sql);
-	}
-}
+	}}
 ?>

@@ -23,6 +23,12 @@ RewriteRule ^feedback/add?$ 						index.php?com=feedback&task=add
 RewriteRule ^feedback/edit/([0-9]+)?$ 				index.php?com=feedback&task=edit&id=$1
 RewriteRule ^feedback/delete/([0-9]+)?$ 			index.php?com=feedback&task=delete&id=$1
 
+# Type of land
+RewriteRule ^type_of_land/?$ 							index.php?com=type_of_land 	[QSA]
+RewriteRule ^type_of_land/add?$ 						index.php?com=type_of_land&task=add
+RewriteRule ^type_of_land/edit/([0-9]+)?$ 				index.php?com=type_of_land&task=edit&id=$1
+RewriteRule ^type_of_land/delete/([0-9]+)?$ 			index.php?com=type_of_land&task=delete&id=$1
+
 #Category
 RewriteRule ^category/?$ 							index.php?com=category 	[QSA]
 RewriteRule ^category/add?$ 						index.php?com=category&task=add
@@ -46,22 +52,21 @@ RewriteRule ^tag/active/([0-9]+)?$ 					index.php?com=tag&task=active&id=$1
 RewriteRule ^tag/delete/([0-9]+)?$ 					index.php?com=tag&task=delete&id=$1
 
 # Menu
-RewriteRule ^menus/?$ 								index.php?com=menus
+RewriteRule ^menus/?$ 								index.php?com=menus 	[QSA]
 RewriteRule ^menus/add?$ 							index.php?com=menus&task=add
 RewriteRule ^menus/edit/([0-9]+)?$ 					index.php?com=menus&task=edit&id=$1
 RewriteRule ^menus/active/([0-9]+)?$ 				index.php?com=menus&task=active&id=$1
 RewriteRule ^menus/delete/([0-9]+)?$ 				index.php?com=menus&task=delete&id=$1
 
 # Menu
-# RewriteRule ^mnuitem/?$ 							index.php?com=mnuitem
-RewriteRule ^mnuitem/([0-9]+)?$ 					index.php?com=mnuitem&task=list&mnuid=$1 	[QSA]
-RewriteRule ^mnuitem/add?$ 							index.php?com=mnuitem&task=add
-RewriteRule ^mnuitem/edit/([0-9]+)?$ 				index.php?com=mnuitem&task=edit&id=$1
-RewriteRule ^mnuitem/active/([0-9]+)?$ 				index.php?com=mnuitem&task=active&id=$1
-RewriteRule ^mnuitem/delete/([0-9]+)?$ 				index.php?com=mnuitem&task=delete&id=$1
+RewriteRule ^mnuitem/([0-9]+)?$ 					index.php?com=mnuitem&mnuid=$1 	[QSA]
+RewriteRule ^mnuitem/([0-9]+)/add?$ 				index.php?com=mnuitem&task=add&mnuid=$1
+RewriteRule ^mnuitem/([0-9]+)/edit/([0-9]+)?$ 		index.php?com=mnuitem&task=edit&mnuid=$1&id=$2
+RewriteRule ^mnuitem/([0-9]+)/active/([0-9]+)?$ 	index.php?com=mnuitem&task=active&mnuid=$1&id=$2
+RewriteRule ^mnuitem/([0-9]+)/delete/([0-9]+)?$ 	index.php?com=mnuitem&task=delete&mnuid=$1&id=$2
 
 # Video
-RewriteRule ^video/?$ 								index.php?com=video
+RewriteRule ^video/?$ 								index.php?com=video 	[QSA]
 RewriteRule ^video/add?$ 							index.php?com=video&task=add
 RewriteRule ^video/edit/([0-9]+)?$ 					index.php?com=video&task=edit&id=$1
 RewriteRule ^video/active/([0-9]+)?$ 				index.php?com=video&task=active&id=$1
@@ -83,7 +88,7 @@ RewriteRule ^album/delete/([0-9]+)?$ 				index.php?com=album&task=delete&id=$1
 RewriteRule ^album/active/([0-9]+)?$ 				index.php?com=album&task=active&id=$1
 
 # Gallery
-RewriteRule ^gallery/?$ 							index.php?com=gallery
+RewriteRule ^gallery/?$ 							index.php?com=gallery 	[QSA]
 RewriteRule ^gallery/add?$ 							index.php?com=gallery&task=add
 RewriteRule ^gallery/edit/([0-9]+)?$ 				index.php?com=gallery&task=edit&id=$1
 RewriteRule ^gallery/delete/([0-9]+)?$ 				index.php?com=gallery&task=delete&id=$1

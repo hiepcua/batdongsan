@@ -3,14 +3,12 @@ require_once("../../../global/libs/gfinit.php");
 require_once("../../../global/libs/gfconfig.php");
 require_once("../../../global/libs/gffunc.php");
 include_once('../../../libs/cls.mysql.php');
-include_once('../../libs/cls.albumgallery.php');
-$obj=new CLS_MYSQL();
-$objGa=new CLS_ALBUMGALLERY();
-$id=isset($_POST['id'])? $_POST['id']: '';
-$sql="SELECT * FROM `tbl_gallery` WHERE `id`='$id'";
+$obj    = new CLS_MYSQL();
+$id     = isset($_POST['id'])? $_POST['id']: '';
+$sql    = "SELECT * FROM `tbl_gallery` WHERE `id`='$id'";
 $obj->Query($sql);
 $obj->Num_rows();
-$row=$obj->Fetch_Assoc();
+$row = $obj->Fetch_Assoc();
 ?>
 <form action="" method="post" id="frm-edit">
     <input type="hidden" name="txtid" value="<?php echo $row['id'] ?>"/>
@@ -26,20 +24,17 @@ $row=$obj->Fetch_Assoc();
         </div>
         <div class="clearfix"></div>
     </div>
-
 </form>
 <?php
 unset($obj);
-unset($objGa);
 ?>
-<script>
-
+<script type="text/javascript">
     $('#btn-submit').click(function(){
         var form = $('#frm-edit');
         var postData = form.serializeArray();
-        $.post('<?php echo ROOTHOST_ADMIN;?>ajaxs/upload_album/editImage.php',postData,function(response_data){
-           $('#respon-img').html(response_data);
-            $('#myModal').modal('hide');
+        $.post('<?php echo ROOTHOST_ADMIN;?>ajaxs/upload_album/editImage.php',postData, function(response_data){
+            $('#respon-img').html(response_data);
+            $('#myModalPopup').modal('hide');
         });
         return false;
     });

@@ -46,7 +46,7 @@
 
 <h1 style="margin: 10px 0;"><?php echo $r_menu['name'];?></h1>
 <div class="com_header color">
-    <form id="frm_list" method="get" action="<?php echo ROOTHOST_ADMIN.COMS;?>">
+    <form id="frm_list" method="get" action="<?php echo ROOTHOST_ADMIN.COMS.'/'.$mnuid;?>">
         <div class="frm-search-box form-inline pull-left">
             <input class="form-control" type="text" value="<?php echo $keyword?>" name="q" id="txtkeyword" placeholder="Từ khóa"/>&nbsp;
             <button type="submit" id="_btnSearch" class="btn btn-success">Tìm kiếm</button>
@@ -69,7 +69,7 @@
                 <ul class="list-inline">
                     <li><button class="btn btn-default" onclick="dosubmitAction('frm_menu','public');"><i class="fa fa-check-circle-o cgreen" aria-hidden="true"></i> Hiển thị</button></li>
                     <li><button class="btn btn-default" onclick="dosubmitAction('frm_menu','unpublic');"><i class="fa fa-times-circle-o cred" aria-hidden="true"></i> Ẩn</button></li>
-                    <li><a class="addnew btn btn-default" href="<?php echo ROOTHOST_ADMIN.COMS;?>/add" title="Thêm mới"><i class="fa fa-plus-circle cgreen" aria-hidden="true"></i> Thêm mới</a></li>
+                    <li><a class="addnew btn btn-default" href="<?php echo ROOTHOST_ADMIN.COMS.'/'.$mnuid;?>/add" title="Thêm mới"><i class="fa fa-plus-circle cgreen" aria-hidden="true"></i> Thêm mới</a></li>
                     <li><a class="delete btn btn-default" href="#" onclick="javascript:if(confirm('Bạn có chắc chắn muốn xóa thông tin này không?')){dosubmitAction('frm_menu','delete'); }" title="Xóa"><i class="fa fa-times-circle cred" aria-hidden="true"></i> Xóa</a></li>
                 </ul>
             </form>

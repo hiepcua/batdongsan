@@ -1,144 +1,158 @@
 <?php
 defined('ISHOME') or die('Can not acess this page, please come back!');
 define('OBJ_PAGE','MENUS');
+$strwhere='';
 
-$keyword='';$strwhere=' WHERE 1=1 ';$action='';
 // Khai báo SESSION
-if(isset($_POST['txtkeyword'])){
-	$keyword=trim($_POST['txtkeyword']);
-	$_SESSION['KEY_'.OBJ_PAGE]=$keyword;
-}
-if(isset($_POST['cbo_active']))
-	$_SESSION['ACT'.OBJ_PAGE]=addslashes($_POST['cbo_active']);
-if(isset($_SESSION['KEY_'.OBJ_PAGE]))
-	$keyword=$_SESSION['KEY_'.OBJ_PAGE];
-else
-	$keyword='';
-$action=isset($_SESSION['ACT'.OBJ_PAGE]) ? $_SESSION['ACT'.OBJ_PAGE]:'';
+$keyword = isset($_GET['q']) ? addslashes(trim($_GET['q'])) : '';
+$action = isset($_GET['cbo_action']) ? addslashes(trim($_GET['cbo_action'])) : '';
 
 // Gán strwhere
-if($keyword!='')
+if($keyword !== ''){
 	$strwhere.=" AND ( `name` like '%$keyword%' )";
-if($action!='' && $action!='all' ){
+}
+if($action !== '' && $action !== 'all' ){
 	$strwhere.=" AND `isactive` = '$action'";
 }
 
-// Pagging
-if(!isset($_SESSION['CUR_PAGE_'.OBJ_PAGE]))
-	$_SESSION['CUR_PAGE_'.OBJ_PAGE]=1;
-if(isset($_POST['txtCurnpage'])){
-	$_SESSION['CUR_PAGE_'.OBJ_PAGE]=(int)$_POST['txtCurnpage'];
+// Begin pagging
+if(!isset($_SESSION['CUR_PAGE_'.OBJ_PAGE])){
+	$_SESSION['CUR_PAGE_'.OBJ_PAGE] = 1;
 }
-$obj->getList($strwhere,'');
-$total_rows=$obj->Num_rows();
-if($_SESSION['CUR_PAGE_'.OBJ_PAGE]>ceil($total_rows/MAX_ROWS))
-	$_SESSION['CUR_PAGE_'.OBJ_PAGE]=ceil($total_rows/MAX_ROWS);
-$cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAGE]:1;
+if(isset($_POST['txtCurnpage'])){
+	$_SESSION['CUR_PAGE_'.OBJ_PAGE] = (int)$_POST['txtCurnpage'];
+}
+
+$sql_count = "SELECT COUNT(*) AS count FROM tbll_menus WHERE 1=1 ".$strwhere;
+$objmysql->Query($sql_count);
+$row_count = $objmysql->Fetch_Assoc();
+$total_rows = $row_count['count'];
+
+if($_SESSION['CUR_PAGE_'.OBJ_PAGE] > ceil($total_rows/MAX_ROWS_ADMIN)){
+	$_SESSION['CUR_PAGE_'.OBJ_PAGE] = ceil($total_rows/MAX_ROWS_ADMIN);
+}
+$cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAGE] : 1;
 // End pagging
 ?>
-
-<div class="body">
-	<script language="javascript">
-		function checkinput(){
-			var strids=document.getElementById("txtids");
-			if(strids.value==""){
-				alert('You are select once record to action');
-				return false;
-			}
-			return true;
+<script language="javascript">
+	function checkinput(){
+		var strids=document.getElementById("txtids");
+		if(strids.value==""){
+			alert('You are select once record to action');
+			return false;
 		}
-	</script>
-	<div class="com_header color">
-		<i class="fa fa-list" aria-hidden="true"></i> Danh sách menu
-		<div class="pull-right">
-			<?php require_once("../global/libs/toolbar.php"); ?>
+		return true;
+	}
+</script>
+
+<div id="path">
+	<ol class="breadcrumb">
+		<li><a href="<?php echo ROOTHOST_ADMIN;?>">Admin</a></li>
+		<li class="active">Danh sách Menu</li>
+	</ol>
+</div>
+
+<div class="com_header color">
+	<form id="frm_list" method="get" action="<?php echo ROOTHOST_ADMIN.COMS;?>">
+		<div class="frm-search-box form-inline pull-left">
+			<label class="mr-sm-2" for="">Từ khóa: </label>
+			<input class="form-control" type="text" value="<?php echo $keyword?>" name="q" id="txtkeyword" placeholder="Từ khóa"/>&nbsp;
+			<button type="submit" id="_btnSearch" class="btn btn-success">Tìm kiếm</button>
+			<select name="cbo_action" class="form-control" id="cbo_action">
+				<option value="all">Tất cả</option>
+				<option value="1">Hiển thị</option>
+				<option value="0">Ẩn</option>
+				<script language="javascript">
+					cbo_Selected('cbo_action','<?php echo $action;?>');
+				</script>
+			</select>
 		</div>
-	</div><br>
-	<div class="user_list col-md-12">
-	<form id="frm_list" name="frm_list" method="post" action="">
-		<div class="table-responsive">
-			<table class="table table-bordered">
-				<tr>
-					<td><div class="col-md-6"><input type="text" name="txtkeyword" id="txtkeyword" placeholder="Keyword" value="" class="form-control"/></div>
-						<input type="submit" name="button" id="button" value="Tìm kiếm" class="btn btn-primary" />
-					</td>
-					<td align="right">
-						<select name="cbo_active" id="cbo_active" onchange="document.frm_list.submit();" class="form-control">
-							<option value="all">Tất cả</option>
-							<option value="1">Hiển thị</option>
-							<option value="0">Ẩn</option>
-							<script language="javascript">
-								cbo_Selected('cbo_active','<?php echo $action;?>');
-							</script>
-						</select>
-					</td>
-				</tr>
-			</table>
+	</form>
+	<div class="pull-right">
+		<div id="menus" class="toolbars">
+			<form id="frm_menu" name="frm_menu" method="post" action="">
+				<input type="hidden" name="txtorders" id="txtorders" />
+				<input type="hidden" name="txtids" id="txtids" />
+				<input type="hidden" name="txtaction" id="txtaction" />
+				<ul class="list-inline">
+					<li><button class="btn btn-default" onclick="dosubmitAction('frm_menu','public');"><i class="fa fa-check-circle-o cgreen" aria-hidden="true"></i> Hiển thị</button></li>
+					<li><button class="btn btn-default" onclick="dosubmitAction('frm_menu','unpublic');"><i class="fa fa-times-circle-o cred" aria-hidden="true"></i> Ẩn</button></li>
+					<li><a class="addnew btn btn-default" href="<?php echo ROOTHOST_ADMIN.COMS;?>/add" title="Thêm mới"><i class="fa fa-plus-circle cgreen" aria-hidden="true"></i> Thêm mới</a></li>
+					<li><a class="delete btn btn-default" href="#" onclick="javascript:if(confirm('Bạn có chắc chắn muốn xóa thông tin này không?')){dosubmitAction('frm_menu','delete'); }" title="Xóa"><i class="fa fa-times-circle cred" aria-hidden="true"></i> Xóa</a></li>
+				</ul>
+			</form>
 		</div>
-		<div style="height:10px;"></div>
-		<div class="table-responsive">
-			<table class="table table-bordered">
-				<tr class="header">
-					<th width="30" align="center">#</th>
-					<th width="30" align="center"><input type="checkbox" name="chkall" id="chkall" value="" onclick="docheckall('chk',this.checked);" /></th>
-					<th width="150" align="center">Mã</th>
-					<th align="center">Tên</th>
-					<th align="center">Mô tả</th>
-					<th width="100" align="center">Menu chi tiết</th>
-					<th colspan="3"></th>
-				</tr>
-				<?php
-				$start=($cur_page-1)*MAX_ROWS;
-				$obj->getList($strwhere," LIMIT $start,".MAX_ROWS);
-				$i=0;
-				while($rows= $obj->Fetch_Assoc()){ $i++;
-					$id=$rows['id'];$code=$rows['code'];$name=Substring($rows['name'],0,10);$desc=$rows['desc'];
+	</div>
+</div><br>
+<div class="clearfix"></div>
 
-					if($rows['isactive']==1) 
-						$icon_active="<i class='fa fa-check cgreen' aria-hidden='true'></i>";
-					else $icon_active='<i class="fa fa-times-circle-o cred" aria-hidden="true"></i>';
+<div class="table-responsive">
+	<div class="table-responsive">
+		<table class="table table-bordered">
+			<thead>
+				<th width="30" align="center">#</th>
+				<th width="30" align="center"><input type="checkbox" name="chkall" id="chkall" value="" onclick="docheckall('chk',this.checked);" /></th>
+				<th width="150" align="center">Mã</th>
+				<th align="center">Tên</th>
+				<th align="center">Mô tả</th>
+				<th width="100" align="center">Menu chi tiết</th>
+				<th colspan="3"></th>
+			</thead>
+			<?php
+			$start = ($cur_page-1) * MAX_ROWS;
+			$sql="SELECT * FROM tbl_menus WHERE 1=1 ".$strwhere." LIMIT $start,".MAX_ROWS;
+			$objmysql->Query($sql);
+			$i=0;
+			while($rows= $objmysql->Fetch_Assoc()){ $i++;
+				$id 	= $rows['id'];
+				$code 	= $rows['code'];
+				$name 	= Substring($rows['name'],0,10);
+				$desc 	= $rows['desc'];
 
-					echo "<tr name='trow'>";
-					echo "<td width='30' align='center'>$i</td>";
-					echo "<td width='30' align='center'><label>";
-					echo "<input type='checkbox' name='chk' id='chk' onclick=\"docheckonce('chk');\" value='$id' />";
-					echo "</label></td>";
-					echo "<td width='75'>$code</td>";
-					echo "<td>$name</td>";
-					echo "<td>$desc &nbsp;</td>";
+				if($rows['isactive']==1) 
+					$icon_active="<i class='fa fa-check cgreen' aria-hidden='true'></i>";
+				else $icon_active='<i class="fa fa-times-circle-o cred" aria-hidden="true"></i>';
 
-					echo "<td align='center'>";
-					echo "<a href='".ROOTHOST_ADMIN."mnuitem/$id'>";
-					showIconFun('menuitem',0);
-					echo "</a>";
-					echo "</td>";
+				echo "<tr name='trow'>";
+				echo "<td width='30' align='center'>$i</td>";
+				echo "<td width='30' align='center'><label>";
+				echo "<input type='checkbox' name='chk' id='chk' onclick=\"docheckonce('chk');\" value='$id' />";
+				echo "</label></td>";
+				echo "<td width='75'>$code</td>";
+				echo "<td>$name</td>";
+				echo "<td>$desc &nbsp;</td>";
 
-					echo "<td width='10' align='center'>";
-					echo "<a href='".ROOTHOST_ADMIN.COMS."/active/$id'>";
-					echo $icon_active;
-					echo "</a>";
-					echo "</td>";
+				echo "<td align='center'>";
+				echo "<a href='".ROOTHOST_ADMIN."mnuitem/$id'>";
+				showIconFun('menuitem',0);
+				echo "</a>";
+				echo "</td>";
 
-					echo "<td width='10' align='center'>";
+				echo "<td width='10' align='center'>";
+				echo "<a href='".ROOTHOST_ADMIN.COMS."/active/$id'>";
+				echo $icon_active;
+				echo "</a>";
+				echo "</td>";
 
-					echo "<a href='".ROOTHOST_ADMIN.COMS."/edit/$id'>";
-					echo "<i class='fa fa-edit' aria-hidden='true'></i>";
-					echo "</a>";
+				echo "<td width='10' align='center'>";
 
-					echo "</td>";
-					echo "<td width='10' align='center'>";
+				echo "<a href='".ROOTHOST_ADMIN.COMS."/edit/$id'>";
+				echo "<i class='fa fa-edit' aria-hidden='true'></i>";
+				echo "</a>";
 
-					echo "<a href='".ROOTHOST_ADMIN.COMS."/delete/$id' onclick=\"return confirm('Bạn có chắc muốn xóa?')\">";
-					echo "<i class='fa fa-times-circle cred' aria-hidden='true'></i>";
-					echo "</a>";
+				echo "</td>";
+				echo "<td width='10' align='center'>";
 
-					echo "</td>";
-					echo "</tr>";
-				}
-				?>
-			</table>
-		</div>
-	</form></div>
+				echo "<a href='".ROOTHOST_ADMIN.COMS."/delete/$id' onclick=\"return confirm('Bạn có chắc muốn xóa?')\">";
+				echo "<i class='fa fa-times-circle cred' aria-hidden='true'></i>";
+				echo "</a>";
+
+				echo "</td>";
+				echo "</tr>";
+			}
+			?>
+		</table>
+	</div>
 	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="Footer_list">
 		<tr>
 			<td align="center">	  
@@ -148,5 +162,4 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
 			</td>
 		</tr>
 	</table>
-</div>
-<?php //----------------------------------------------?>
+	<?php //----------------------------------------------?>

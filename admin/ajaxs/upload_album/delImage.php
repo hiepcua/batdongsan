@@ -3,24 +3,28 @@ require_once("../../../global/libs/gfinit.php");
 require_once("../../../global/libs/gfconfig.php");
 require_once("../../../global/libs/gffunc.php");
 include_once('../../libs/cls.mysql.php');
-include_once('../../libs/cls.gallery.php');
-$obj=new CLS_MYSQL();
-$objGa=new CLS_GALLERY();
-$id=isset($_POST['imgId'])? $_POST['imgId']: '';
-$sql="SELECT link FROM `tbl_gallery` WHERE `id`='$id'";
-$obj->Query($sql);
-$obj->Num_rows();
-$row=$obj->Fetch_Assoc();
+$objmysql = new CLS_MYSQL();
 
-$link=ROOTDOCUMENT.PATH_GALLERY_REVIEW.$row['link'];
-if(is_file($link)){
-    unlink($link);
+$id = isset($_POST['imgId'])? $_POST['imgId']: '';
+$sql = "SELECT link FROM `tbl_gallery` WHERE `id`='$id'";
+
+$objmysql->Query($sql);
+$objmysql->Num_rows();
+$row = $objmysql->Fetch_Assoc();
+$sls = explode('/', $row['link']);
+$link = end($sls);
+$file = UPLOAD_PATH.PATH_GALLERY_REVIEW.$link;
+
+if(is_file($file)){
+    unlink($file);
 }
-$objGa->DeleteGallery($id);
-unset($obj);
-unset($objGa);
+
+$sql_GA = "DELETE FROM `tbl_gallery` WHERE `id` in ('$id')";
+$objmysql->Exec($sql_GA);
+
+unset($objmysql);
 ?>
-<script>
+<script type="text/javascript">
     /*del image*/
     $('#respon-img .del-item').click(function(){
         if(confirm("Bạn có muốn chắc xóa ảnh này")){
@@ -28,7 +32,7 @@ unset($objGa);
             var par_id=$('#par_id').val();
             $.post('<?php echo ROOTHOST_ADMIN;?>ajaxs/upload_album/delImage.php',{imgId, par_id},function(response_data){
             });
-            var parent= $(this).parent();
+            var parent= $(this).parent().parent();
             parent.remove();
         }
         else return false;

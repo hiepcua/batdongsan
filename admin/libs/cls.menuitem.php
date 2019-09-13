@@ -23,7 +23,7 @@ class CLS_MENUITEM{
 	public function CLS_MENUITEM(){
 		$this->objmysql=new CLS_MYSQL;
 	}
-// property set value
+	// property set value
 	public function __set($proname,$value){
 		if(!isset($this->pro[$proname])){
 			echo ('Can not found $proname member');
@@ -112,17 +112,17 @@ class CLS_MENUITEM{
 			echo "<td width='100' align='center'>$type &nbsp;</td>";
 			echo "<td width='50' align='center'><input type='text' name='txt_order' id='txt_order' value='$order' size='4' class='order'></td>";
 			echo "<td width='50' align='center'>";
-			echo "<a href='".ROOTHOST_ADMIN.COMS."/active/$mnuids'>";
+			echo "<a href='".ROOTHOST_ADMIN.COMS."/".$rows['menu_id']."/active/$mnuids'>";
 			echo $icon_active;
 			echo "</a>";
 			echo "</td>";
 			echo "<td width='50' align='center'>";
-			echo "<a href='".ROOTHOST_ADMIN.COMS."/edit/$mnuids'>";
+			echo "<a href='".ROOTHOST_ADMIN.COMS."/".$rows['menu_id']."/edit/$mnuids'>";
 			echo "<i class='fa fa-edit' aria-hidden='true'></i>";
 			echo "</a>";			
 			echo "</td>";
 			echo "<td width='50' align='center'>";
-			echo "<a href='".ROOTHOST_ADMIN.COMS."/delete/$mnuids' onclick=\"return confirm('Do you want to delete this record?');\">";
+			echo "<a href='".ROOTHOST_ADMIN.COMS."/".$rows['menu_id']."/delete/$mnuids' onclick=\"return confirm('Do you want to delete this record?');\">";
 			echo "<i class='fa fa-times-circle cred' aria-hidden='true'></i>";
 			echo "</a>";
 			echo "</td>";
@@ -165,23 +165,6 @@ class CLS_MENUITEM{
 		`isactive`='".$this->isActive."'";
 		$sql.=" WHERE `id`='".$this->ID."'";
 		//echo $sql;
-		return $this->objmysql->Exec($sql);
-	}
-	function Order($arr_id,$arr_quan){
-		$n=count($arr_id);
-		for($i=0;$i<$n;$i++){
-			$sql="UPDATE `tbl_mnuitems` SET `order`='".$arr_quan[$i]."' WHERE `id` = '".$arr_id[$i]."' ";
-			$this->objmysql->Exec($sql);
-		}
-	}
-	function setActive($ids,$status=''){
-		$sql="UPDATE `tbl_mnuitems` SET `isactive`='$status' WHERE `id` in ('$ids')";
-		if($status=='')
-			$sql="UPDATE `tbl_mnuitems` SET `isactive`=if(`isactive`=1,0,1) WHERE `id` in ('$ids')";
-		return $this->objmysql->Exec($sql);
-	}
-	function Delete($ids){
-		$sql="DELETE FROM `tbl_mnuitems` WHERE `id` in ('$ids')";
 		return $this->objmysql->Exec($sql);
 	}
 }

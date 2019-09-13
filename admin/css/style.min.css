@@ -717,49 +717,69 @@ fieldset legend.title>span{
 }
 #respon-video{
 	clear: both;
-	padding-top: 20px;
 	overflow: hidden;
-	padding-bottom: 20px;
+	margin-bottom: 15px;
+}
+#respon-info{}
+#respon-info .name{
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+#respon-info .img_src{
+	color: #337ab7;
 }
 #respon-img .info-item{
-	width: 165px;
-	float: left;
-	height: 130px;
+    position: relative;
+    width: 160px;
+    height: 130px;
 }
-
 .info-item{
 	padding: 5px;
 	float: left;
-	margin-right: 5px;
+	margin-right: 10px;
 	position: relative;
 	margin-bottom: 8px;
 }
+.info-item .name{
+    padding: 8px;
+    text-align: center;
+}
 .info-item img{
-	float: left;
 	width: 160px;
 	height: 90px;
 }
+.info-item .wrap-item-info {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: none;
+}
+.info-item:hover .wrap-item-info {
+    display: block;
+}
 .info-item .del-item{
-	display: block;
 	position: absolute;
-	top: 5px;
-	right: -5px;
-	background: url("../images/cancel_f2.png");
-	background-size: 14px auto;
-	width: 14px;
-	height: 14px;
+	left: 60px;
+	top: 30%;
+	width: 20px;
+	height: 20px;
 	cursor: pointer;
+	margin: auto;
+	background: url(../images/cancel_f2.png);
+	background-size: 20px auto;
 }
 .info-item .edit-item{
-	display: block;
 	position: absolute;
-	top: 20px;
-	right: -5px;
-	background: url("../images/icon-32-edit.png");
-	background-size: 14px auto;
-	width: 14px;
-	height: 14px;
-	cursor: pointer;
+    left: 90px;
+    top: 30%;
+    margin: auto;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    background: url(../images/icon-32-edit.png);
+    background-size: 20px auto;
 }
 .info-item span{
 	height: 60px;

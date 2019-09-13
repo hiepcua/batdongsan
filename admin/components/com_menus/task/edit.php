@@ -3,128 +3,79 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
 $id="";
 if(isset($_GET["id"]))
 	$id=(int)$_GET["id"];
-$obj->getList(' WHERE id='.$id);
-$row=$obj->Fetch_Assoc();
-?>
-<div class="body">
-	<script language="javascript">
-		function checkinput(){
-			if($("#txtname").val()==""){
-				$("#txtname_err").fadeTo(200,0.1,function(){ 
-					$(this).html('Yêu cầu nhập tên').fadeTo(900,1);
-				});
-				$("#txtname").focus();
-				return false;
-			}
-			if($("#txtcode").val()==""){
-				$("#txtcode_err").fadeTo(200,0.1,function(){ 
-					$(this).html('Yêu cầu nhập mã').fadeTo(900,1);
-				});
-				$("#txtcode").focus();
-				return false;
-			}
-			else if (($("#txtcode").val().trim()).length<2) {
-				$("#txtcode_err").fadeTo(200,0.1,function(){
-					$("#txtcode_err").html("Mã gồm ít nhất 2 ký tự").fadeTo(900,1);
-				});
-				$("#txtcode").focus();
-				return false;
-			}
-			return true;
-		}
 
-		$(document).ready(function(){
-			$("#txtname").blur(function() {
-				if( $(this).val()=='') {
-					$("#txtname_err").fadeTo(200,0.1,function()
-					{ 
-						$(this).html('Yêu cầu nhập tên').fadeTo(900,1);
-					});
-				}
-				else {
-					$("#txtname_err").fadeTo(200,0.1,function()
-					{ 
-						$(this).html('').fadeTo(900,1);
-					});
-				}
-			})
-			$("#txtcode").blur(function() {
-				if( $(this).val()=='') {
-					$("#txtcode_err").fadeTo(200,0.1,function()
-					{ 
-						$(this).html('Yêu cầu nhập mã').fadeTo(900,1);
-					});
-				}
-				else {
-					$("#txtcode_err").fadeTo(200,0.1,function()
-					{ 
-						$(this).html('').fadeTo(900,1);
-					});
-				}
-			})
-		})
-	</script>
-	<div class="com_header color">
-		<i class="fa fa-pencil-square" aria-hidden="true"></i> Sửa menus
-		<div class="pull-right">
-			<?php require_once("../global/libs/toolbar.php"); ?>
-		</div>
-	</div><br>
-	
-	<form id="frm_action" name="frm_action" method="post" action="">
-	<div class='col-sm-12'>
-		<p>Những mục đánh dấu <font color="red">*</font> là yêu cầu bắt buộc.</p>
-		<input type="hidden" name="txtid" id="txtid" value="<?php echo $row['id'];?>">
-		<div class="row">
-			<div class="col-md-6">
-				<div class="form-group">
-					<label for="" class="col-sm-3 form-control-label">Tên menu*</label>
-					<div class="col-sm-9">
-						<input type="text" class="form-control" value="<?php echo $row['name'];?>" name="txtname" id="txtname">
-						<span id="txtname_err" class="check_error"></span>
-						<input name="txttask" type="hidden" id="txttask" value="1" />
-					</div>
-					<div class="clearfix"></div>
-				</div>
-			</div>
-			<div class="col-md-6"><label class="control-label"><font id="txtname_err" color="red"></font></label></div>
-			<div class="clearfix"></div>
-			<div class="col-md-6">
-				<div class="form-group">
-					<label for="" class="col-sm-3 form-control-label">Mã menu*</label>
-					<div class="col-sm-9">
-						<input type="text" class="form-control" value="<?php echo $row['code'];?>" name="txtcode" id="txtcode">
-					</div>
-					<span id="txtcode_err" class="check_error"></span>
-					<div class="clearfix"></div>
-				</div>
-			</div>
-			<div class="col-md-6"><label class="control-label"><font id="txtcode_err" color="red"></font></label></div>
-			<div class="clearfix"></div>
-			<div class="col-md-6">
-				<div class="form-group">
-					<label for="" class="col-sm-3 form-control-label">Hiển thị</label>
-					<div class="col-sm-9">
-						<label class="radio-inline"><input name="optactive" type="radio" id="radio" value="1" <?php if($row['isactive']==1) echo "checked";?>>Có</label>
-						<label class="radio-inline"><input name="optactive" type="radio" id="radio2" value="0" <?php if($row['isactive']==0) echo "checked";?>>Không</label>
-					</div>
-					<div class="clearfix"></div>
-				</div>
-			</div>
-		</div>
-		</div>
-		<fieldset>
-			<legend><strong>Mô tả:</strong></legend>
-			<textarea name="txtdesc" id="txtdesc" cols="45" rows="5"><?php echo $row['desc'];?></textarea>
-			<script language="javascript">
-				var oEdit1=new InnovaEditor("oEdit1");
-				oEdit1.width="100%";
-				oEdit1.height="200";
-				oEdit1.cmdAssetManager ="modalDialogShow('<?php echo ROOTHOST_ADMIN;?>extensions/editor/innovar/assetmanager/assetmanager.php',640,465)";
-				oEdit1.REPLACE("txtdesc");
-				document.getElementById("idContentoEdit1").style.height="200px";
-			</script>
-			<input type="submit" name="cmdsave" id="cmdsave" value="Submit" style="display:none;">
-		</fieldset>
-	</form>
+$sql = "SELECT * FROM tbl_menus WHERE id = ".$id;
+$objmysql->Query($sql);
+$row = $objmysql->Fetch_Assoc();
+?>
+<script language="javascript">
+	function checkinput(){	
+		if($("#txtname").val()==""){
+			$("#txtname_err").fadeTo(200,0.1,function(){
+				$(this).html('Yêu cầu nhập tên').fadeTo(900,1);
+			});
+			return false;
+		}
+		return true;
+	}
+</script>
+
+<div id="path">
+    <ol class="breadcrumb">
+        <li><a href="<?php echo ROOTHOST_ADMIN;?>">Admin</a></li>
+        <li><a href="<?php echo ROOTHOST_ADMIN.COMS;?>">Danh sách Menu</a></li>
+        <li class="active">Cập nhật Menu</li>
+    </ol>
 </div>
+
+<div class="com_header color">
+    <h1>Cập nhật Menu</h1>
+    <div class="pull-right">
+        <form id="frm_menu" name="frm_menu" method="post" action="">
+            <input type="hidden" name="txtorders" id="txtorders" />
+            <input type="hidden" name="txtids" id="txtids" />
+            <input type="hidden" name="txtaction" id="txtaction" />
+
+            <ul class="list-inline">
+                <li><a class="save btn btn-success" href="#" onclick="dosubmitAction('frm_action','save');" title="Lưu"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</a></li>
+                <li><a class="btn btn-default"  href="<?php echo ROOTHOST_ADMIN.COMS;?>" title="Đóng"><i class="fa fa-sign-out" aria-hidden="true"></i> Đóng</a></li>
+            </ul>
+        </form>
+    </div>
+</div>
+<div class="clearfix"></div>
+
+<form id="frm_action" class="form-horizontal" name="frm_action" method="post" action="">
+	<input type="hidden" name="txtid" value="<?php echo $row['id'];?>">
+	<p>Những mục đánh dấu <font color="red">*</font> là yêu cầu bắt buộc.</p>
+	<div class='col-sm-12'>
+		<div class="row">
+			<div class="form-group">
+				<div class="col-md-6">
+					<label>Tên Menu<small class="cred"> (*)</small><span id="txtname_err" class="mes-error"></span></label>
+					<input type="text" class="form-control" name="txtname" value="<?php echo $row['name'];?>" id="txtname">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-md-6">
+					<label>Hiển thị</label>
+					<div>
+						<label class="radio-inline"><input name="optactive" type="radio" id="radio" value="1" <?php if($row['isactive']=='1') echo 'checked';?>>Có</label>
+						<label class="radio-inline"><input type="radio" value="0" name="optactive" <?php if($row['isactive']=='0') echo 'checked';?>>Không</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-xs-12">
+					<textarea name="txtdesc" id="txtdesc" rows="5"><?php echo $row['desc'];?></textarea>
+				</div>
+			</div>
+			<input type="submit" name="cmdsave" id="cmdsave" value="Submit" style="display:none;">
+			<div class="text-center toolbar">
+				<div style="height: 20px;"></div>
+				<a class="save btn btn-success" href="#" onclick="dosubmitAction('frm_action','save');" title="Lưu thông tin"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu thông tin</a>
+			</div>
+		</div>
+	</div>
+</form>

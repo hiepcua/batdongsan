@@ -1,8 +1,10 @@
 <?php
-	defined("ISHOME") or die("Can't acess this page, please come back!");
-	$id="0";
-	if(isset($_GET["id"]))
-		$id=(int)$_GET["id"];
-	$obj->Delete($id);
-	echo "<script language=\"javascript\">".ROOTHOST_ADMIN.COMS."'</script>";
+	defined('ISHOME') or die('Can not acess this page, please come back!');
+	$id='';
+	if(isset($_GET['id']))
+		$id=(int)$_GET['id'];
+
+	$sql_del = "DELETE FROM `tbl_menus` WHERE `id` in ('$id')";
+	$objmysql->Exec($sql_del);
+	echo "<script language=\"javascript\">window.location='".ROOTHOST_ADMIN.COMS."'</script>";
 ?>

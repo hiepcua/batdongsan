@@ -8,7 +8,7 @@ require_once("../global/libs/gffunc.php");
 require_once("includes/gfconfig.php");
 require_once("libs/cls.mysql.php");
 require_once("libs/cls.user.php");
-require_once("libs/cls.menu.php");
+// require_once("libs/cls.menu.php");
 require_once("libs/cls.category.php");
 $UserLogin = new CLS_USER();
 global $UserLogin;
@@ -109,9 +109,9 @@ global $UserLogin;
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h3 class="modal-title"></h3>
+						<h3 class="modal-title" id="myModalLabel"></h3>
 					</div>
-					<div class="modal-body">
+					<div class="modal-body" id="data-frm">
 					</div>
 				</div>
 			</div>

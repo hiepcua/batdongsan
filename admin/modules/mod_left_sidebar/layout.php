@@ -2,8 +2,7 @@
 if($UserLogin->isLogin()) {
 	$PERMISSION = $UserLogin->getInfo('isroot');
 }
-$obj_cate=new CLS_CATEGORY;
-$obj_mnu=new CLS_MENU;
+$objmysql = new CLS_MYSQL();
 ?>
 <div id="left_sidebar">
 	<div class="sidebar_top"></div>
@@ -31,9 +30,24 @@ $obj_mnu=new CLS_MENU;
 		</li>
 
 		<li>
+			<div class="title"><i class="fa fa-list" aria-hidden="true"></i> <span>Loại hình đất đai</span></div>
+			<ul class="sub">
+				<li><a href="<?php echo ROOTHOST_ADMIN;?>type_of_land/add" title="Thêm loại hình đất"><i class="fa fa-plus" aria-hidden="true"></i> <span>Thêm mới</span></a></li>
+				<li><a href="<?php echo ROOTHOST_ADMIN;?>type_of_land" title="Ds loại hình đất"><i class="fa fa-bars" aria-hidden="true"></i> <span>Ds loại hình đất</span></a></li>
+			</ul>
+		</li>
+
+		<li>
 			<div class="title"><i class="fa fa-list" aria-hidden="true"></i> <span>Menu</span></div>
 			<ul class="sub">
-				<?php echo $obj_mnu->getListmenu('list');?>
+				<?php 
+				$sql_menu="SELECT * FROM tbl_menus WHERE isactive = 1";
+				$objmysql->Query($sql_menu);
+				while($rows = $objmysql->Fetch_Assoc()){
+					echo "<li><a href=\"".ROOTHOST_ADMIN."mnuitem/".$rows["id"]."\"><i class=\"fa fa-bars\" aria-hidden=\"true\"></i>".$rows["name"]."</a></li>";
+				}
+				?>
+				<li><a href="<?php echo ROOTHOST_ADMIN;?>menus"><i class="fa fa-bars" aria-hidden="true"></i>QL menu</a></li>
 			</ul>
 		</li>
 

@@ -2,8 +2,6 @@
 defined('ISHOME') or die('Can not acess this page, please come back!');
 define('COMS','mnuitem');
 define('THIS_COM_PATH',COM_PATH.'com_'.COMS.'/');
-$mnuid = isset($_GET['mnuid']) ? (int)$_GET['mnuid'] : 0;
-define('MNU_ID', $mnuid);
 
 $flag = false;
 if(!isset($UserLogin)) $UserLogin = new CLS_USERS();
@@ -18,61 +16,57 @@ if($flag == false){
 // Begin Toolbar
 require_once('libs/cls.menuitem.php');
 require_once('libs/cls.category.php');
-require_once('libs/cls.contents.php');
-require_once('libs/cls.menu.php');
-$obj_cate = new CLS_CATEGORY();
-$obj_con = new CLS_CONTENTS();
-$obj_mnu = new CLS_MENU();
 $objmysql = new CLS_MYSQL();
+$obj_cate = new CLS_CATEGORY();
+$obj = new CLS_MENUITEM();
 
-if(!isset($_SESSION['ids'])){
-	$_SESSION['ids']="";
-}
-//------------------------------------------------
-if(!isset($_SESSION['mnuid'])){
-	$_SESSION['mnuid']='';
-}
-$mnuid='';
-if(isset($_GET['mnuid']) && $_GET['mnuid']!='') {
-	$_SESSION['mnuid']=(int)$_GET['mnuid'];
-}
-if($_GET['com']=='menus' && isset($_GET['id'])==true){
-	$_SESSION['mnuid']=(int)$_GET['id'];
-}
-if(isset($_POST['cbo_menutype'])){
-	$mnuid=(int)$_POST['cbo_menutype'];
-	$_SESSION['mnuid']=$mnuid;
-}
-$mnuid=$_SESSION['mnuid'];
-//----------------------------------------------
-$obj=new CLS_MENUITEM();
+$mnuid = isset($_GET['mnuid']) ? (int)$_GET['mnuid'] : 0;
 if(isset($_POST['cmdsave'])){ 
-	$obj->Par_ID=(int)$_POST['cbo_parid'];
-	$level = $obj->getLevelChild($obj->Par_ID);
-	$obj->Name=addslashes($_POST['txtname']);
-	$obj->Code=addslashes(un_unicode($_POST['txtname']));
-	$obj->Intro=addslashes($_POST['txtdesc']);
-	$obj->Mnu_ID=(int)$mnuid; 
-	$obj->Viewtype=addslashes($_POST['cbo_viewtype']);
+	$Cate_ID 	= '';
+	$Con_ID 	= '';
+	$Link 		= '';
+	$Mnu_ID 	= (int)$mnuid;
+	$Code 		= addslashes(un_unicode($_POST['txtname']));
+	$Par_ID		= isset($_POST['cbo_parid']) ? (int)$_POST['cbo_parid'] : 0;
+	$Name 		= isset($_POST['txtname']) ? addslashes($_POST['txtname']) : '';
+	$Intro 		= isset($_POST['txtdesc']) ? addslashes($_POST['txtdesc']) : '';
+	$Viewtype 	= isset($_POST['cbo_viewtype']) ? addslashes($_POST['cbo_viewtype']) : '';
+	$Icon 		= isset($_POST['txticon']) ? addslashes($_POST['txticon']) : '';
+	$Class 		= isset($_POST['txtclass']) ? addslashes($_POST['txtclass']) : '';
+	$isActive 	= isset($_POST['optactive']) ? (int)$_POST['optactive'] : 0;
 
-	if($obj->Viewtype=='block'){
-		$obj->Cate_ID=(int)$_POST['cbo_cate'];
+	if($Viewtype == 'block'){
+		$Cate_ID = (int)$_POST['cbo_cate'];
 	}
-	else if($obj->Viewtype=='article'){		
-		$obj->Con_ID=(int)$_POST['cbo_article'];
+	else if($Viewtype == 'article'){		
+		$Con_ID = (int)$_POST['cbo_article'];
 	}
 	else{
-		$obj->Link=addslashes($_POST['txtlink']);
+		$Link = addslashes($_POST['txtlink']);
 	}
-	
-	$obj->Icon=addslashes($_POST['txticon']);
-	$obj->Class=addslashes($_POST['txtclass']);
-	$obj->isActive=(int)$_POST['optactive'];
+
 	if(isset($_POST['txtid'])){
-		$obj->ID=(int)$_POST['txtid'];
-		$obj->Update();
+		$ID = (int)$_POST['txtid'];
+
+		$sql="UPDATE `tbl_mnuitems` SET  
+		`par_id`='".$Par_ID."',
+		`code`='".$Code."',
+		`intro`='".$Intro."',
+		`name`='".$Name."',
+		`menu_id`='".$Mnu_ID."',
+		`viewtype`='".$Viewtype."',
+		`category_id`='".$Cate_ID."',
+		`content_id`='".$Con_ID."',
+		`link`='".$Link."',
+		`icon`='".$Icon."',
+		`class`='".$Class."',
+		`isactive`='".$isActive."'";
+		$sql.=" WHERE `id`='".$ID."'";
+		$objmysql->Exec($sql);
 	}else{
-		$obj->Add_new();
+		$sql="INSERT INTO `tbl_mnuitems`(`par_id`,`name`,`code`,`menu_id`,`viewtype`,`category_id`,`content_id`,`link`,`icon`,`class`,`intro`,`isactive`) VALUES ";
+		$sql.="('".$Par_ID."','".$Name."','".$Code."','".$Mnu_ID."','".$Viewtype."','".$Cate_ID."','".$Con_ID."','".$Link."','".$Icon."','".$Class."','".$Intro."','".$isActive."') ";
+		$objmysql->Exec($sql);
 	}
 	echo '<script language="javascript">window.location="'.ROOTHOST_ADMIN.COMS.'/'.$mnuid.'"</script>';
 }
@@ -104,7 +98,7 @@ if(isset($_POST["txtaction"]) && $_POST["txtaction"]!=""){
 				$objmysql->Exec($sql_order);
 			}
 	}
-	echo "<script language=\"javascript\">window.location='".ROOTHOST_ADMIN.COMS."'</script>";
+	echo "<script language=\"javascript\">window.location='".ROOTHOST_ADMIN.COMS.'/'.$mnuid."'</script>";
 }
 
 $task='';

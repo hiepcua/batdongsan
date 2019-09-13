@@ -1,6 +1,6 @@
 <?php
     defined('ISHOME') or die('Can not acess this page, please come back!');
-    define('OBJ_PAGE','SLIDER');
+    define('OBJ_PAGE','TYPE_OF_LAND');
     $strwhere='';
 
     // Khai báo SESSION
@@ -9,7 +9,7 @@
 
     // Gán strwhere
     if($keyword !== ''){
-        $strwhere.=" AND ( `slogan` like '%$keyword%' )";
+        $strwhere.=" AND ( `title` like '%$keyword%' )";
     }
     if($action !== '' && $action !== 'all' ){
         $strwhere.=" AND `isactive` = '$action'";
@@ -23,7 +23,7 @@
         $_SESSION['CUR_PAGE_'.OBJ_PAGE] = (int)$_POST['txtCurnpage'];
     }
 
-    $sql_count = "SELECT COUNT(*) AS count FROM tbl_feedback WHERE 1=1 ".$strwhere;
+    $sql_count = "SELECT COUNT(*) AS count FROM tbl_type_of_land WHERE 1=1 ".$strwhere;
     $objmysql->Query($sql_count);
     $row_count = $objmysql->Fetch_Assoc();
     $total_rows = $row_count['count'];
@@ -48,7 +48,7 @@
 <div id="path">
     <ol class="breadcrumb">
         <li><a href="<?php echo ROOTHOST_ADMIN;?>">Admin</a></li>
-        <li class="active">Danh sách cảm nhận</li>
+        <li class="active">Danh sách loại hình đất đai</li>
     </ol>
 </div>
 
@@ -91,9 +91,8 @@
         <thead>
             <th width="30" align="center">#</th>
             <th width="30" align="center"><input type="checkbox" name="chkall" id="chkall" value="" onclick="docheckall('chk',this.checked);" /></th>
-            <th>Avatar</th>
             <th>Tên</th>
-            <th>Comment</th>
+            <th>Mô tả</th>
             <th width="70" style="text-align: center;">Sắp xếp
                 <a href="javascript:saveOrder()">
                     <i class="fa fa-floppy-o" aria-hidden="true"></i>
@@ -104,18 +103,16 @@
             <th width="50" align="center">Xóa</th>
         </thead>
         <?php 
-        // $obj->listTable($strwhere,$cur_page);
         $star = ($cur_page-1) * MAX_ROWS;
         $leng = MAX_ROWS;
-        $sql = "SELECT * FROM tbl_feedback ".$strwhere." ORDER BY `order` ASC LIMIT $star,$leng";
+        $sql = "SELECT * FROM tbl_type_of_land ".$strwhere." ORDER BY `order` ASC LIMIT $star,$leng";
         $objmysql->Query($sql);
         $i=0;
         while($rows = $objmysql->Fetch_Assoc()){
             $i++;
             $ids=$rows['id'];
-            $name=$rows['name'];
-            $img=$rows['avatar'];
-            $comment=$rows['comment'];
+            $name=$rows['title'];
+            $intro=$rows['intro'];
             $order=$rows['order'];
             if($rows['isactive']==1) 
                 $icon_active="<i class='fa fa-check cgreen' aria-hidden='true'></i>";
@@ -126,9 +123,8 @@
 
             echo "<td width=\"30\" align=\"center\"><input type=\"checkbox\" name=\"chk\" id=\"chk\" onclick=\"docheckonce('chk');\" value=\"$ids\"/></td>";
 
-            echo "<td><img src='".$img."' align='' class='df_thumb'></td>";
             echo "<td>".$name."</td>";
-            echo "<td>".$comment."</td>";
+            echo "<td>".$intro."</td>";
 
             echo "<td width=\"50\" align=\"center\"><input type=\"text\" name=\"txt_order\" id=\"txt_order\" value=\"$order\" class=\"order\"></td>";
             echo "<td align=\"center\">";

@@ -65,11 +65,10 @@ if(isset($_POST["txtaction"]) && $_POST["txtaction"]!=""){
 }
 
 $task='';
-if(isset($_GET['task']))
-	$task=$_GET['task'];
+if(isset($_GET['task'])) $task=$_GET['task'];
 if(!is_file(THIS_COM_PATH.'task/'.$task.'.php')){
 	$task='list';
 }
 include_once(THIS_COM_PATH.'task/'.$task.'.php');
-unset($task); unset($ids); unset($obj); unset($objlang);
+unset($obj); unset($task);	unset($objlang); unset($ids);
 ?>

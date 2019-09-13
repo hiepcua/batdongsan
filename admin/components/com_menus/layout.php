@@ -1,7 +1,8 @@
 <?php
 defined('ISHOME') or die('Can not acess this page, please come back!');
-include_once('libs/cls.menu.php');
 define('COMS','menus');
+define('THIS_COM_PATH',COM_PATH.'com_'.COMS.'/');
+$objmysql = new CLS_MYSQL();
 
 $check_permission = $UserLogin->Permission(COMS);
 if($check_permission==false) die($GLOBALS['MSG_PERMIS']);
@@ -15,56 +16,59 @@ if($flag==false){
     return false;
 }
 
-$obj=new CLS_MENU();
-$title_manager="Danh sách Menu";
-if(isset($_GET['task']) && $_GET['task']=='add')
-    $title_manager = "Thêm mới Menu";
-if(isset($_GET['task']) && $_GET['task']=='edit')
-    $title_manager = "Sửa Menu";
+if(isset($_POST['cmdsave'])){
+    $Name       = addslashes($_POST['txtname']);
+    $Code       = un_unicode($Name);
+    $Desc       = addslashes($_POST['txtdesc']);
+    $isActive   = (int)$_POST['optactive'];
 
-if(isset($_POST['txttask']) && $_POST['txttask']==1){
-    $obj->Code=addslashes($_POST['txtcode']);
-    $obj->Name=addslashes($_POST['txtname']);
-    $sContent=addslashes($_POST['txtdesc']);
-    $obj->Desc=addslashes($sContent);
-    $obj->isActive=(int)$_POST['optactive'];
     if(isset($_POST['txtid'])){
-        $obj->ID=(int)$_POST['txtid'];
-        $obj->Update();
+        $ID=(int)$_POST['txtid'];
+        $sql="UPDATE `tbl_menus` SET `code`='".$Code."',`desc`='".$Desc."',`name`='".$Name."',`isactive`='".$isActive."' WHERE `id`='".$ID."'";
+        $objmysql->Exec($sql);
     }else{
-        $obj->Add_new();
+        $sql="INSERT INTO `tbl_menus`(`name`,`code`,`desc`,`isactive`) VALUES ('".$Name."','".$Code."','".$Desc."','".$isActive."') ";
+        $objmysql->Exec($sql);
     }
     echo '<script language="javascript">window.location="'.ROOTHOST_ADMIN.COMS.'"</script>';
 }
 
-
-if(isset($_POST["txtaction"]) && $_POST["txtaction"]!="")
-{
-    $ids=$_POST['txtids'];
-    $ids=str_replace(',',"','",$ids);
-    switch ($_POST['txtaction'])
-    {
-        case 'public': 		$obj->setActive($ids,1); 		break;
-        case 'unpublic': 	$obj->setActive($ids,0); 		break;
-        case "edit":
-        $id=explode("','",$ids);
-        echo "<script language=\"javascript\">window.location='".ROOTHOST_ADMIN.COMS."/edit/".$id[0]."'</script>";
-        exit();
-        break;
-        case 'delete': 		$obj->Delete($ids); 			break;
+if(isset($_POST["txtaction"]) && $_POST["txtaction"]!=""){
+    $ids=trim($_POST["txtids"]);
+    if($ids!='')
+        $ids = substr($ids,0,strlen($ids)-1);
+    $ids=str_replace(",","','",$ids);
+    switch ($_POST["txtaction"]){
+        case "public": 
+            $sql_active = "UPDATE `tbl_menus` SET `isactive`='1' WHERE `id` in ('$ids')";
+            $objmysql->Exec($sql_active);
+            break;
+        case "unpublic":
+            $sql_unactive = "UPDATE `tbl_menus` SET `isactive`='0' WHERE `id` in ('$ids')";
+            $objmysql->Exec($sql_unactive);
+            break;
+        case "delete":
+            $sql_del = "DELETE FROM `tbl_menus` WHERE `id` in ('$ids')";
+            $objmysql->Exec($sql_del);
+            break;
+        case 'order':
+            $sls = explode(',',$_POST['txtorders']); 
+            $ids = explode(',',$_POST['txtids']);
+            $n = count($ids);
+            for($i=0;$i<$n;$i++){
+                $sql_order = "UPDATE `tbl_menus` SET `order`='".$sls[$i]."' WHERE `id` = '".$ids[$i]."' ";
+                $objmysql->Exec($sql_order);
+            }
     }
     echo "<script language=\"javascript\">window.location='".ROOTHOST_ADMIN.COMS."'</script>";
 }
 
-define("THIS_COM_PATH",COM_PATH."com_".COMS."/");
 $task='';
-if(isset($_GET['task']))
-    $task=$_GET['task'];
+if(isset($_GET['task'])) $task=$_GET['task'];
 if(!is_file(THIS_COM_PATH.'task/'.$task.'.php')){
     $task='list';
 }
 include_once(THIS_COM_PATH.'task/'.$task.'.php');
-unset($task);	unset($ids);
-unset($obj);	unset($objlag);
+unset($obj); unset($task);  unset($objlang); unset($ids);
 
 ?>

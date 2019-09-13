@@ -3,6 +3,8 @@
 	$id='';
 	if(isset($_GET['id']))
 		$id=(int)$_GET['id'];
-	$obj->Delete($id);
+
+	$sql_del = "DELETE FROM `tbl_video` WHERE `id` in ('$id')";
+	$objmysql->Exec($sql_del);
 	echo "<script language=\"javascript\">window.location='".ROOTHOST_ADMIN.COMS."'</script>";
 ?>
