@@ -79,3 +79,8 @@ $row = $objmysql->Fetch_Assoc();
 		</div>
 	</div>
 </form>
+<script type="text/javascript">
+    $(document).ready(function(){
+        tinymce.init({selector:'#txtdesc'});
+    });
+</script>

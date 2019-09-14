@@ -4,22 +4,23 @@ define('COMS','type_of_land');
 define('THIS_COM_PATH',COM_PATH.'com_'.COMS.'/');
 $objmysql = new CLS_MYSQL();
 
-if(isset($_POST["cmdsave"])){		
-	$Title 		= addslashes($_POST['txt_name']);
-	$Code 		= un_unicode($Title);
-	$Intro 		= addslashes($_POST['txt_comment']);
-	$isActive 	= '1';
+if(isset($_POST["cmdsave"])){
+	$Intro 			= isset($_POST['txt_comment']) ? addslashes($_POST['txt_comment']) : '';
+	$Title 			= isset($_POST['txt_name']) ? addslashes($_POST['txt_name']) : '';
+	$Thumb 			= isset($_POST['txtthumb']) ? addslashes($_POST['txtthumb']) : '';
+	$Code 			= un_unicode($Title);
+	$isActive 		= '1';
 
     if(isset($_POST["txtthumb"]))
         $Avatar=addslashes($_POST["txtthumb"]);
 
     if(isset($_POST['txtid'])){
 		$ID=$_POST['txtid'];
-		$sql="UPDATE `tbl_type_of_land` SET  
-		`title`='".$Title."',
-		`code`='".$Code."',
-		`intro`='".$Intro."'
-		WHERE `id`='".$ID."'";
+		$sql = "UPDATE `tbl_type_of_land` SET  
+		`title` 	= '".$Title."',
+		`code` 		= '".$Code."',
+		`intro` 	= '".$Intro."'
+		WHERE `id` 	= '".$ID."'";
 		$objmysql->Exec($sql);
 	}else{
 		$sql="INSERT INTO `tbl_type_of_land` ( `title`, `code`, `intro`, `isactive`) VALUES ";

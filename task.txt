@@ -1,5 +1,0 @@
-- Menu
-- Menu chi tiết
-- Bài viết
-- Meta seo
-- General sitemap

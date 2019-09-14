@@ -24,10 +24,10 @@ RewriteRule ^feedback/edit/([0-9]+)?$ 				index.php?com=feedback&task=edit&id=$1
 RewriteRule ^feedback/delete/([0-9]+)?$ 			index.php?com=feedback&task=delete&id=$1
 
 # Type of land
-RewriteRule ^type_of_land/?$ 							index.php?com=type_of_land 	[QSA]
-RewriteRule ^type_of_land/add?$ 						index.php?com=type_of_land&task=add
-RewriteRule ^type_of_land/edit/([0-9]+)?$ 				index.php?com=type_of_land&task=edit&id=$1
-RewriteRule ^type_of_land/delete/([0-9]+)?$ 			index.php?com=type_of_land&task=delete&id=$1
+RewriteRule ^type_of_land/?$ 						index.php?com=type_of_land 	[QSA]
+RewriteRule ^type_of_land/add?$ 					index.php?com=type_of_land&task=add
+RewriteRule ^type_of_land/edit/([0-9]+)?$ 			index.php?com=type_of_land&task=edit&id=$1
+RewriteRule ^type_of_land/delete/([0-9]+)?$ 		index.php?com=type_of_land&task=delete&id=$1
 
 #Category
 RewriteRule ^category/?$ 							index.php?com=category 	[QSA]
@@ -36,8 +36,16 @@ RewriteRule ^category/edit/([0-9]+)?$ 				index.php?com=category&task=edit&id=$1
 RewriteRule ^category/delete/([0-9]+)?$ 			index.php?com=category&task=delete&id=$1
 RewriteRule ^category/active/([0-9]+)?$ 			index.php?com=category&task=active&id=$1
 
+#Seo
+RewriteRule ^seo/?$ 								index.php?com=seo 	[QSA]
+RewriteRule ^seo/add?$ 								index.php?com=seo&task=add
+RewriteRule ^seo/edit/([0-9]+)?$ 					index.php?com=seo&task=edit&id=$1
+RewriteRule ^seo/delete/([0-9]+)?$ 					index.php?com=seo&task=delete&id=$1
+RewriteRule ^seo/active/([0-9]+)?$ 					index.php?com=seo&task=active&id=$1
+
+
 # Contents
-RewriteRule ^contents/?$ 							index.php?com=contents
+RewriteRule ^contents/?$ 							index.php?com=contents 	[QSA]
 RewriteRule ^contents/add?$ 						index.php?com=contents&task=add
 RewriteRule ^contents/edit/([0-9]+)?$ 				index.php?com=contents&task=edit&id=$1
 RewriteRule ^contents/active/([0-9]+)?$ 			index.php?com=contents&task=active&id=$1
@@ -96,21 +104,21 @@ RewriteRule ^gallery/active/([0-9]+)?$ 				index.php?com=gallery&task=active&id=
 RewriteRule ^gallery/add_gallery/([0-9]+)?$ 		index.php?com=gallery&task=add_gallery&id=$1
 
 # Document
-RewriteRule ^document_group/?$ 					index.php?com=document_group
-RewriteRule ^document/?$ 						index.php?com=document
-RewriteRule ^document/add?$ 					index.php?com=document&task=add
-RewriteRule ^document/edit/([0-9]+)?$ 			index.php?com=document&task=edit&id=$1
-RewriteRule ^document/delete/([0-9]+)?$ 		index.php?com=document&task=delete&id=$1
-RewriteRule ^document/active/([0-9]+)?$ 		index.php?com=document&task=active&id=$1
+RewriteRule ^document_group/?$ 						index.php?com=document_group
+RewriteRule ^document/?$ 							index.php?com=document
+RewriteRule ^document/add?$ 						index.php?com=document&task=add
+RewriteRule ^document/edit/([0-9]+)?$ 				index.php?com=document&task=edit&id=$1
+RewriteRule ^document/delete/([0-9]+)?$ 			index.php?com=document&task=delete&id=$1
+RewriteRule ^document/active/([0-9]+)?$ 			index.php?com=document&task=active&id=$1
 
 # Profile
-RewriteRule ^profile/?$ 						index.php?com=profile
-RewriteRule ^profile/add?$ 						index.php?com=profile&task=add
-RewriteRule ^profile/edit/([0-9]+)?$ 			index.php?com=profile&task=edit&id=$1
-RewriteRule ^profile/active/([0-9]+)?$ 			index.php?com=profile&task=active&id=$1
-RewriteRule ^profile/delete/([0-9]+)?$ 			index.php?com=profile&task=delete&id=$1
-RewriteRule ^profile/take/([0-9]+)?$ 			index.php?com=profile&task=take&id=$1
-RewriteRule ^profile/pass/([0-9]+)?$ 			index.php?com=profile&task=pass&id=$1
+RewriteRule ^profile/?$ 							index.php?com=profile
+RewriteRule ^profile/add?$ 							index.php?com=profile&task=add
+RewriteRule ^profile/edit/([0-9]+)?$ 				index.php?com=profile&task=edit&id=$1
+RewriteRule ^profile/active/([0-9]+)?$ 				index.php?com=profile&task=active&id=$1
+RewriteRule ^profile/delete/([0-9]+)?$ 				index.php?com=profile&task=delete&id=$1
+RewriteRule ^profile/take/([0-9]+)?$ 				index.php?com=profile&task=take&id=$1
+RewriteRule ^profile/pass/([0-9]+)?$ 				index.php?com=profile&task=pass&id=$1
 
 
 # Module
@@ -129,12 +137,12 @@ RewriteRule ^user/delete/([0-9]+)?$ 				index.php?com=user&task=delete&id=$1
 RewriteRule ^user/changepass/([0-9]+)?$ 			index.php?com=user&task=changepass&id=$1
 
 # User group
-RewriteRule ^user_group/?$ 								index.php?com=user_group 	[QSA]
-RewriteRule ^user_group/add?$ 							index.php?com=user_group&task=add
-RewriteRule ^user_group/edit/([0-9]+)?$ 				index.php?com=user_group&task=edit&id=$1
-RewriteRule ^user_group/active/([0-9]+)?$ 				index.php?com=user_group&task=active&id=$1
-RewriteRule ^user_group/delete/([0-9]+)?$ 				index.php?com=user_group&task=delete&id=$1
-RewriteRule ^user_group/changepass/([0-9]+)?$ 			index.php?com=user_group&task=changepass&id=$1
+RewriteRule ^user_group/?$ 							index.php?com=user_group 	[QSA]
+RewriteRule ^user_group/add?$ 						index.php?com=user_group&task=add
+RewriteRule ^user_group/edit/([0-9]+)?$ 			index.php?com=user_group&task=edit&id=$1
+RewriteRule ^user_group/active/([0-9]+)?$ 			index.php?com=user_group&task=active&id=$1
+RewriteRule ^user_group/delete/([0-9]+)?$ 			index.php?com=user_group&task=delete&id=$1
+RewriteRule ^user_group/changepass/([0-9]+)?$ 		index.php?com=user_group&task=changepass&id=$1
 
 # Mail
 RewriteRule ^mail/?$ 								index.php?com=mail

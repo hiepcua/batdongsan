@@ -1,6 +1,6 @@
 <?php
 defined('ISHOME') or die('Can not acess this page, please come back!');
-define('OBJ_PAGE','CATEGORY');
+define('OBJ_PAGE','SEO');
 $strwhere='';
 
 // Khai báo SESSION
@@ -9,7 +9,7 @@ $action = isset($_GET['cbo_action']) ? addslashes(trim($_GET['cbo_action'])) : '
 
 // Gán strwhere
 if($keyword !== ''){
-    $strwhere.=" AND ( `name` like '%$keyword%' )";
+    $strwhere.=" AND ( `title` like '%$keyword%' )";
 }
 if($action !== '' && $action !== 'all' ){
     $strwhere.=" AND `isactive` = '$action'";
@@ -23,7 +23,7 @@ if(isset($_POST['txtCurnpage'])){
     $_SESSION['CUR_PAGE_'.OBJ_PAGE] = (int)$_POST['txtCurnpage'];
 }
 
-$sql_count = "SELECT COUNT(*) AS count FROM tbl_categories WHERE 1=1 ".$strwhere;
+$sql_count = "SELECT COUNT(*) AS count FROM tbl_seo WHERE 1=1 ".$strwhere;
 $objmysql->Query($sql_count);
 $row_count = $objmysql->Fetch_Assoc();
 $total_rows = $row_count['count'];
@@ -48,7 +48,7 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
 <div id="path">
     <ol class="breadcrumb">
         <li><a href="<?php echo ROOTHOST_ADMIN;?>">Admin</a></li>
-        <li class="active">Danh sách danh mục đất đai</li>
+        <li class="active">Danh sách Meta SEO</li>
     </ol>
 </div>
 
@@ -91,22 +91,55 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
         <thead>
             <th width="30" align="center">#</th>
             <th width="30" align="center"><input type="checkbox" name="chkall" id="chkall" value="" onclick="docheckall('chk',this.checked);" /></th>
-            <th width="50" align="center">Xóa</th>
-            <th align="center">Tên nhóm 
+            <th>Tiêu đề 
                 <div class="sort" sort-name="name">
                     <i class="fa fa-sort-up" title="Giảm" sort="desc"></i>
                     <i class="fa fa-sort-down" title="Tăng" sort="asc"></i>
                 </div>
             </th>
+            <th>Link</th>
             <th width="70" align="center" style="text-align: center;">Sắp xếp
                 <a href="javascript:saveOrder()"><i class="fa fa-floppy-o" aria-hidden="true"></i></a>
             </th>
             <th width="50" align="center">Hiển thị</th>
             <th width="50" align="center">Sửa</th>
+            <th width="50" align="center">Xóa</th>
         </thead>
         <tbody>
             <?php
-            $obj->listTable($strwhere,0,0,0);
+            $star = ($cur_page - 1) * MAX_ROWS_ADMIN;
+            $sql = "SELECT * FROM tbl_seo WHERE 1=1 $strwhere ORDER BY `title` asc LIMIT $star,".MAX_ROWS_ADMIN;
+            $objmysql->Query($sql);
+            $i = 0;
+            while($rows = $objmysql->Fetch_Assoc()){
+                $i++;
+                $ids        = $rows['id'];
+                $title      = Substring(stripslashes($rows['title']),0,10);
+                $link       = stripslashes($rows['link']);
+                $order      = number_format($rows['order']);
+
+                if($rows['isactive'] == 1) 
+                    $icon_active    = "<i class='fa fa-check cgreen' aria-hidden='true'></i>";
+                else $icon_active   = '<i class="fa fa-times-circle-o cred" aria-hidden="true"></i>';
+
+                echo "<tr name='trow'>";
+                echo "<td width='30' align='center'>$i</td>";
+                echo "<td width='30' align='center'><label>";
+                echo "<input type='checkbox' name='chk' id='chk' onclick=\"docheckonce('chk');\" value='$ids'/>";
+                echo "</label></td>";
+                echo "<td>$title</td>";
+                echo "<td>$link</td>";
+
+                echo "<td width='50' align='center'><input type='text' name='txt_order' id='txt_order' value='$order' size='4' class='order'></td>";
+
+                echo "<td align='center' width='10'><a href='".ROOTHOST_ADMIN.COMS."/active/$ids'>".$icon_active."</a></td>";
+
+                echo "<td align='center' width='10'><a href='".ROOTHOST_ADMIN.COMS."/edit/$ids'><i class='fa fa-edit' aria-hidden='true'></i></a></td>";
+
+                echo "<td align='center' width='10'><a href='".ROOTHOST_ADMIN.COMS."/delete/$ids' onclick=\" return confirm('Bạn có chắc muốn xóa ?')\"><i class='fa fa-times-circle cred' aria-hidden='true'></i></a></td>";
+
+                echo "</tr>";
+            }
             ?>
         </tbody>
     </table>

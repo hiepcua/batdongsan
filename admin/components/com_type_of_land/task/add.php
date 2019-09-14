@@ -51,8 +51,8 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
 
             <div class="form-group">
                 <div class="col-xs-12">
-                    <label>Mô tả</label>
-                    <textarea class="form-control" name="txt_comment" placeholder="Nội dung ..."></textarea>
+                    <label>Sapo</label>
+                    <textarea class="form-control" name="txt_comment" rows="5" placeholder="Nội dung ..."></textarea>
                 </div>
             </div>
         </div>

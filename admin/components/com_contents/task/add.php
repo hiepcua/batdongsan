@@ -1,17 +1,10 @@
 <?php
 defined("ISHOME") or die("Can't acess this page, please come back!");
-$cat_id=0;
-if(isset($_SESSION['CONTENT_ID_SELECTED']))
-	$cat_id=(int)$_SESSION['CONTENT_ID_SELECTED'];
 ?>
-<style type="text/css">
-    .form-horizontal .control-label{text-align: left;}
-</style>
-
 <script language="javascript">
     function checkinput(){
         if($("#txt_name").val()==""){
-            $("#txt_name_err").fadeTo(200,0.1,function(){
+            $("#err_name").fadeTo(200,0.1,function(){
                 $(this).html('Vui lòng nhập tên bài viết').fadeTo(900,1);
             });
             $("#txt_name").focus();
@@ -20,14 +13,32 @@ if(isset($_SESSION['CONTENT_ID_SELECTED']))
         return true;
     }
 </script>
-<div class='row'>
-    <div class="com_header color">
-        <i class="fa fa-plus-circle" aria-hidden="true"></i> Thêm mới bài tin
-        <div class="pull-right">
-            <?php require_once("../global/libs/toolbar.php"); ?>
-        </div>
+
+<div id="path">
+    <ol class="breadcrumb">
+        <li><a href="<?php echo ROOTHOST_ADMIN;?>">Admin</a></li>
+        <li><a href="<?php echo ROOTHOST_ADMIN.COMS;?>">Danh sách tin đất đai</a></li>
+        <li class="active">Thêm mới tin đất đai</li>
+    </ol>
+</div>
+
+<div class="com_header color">
+    <h1>Thêm mới tin đất đai</h1>
+    <div class="pull-right">
+        <form id="frm_menu" name="frm_menu" method="post" action="">
+            <input type="hidden" name="txtorders" id="txtorders" />
+            <input type="hidden" name="txtids" id="txtids" />
+            <input type="hidden" name="txtaction" id="txtaction" />
+
+            <ul class="list-inline">
+                <li><a class="save btn btn-success" href="#" onclick="dosubmitAction('frm_action','save');" title="Lưu"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</a></li>
+                <li><a class="btn btn-default"  href="<?php echo ROOTHOST_ADMIN.COMS;?>" title="Đóng"><i class="fa fa-sign-out" aria-hidden="true"></i> Đóng</a></li>
+            </ul>
+        </form>
     </div>
-</div><br>
+</div>
+<div class="clearfix"></div>
+
 <div class="box-tabs">
     <ul class="nav nav-tabs" role="tablist">
         <li class="active">
@@ -45,99 +56,141 @@ if(isset($_SESSION['CONTENT_ID_SELECTED']))
         <div class="tab-content">
             <div class="tab-pane fade active in" id="info">
                 <div class="form-group">
-                    <label class="col-sm-3 col-md-2 control-label">Danh mục tin <span class="cred">*</span></label>
-                    <div class="col-sm-9 col-md-10">
+                    <div class="col-sm-6 col-md-6">
+                        <label>Danh mục đất đai<small class="cred"> (*)</small><span id="err_cate" class="mes-error"></span></label>
                         <select class="form-control" id="cbo_cata" name="cbo_cata" style="width: 100%" required>
                             <option value="">Root</option>
                             <?php $obj_cate->getListCate(0,0); ?>
-                        </select><script>cbo_Selected('cbo_cata',<?php echo $cat_id;?>);</script>
-                        <div id="txt_cata_err" class="mes-error"></div>
+                        </select>
                     </div>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-3 col-md-2 control-label">Tiêu đề <span class="cred">*</span></label>
-                    <div class="col-sm-9 col-md-10">
+
+                    <div class="col-sm-6 col-md-6">
+                        <label>Tiêu đề<small class="cred"> (*)</small><span id="err_name" class="mes-error"></span></label>
                         <input type="text" name="txt_name" class="form-control" id="txt_name" placeholder="" required>
-                        <div id="txt_name_err" class="mes-error"></div>
                     </div>
                     <div class="clearfix"></div>
                 </div>
+                <div class="clearfix"></div>
+
                 <div class='form-group'>
-                    <label class="col-sm-3 col-md-2 control-label">Ảnh đại diện</label>
-                    <div class="col-sm-9 col-md-10">
+                    <div class="col-sm-6 col-md-6">
+                        <label>Loại hình đất đai<small class="cred"> (*)</small><span id="err_type_of_land" class="mes-error"></span></label>
+                        <select class="form-control" id="cbo_type_of_land" name="cbo_type_of_land" style="width: 100%" required>
+                            <option value="">Root</option>
+                            <?php
+                            $sql_tol = "SELECT * FROM tbl_type_of_land WHERE isactive = 1";
+                            $objmysql->Query($sql_tol);
+
+                            while ($r_tol = $objmysql->Fetch_Assoc()) {
+                                echo '<option value="'.$r_tol['id'].'">'.$r_tol['title'].'</option>';
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+                    <div class="col-sm-6 col-md-6">
+                        <label>Ảnh đại diện</label>
                         <div class="row">
-                            <div class="col-sm-9">
-                                <input name="txtthumb" type="text" id="file-thumb" size="45" class='form-control' value="" placeholder='' />
+                            <div class="col-sm-9 col-md-10">
+                                <input name="txtthumb" type="text" id="file-thumb" size="45" class='form-control' value="" placeholder='Tiêu đề bài viết' />
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-sm-3 col-md-2">
                                 <a class="btn btn-primary" href="#" onclick="OpenPopup('<?php echo ROOTHOST_ADMIN;?>extensions/upload_image.php');"><b style="margin-top: 15px">Chọn</b></a>
                             </div>
                             <div id="txt_thumb_err" class="mes-error"></div>
                         </div>
                     </div>
-                    <div class="clearfix"></div>
                 </div>
+                <div class="clearfix"></div>
+
                 <div class="form-group">
-                    <label class="col-sm-3 col-md-2 control-label">Tác giả <span class="cred">*</span></label>
-                    <div class="col-sm-4">
+                    <div class="col-sm-6 col-md-6">
+                        <label>Diện tích<small class="cred"> (*)</small><span id="err_area" class="mes-error"></span></label>
+                        <input type="number" name="txt_area" value="" class="form-control" id="txt_area" placeholder="Diện tích đất">
+                    </div>
+
+                    <div class="col-sm-6 col-md-6">
+                        <label>Giá<small class="cred"> (*)</small><span id="err_price" class="mes-error"></span></label>
+                        <input type="number" name="txt_price" value="" class="form-control" id="txt_price" placeholder="Giá">
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+
+                <div class='form-group'>
+                    <div class="col-sm-6 col-md-6">
+                        <label>Tác giả <span class="cred">*</span></label>
                         <input type="text" name="txt_author" value="<?php echo $_SESSION[MD5($_SERVER['HTTP_HOST']).'_USERLOGIN']['username']; ?>" class="form-control" id="txt_author" readonly placeholder="">
                     </div>
-
-                    <label class="col-sm-2 control-label">Hiển thị <span class="cred">*</span></label>
-                    <div class="col-sm-4">
-                        <label class="radio-inline"><input type="radio" value="1" name="opt_isactive" checked>Có</label>
-                        <label class="radio-inline"><input type="radio" value="0" name="opt_isactive">Không</label>
-                    </div>
-                    <div class="clearfix"></div>
                 </div>
 
-                <div class="clearfix"></div>
                 <div class="form-group">
-                    <label class="control-label col-md-12"> Tóm tắt</label>
+                    <div class="col-sm-6 col-md-6">
+                        <label>Hiển thị</label>
+                        <div>
+                            <label class="radio-inline"><input type="radio" value="1" name="opt_isactive" checked>Có</label>
+                            <label class="radio-inline"><input type="radio" value="0" name="opt_isactive">Không</label>
+                        </div>
+                    </div>
+                    
+                    <div class="col-sm-6 col-md-6">
+                        <label>Nổi bật</label>
+                        <div>
+                            <label class="radio-inline"><input type="radio" value="1" name="opt_ishot">Có</label>
+                            <label class="radio-inline"><input type="radio" value="0" name="opt_ishot" checked>Không</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-12"> Sapo</label>
                     <div class="text_inner">
                         <textarea name="txt_intro" id="txt_intro" class="form-control" rows="5"></textarea>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label class="control-label col-md-12"> Nội dung</label>
                     <div class="text_inner">
                         <textarea name="txt_fulltext" id="txt_fulltext" class="form-control"></textarea>
-                        <script language="javascript">
-							var oEdit2=new InnovaEditor("oEdit2");
-							oEdit2.width="100%";
-							oEdit2.height="200";
-							oEdit2.cmdAssetManager ="modalDialogShow('<?php echo ROOTHOST_ADMIN;?>extensions/editor/innovar/assetmanager/assetmanager.php',640,465)";
-							oEdit2.REPLACE("txt_fulltext");
-							document.getElementById("idContentoEdit2").style.height="200px";
-						</script>
                     </div>
                 </div>
             </div>
+
             <div class="tab-pane fade" id="seo">
-                <div class='form-group'>
-                    <label class="col-sm-3 col-md-2 control-label"><strong>Meta Title</strong></label>
-                    <div class="col-sm-9">
-                        <input name="txt_metatitle" type="text" id="txt_metatitle" class='form-control' value="" placeholder='' />
+                <div class="tab-pane fade" id="seo">
+                    <div class="col-xs-12">
+                        <div class='form-group'>
+                            <label><strong>Meta Title</strong></label>
+                            <input name="txt_metatitle" type="text" id="txt_metatitle" class='form-control' value="" placeholder='' />
+                        </div>
+
+                        <div class='form-group'>
+                            <label><strong>Meta Keyword</strong></label>
+                            <textarea class="form-control" name="txt_metakey" id="txt_metakey" rows="3"></textarea>
+                        </div>
+
+                        <div class='form-group'>
+                            <label><strong>Meta Description</strong></label>
+                            <textarea class="form-control" name="txt_metadesc" id="txt_metadesc" rows="5"></textarea>
+                        </div>
                     </div>
-                    <div class="clearfix"></div>
-                </div>
-                <div class='form-group'>
-                    <label class="col-sm-3 col-md-2 control-label"><strong>Meta Keyword</strong></label>
-                    <div class="col-sm-9">
-                        <textarea class="form-control" name="txt_metakey" id="txt_metakey" rows="3"></textarea>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <div class='form-group'>
-                    <label class="col-sm-3 col-md-2 control-label"><strong>Meta Description</strong></label>
-                    <div class="col-sm-9">
-                        <textarea class="form-control" name="txt_metadesc" id="txt_metadesc" rows="5"></textarea>
-                    </div>
-                    <div class="clearfix"></div>
                 </div>
             </div>
             <input type="submit" name="cmdsave" id="cmdsave" value="Submit" style="display:none;" />
+            <div class="text-center toolbar">
+                <div style="height: 20px;"></div>
+                <a class="save btn btn-success" href="#" onclick="dosubmitAction('frm_action','save');" title="Lưu thông tin"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu thông tin</a>
+            </div>
         </div>
     </form>
 </div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        tinymce.init({selector:'#txt_intro'});
+        tinymce.init({selector:'#txt_fulltext'});
+
+        $("#cbo_cata").select2();
+        $("#cbo_type_of_land").select2();
+    });
+</script>

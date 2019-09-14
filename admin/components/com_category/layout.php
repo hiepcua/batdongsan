@@ -4,21 +4,27 @@ define('COMS','category');
 define('THIS_COM_PATH',COM_PATH.'com_'.COMS.'/');
 
 require_once('libs/cls.category.php');
-$objmysql = new CLS_MYSQL();
-$obj = new CLS_CATEGORY();
+$objmysql 	= new CLS_MYSQL();
+$obj 		= new CLS_CATEGORY();
 
 if(isset($_POST['cmdsave'])){
-	$Par_Id=addslashes($_POST['cbo_cate']);
-	$Name=addslashes($_POST['txt_name']);
-	$Code=un_unicode(addslashes($_POST['txt_name']));
-	$Intro=addslashes($_POST['txtintro']);
-	if(isset($_POST["txtthumb"]))
-		$Thumb=addslashes($_POST["txtthumb"]);
-	$isActive=1;
-	$Type=1;
-	if(isset($_POST['txtid'])){
-		$ID=(int)$_POST['txtid'];
+	$Par_Id 		= isset($_POST['cbo_cate']) ? (int)$_POST['cbo_cate'] : 0;
+	$Intro 			= isset($_POST['txtintro']) ? addslashes($_POST['txtintro']) : '';
+	$Name 			= isset($_POST['txt_name']) ? addslashes($_POST['txt_name']) : '';
+	$Code 			= un_unicode(addslashes($_POST['txt_name']));
+	$Thumb 			= isset($_POST['txtthumb']) ? addslashes($_POST['txtthumb']) : '';
+	$isActive 		= 1;
 
+	$Meta_title 	= isset($_POST['txt_metatitle']) ? addslashes(htmlentities($_POST['txt_metatitle'])) : '';
+	$Meta_key 		= isset($_POST['txt_metakey']) ? addslashes(htmlentities($_POST['txt_metakey'])) : '';
+	$Meta_desc 		= isset($_POST['txt_metadesc']) ? addslashes(htmlentities($_POST['txt_metadesc'])) : '';
+	$seo_link 		= isset($_POST['txt_seo_link']) ? $_POST['txt_seo_link'] : '';
+	$Link 			= ROOTHOST.$Code;
+
+	if(isset($_POST['txtid'])){
+		$ID = (int)$_POST['txtid'];
+
+		$objmysql->Query("BEGIN");
 		$sql = "UPDATE tbl_categories SET 
         `par_id`='".$Par_Id."',
         `name`='".$Name."',
@@ -26,10 +32,36 @@ if(isset($_POST['cmdsave'])){
         `thumb`='".$Thumb."',
         `intro`='".$Intro."'
         WHERE id='".$ID."'";
-        $objmysql->Exec($sql);
+        $result = $objmysql->Exec($sql);
+
+        $sql2 = "UPDATE tbl_seo SET 
+		`title` = '".$Name."', 
+		`link` = '".$Link."',
+		`image` = '".$Thumb."',
+		`meta_title` = '".$Meta_title."',
+		`meta_key` = '".$Meta_key."',
+		`meta_desc` = '".$Meta_desc."'
+		WHERE `link` = '".$seo_link."'";
+		$result2 = $objmysql->Exec($sql2);
+
+		if($result && $result2){
+			$objmysql->Exec('COMMIT');
+		}
+		else
+			$objmysql->Exec('ROLLBACK');
 	}else{
+		$objmysql->Exec("BEGIN");
 		$sql="INSERT INTO `tbl_categories`(`par_id`,`name`,`code`,`thumb`,`intro`,`isactive`) VALUES ('".$Par_Id."','".$Name."','".$Code."','".$Thumb."','".$Intro."','".$isActive."')";
-		$objmysql->Exec($sql);
+		$result = $objmysql->Exec($sql);
+
+		$sql2 = "INSERT INTO tbl_seo (`title`,`link`,`image`,`meta_title`,`meta_key`,`meta_desc`) VALUES ('".$Name."','".$Link."','".$Thumb."','".$Meta_title."','".$Meta_key."','".$Meta_desc."')";
+		$result2 = $objmysql->Exec($sql2);
+
+		if($result && $result2){
+			$objmysql->Exec('COMMIT');
+		}else{
+			$objmysql->Exec('ROLLBACK');
+		}
 	}
 	echo "<script language=\"javascript\">window.location.href='".ROOTHOST_ADMIN.COMS."'</script>";
 }

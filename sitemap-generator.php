@@ -1,10 +1,11 @@
 <?php
 ini_set('display_errors',1);
-include_once('../global/libs/gfinit.php');
-require_once('../global/libs/gfconfig.php');
+include_once('global/libs/gfinit.php');
+require_once('global/libs/gfconfig.php');
 include_once('libs/cls.mysql.php');
-include_once('libs/cls.category.php');
-include_once('libs/cls.contents.php');
+$objmysql = new CLS_MYSQL();
+$objdata  = new CLS_MYSQL();
+
 $count=1;
 $data='<?xml version="1.0" encoding="UTF-8"?>';
 $data.='<urlset
@@ -18,41 +19,34 @@ $data.='<loc>'.ROOTHOST.'</loc>';
 $data.='<changefreq>daily</changefreq>';
 $data.="</url>\n";
 //----------CREAT SITE MAP FOR CATEGORY---------------/
-$objcat=new CLS_CATEGORY;
-$objcat->getList();
-while($r=$objcat->Fetch_Assoc()){
+$sql_cate = "SELECT * FROM tbl_categories WHERE isactive = 1";
+$objmysql->Query($sql_cate);
+while($r = $objmysql->Fetch_Assoc()){
 	$count++;
-	$link=ROOTHOST.$r['code'].'/';
+	$link = ROOTHOST.$r['code'].'/';
 	$data.='<url>';
 	$data.='<loc>'.$link.'</loc>';
 	$data.='<changefreq>daily</changefreq>';
 	$data.="</url>\n";
 }
 //----------CREAT SITE MAP FOR CONTENT---------------/
-$objcon=new CLS_CONTENTS;
-$objcon->getList(' ', 'ORDER BY `id` ASC');
-while($r=$objcon->Fetch_Assoc()){
+$sql_con = "SELECT * FROM tbl_contents WHERE isactive = 1 ORDER BY title ASC";
+$objmysql->Query($sql_con);
+
+while($r = $objmysql->Fetch_Assoc()){
+	$sql_cate = "SELECT * FROM tbl_categories WHERE isactive = 1 AND id = ".$r['category_id'];
+	$objdata->Query($sql_cate);
+	$r_cate = $objdata->Fetch_Assoc();
+
 	$count++;
-	$link=ROOTHOST.$r['code'].'.html';
-	$name=$r['meta_desc']!=''?$r['meta_desc']:$r['title'];
+	$link = ROOTHOST.$r_cate['code'].'/'.$r['code'].'.html';
 	$data.='<url>';
-	$data.='<loc>'.$link;
-	/*$data.='<news:news>
-			  <news:publication>
-				<news:name>'.$name.'</news:name>
-				<news:language>vi</news:language>
-			  </news:publication>
-			  <news:genres>Press release, blog</news:genres>
-			  <news:publication_date>'.date("Y-m-d",strtotime($r['cdate'])).'</news:publication_date>
-			  <news:title>'.$r['title'].'</news:title>
-			  <news:keywords>'.$r['meta_key'].'</news:keywords>
-			</news:news>';*/
-	$data.='</loc>';
+	$data.='<loc>'.$link.'</loc>';
 	$data.='<changefreq>never</changefreq>';
 	$data.="</url>\n";
 }
 
 $data.='</urlset>';
 echo "<p align='center'><h3>Create sitemap.xml success! </h3><h4>Update: $count links</h4></p>";
-file_put_contents("../sitemap.xml",$data);
+file_put_contents("sitemap.xml", $data);
 ?>

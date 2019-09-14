@@ -14,18 +14,18 @@ $objmysql = new CLS_MYSQL();
 		</li>
 
 		<li>
-			<div class="title"><i class="fa fa-list" aria-hidden="true"></i> <span>Bài viết</span></div>
+			<div class="title"><i class="fa fa-list" aria-hidden="true"></i> <span>Tin đất đai</span></div>
 			<ul class="sub">
-				<li><a href="<?php echo ROOTHOST_ADMIN;?>contents/add" title="Thêm bài viết"><i class="fa fa-plus" aria-hidden="true"></i> <span>Thêm bài viết</span></a></li>
-				<li><a href="<?php echo ROOTHOST_ADMIN;?>contents" title="Ds bài viết"><i class="fa fa-bars" aria-hidden="true"></i> <span>Danh sách bài viết</span></a></li>
+				<li><a href="<?php echo ROOTHOST_ADMIN;?>contents/add" title="Thêm bài viết"><i class="fa fa-plus" aria-hidden="true"></i> <span>Thêm tin đất đai</span></a></li>
+				<li><a href="<?php echo ROOTHOST_ADMIN;?>contents" title="Ds bài viết"><i class="fa fa-bars" aria-hidden="true"></i> <span>Ds tin đất đai</span></a></li>
 			</ul>
 		</li>
 
 		<li>
-			<div class="title"><i class="fa fa-list" aria-hidden="true"></i> <span>Nhóm tin</span></div>
+			<div class="title"><i class="fa fa-list" aria-hidden="true"></i> <span>Danh mục đất đai</span></div>
 			<ul class="sub">
-				<li><a href="<?php echo ROOTHOST_ADMIN;?>category/add" title="Thêm nhóm tin"><i class="fa fa-plus" aria-hidden="true"></i> <span>Thêm nhóm tin</span></a></li>
-				<li><a href="<?php echo ROOTHOST_ADMIN;?>category" title="Ds nhóm tin"><i class="fa fa-bars" aria-hidden="true"></i> <span>Danh sách nhóm tin</span></a></li>
+				<li><a href="<?php echo ROOTHOST_ADMIN;?>category/add" title="Thêm nhóm tin"><i class="fa fa-plus" aria-hidden="true"></i> <span>Thêm danh mục đất đai</span></a></li>
+				<li><a href="<?php echo ROOTHOST_ADMIN;?>category" title="Ds nhóm tin"><i class="fa fa-bars" aria-hidden="true"></i> <span>Ds danh mục đất đai</span></a></li>
 			</ul>
 		</li>
 
@@ -34,6 +34,14 @@ $objmysql = new CLS_MYSQL();
 			<ul class="sub">
 				<li><a href="<?php echo ROOTHOST_ADMIN;?>type_of_land/add" title="Thêm loại hình đất"><i class="fa fa-plus" aria-hidden="true"></i> <span>Thêm mới</span></a></li>
 				<li><a href="<?php echo ROOTHOST_ADMIN;?>type_of_land" title="Ds loại hình đất"><i class="fa fa-bars" aria-hidden="true"></i> <span>Ds loại hình đất</span></a></li>
+			</ul>
+		</li>
+
+		<li>
+			<div class="title"><i class="fa fa-list" aria-hidden="true"></i> <span>Meta SEO</span></div>
+			<ul class="sub">
+				<li><a href="<?php echo ROOTHOST_ADMIN;?>seo/add" title="Thêm meta SEO"><i class="fa fa-plus" aria-hidden="true"></i> <span>Thêm Meta SEO</span></a></li>
+				<li><a href="<?php echo ROOTHOST_ADMIN;?>seo" title="Ds meta SEO"><i class="fa fa-bars" aria-hidden="true"></i> <span>Danh sách Meta SEO</span></a></li>
 			</ul>
 		</li>
 
@@ -51,7 +59,7 @@ $objmysql = new CLS_MYSQL();
 			</ul>
 		</li>
 
-		<li>
+		<!-- <li>
 			<div class="title"><i class="fa fa-list" aria-hidden="true"></i> <span>Đối tác</span></div>
 			<ul class="sub">
 				<li><a href="<?php echo ROOTHOST_ADMIN;?>partner/add" title="Thêm đối tác"><i class="fa fa-plus" aria-hidden="true"></i> <span>Thêm đối tác</span></a></li>
@@ -73,7 +81,7 @@ $objmysql = new CLS_MYSQL();
 				<li><a href="<?php echo ROOTHOST_ADMIN;?>video/add" title="Thêm mới"><i class="fa fa-plus" aria-hidden="true"></i> <span>Thêm mới</span></a></li>
 				<li><a href="<?php echo ROOTHOST_ADMIN;?>video" title="Ds video"><i class="fa fa-bars" aria-hidden="true"></i> <span>Ds video</span></a></li>
 			</ul>
-		</li>
+		</li> -->
 
 		<li>
 			<div class="title"><i class="fa fa-list" aria-hidden="true"></i> <span>Banner</span></div>
@@ -83,13 +91,13 @@ $objmysql = new CLS_MYSQL();
 			</ul>
 		</li>
 
-		<li>
+		<!-- <li>
 			<div class="title"><i class="fa fa-list" aria-hidden="true"></i> <span>Cảm nhận khách hàng</span></div>
 			<ul class="sub">
 				<li><a href="<?php echo ROOTHOST_ADMIN;?>feedback/add" title="Thêm cảm nhận"><i class="fa fa-plus" aria-hidden="true"></i> <span>Thêm cảm nhận</span></a></li>
 				<li><a href="<?php echo ROOTHOST_ADMIN;?>feedback" title="Cảm nhận khách hàng"><i class="fa fa-bars" aria-hidden="true"></i> <span>Cảm nhận khách hàng</span></a></li>
 			</ul>
-		</li>
+		</li> -->
 
 		<li>
 			<div class="title"><i class="fa fa-users" aria-hidden="true"></i> <span>Qlý người dùng</span></div>
@@ -121,10 +129,25 @@ $objmysql = new CLS_MYSQL();
 				<li><a href="<?php echo ROOTHOST_ADMIN;?>config/" title="Cấu hình website"><i class="fa fa-bars" aria-hidden="true"></i> <span>Cấu hình website</span></a></li>
 			</ul>
 		</li>
+
+		<li>
+			<a href="javascript:void(0)" onclick="generator_sitemap();" title="Xuất sitemap"><i class="fa fa-cogs" aria-hidden="true"></i><b>Generator sitemap</b></a>
+		</li>
 	</ul>
 </div>
 <script>
 	$(document).ready(function(){
 		$('[data-toggle="tooltip"]').tooltip(); 
 	})
+
+	function generator_sitemap(){
+		$.ajax({
+			type: "GET",
+			url: "<?php echo ROOTHOST.'sitemap-generator.php';?>" ,
+			data: {},
+			success : function(res) { 
+				showMess('Xuất sitemap thành công!');
+			}
+		});
+	}
 </script>

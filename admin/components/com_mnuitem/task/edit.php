@@ -218,7 +218,7 @@ if(isset($_POST["txt_viewtype"])){
 
 		<div class="form-group">
 			<div class="col-xs-12">
-				<label>Mô tả:</label>
+				<label>Sapo:</label>
 				<textarea name="txtdesc" id="txtdesc" cols="45" rows="5"><?php echo $row['intro'];?></textarea>
 			</div>
 		</div>
@@ -229,3 +229,8 @@ if(isset($_POST["txt_viewtype"])){
 		<a class="save btn btn-success" href="#" onclick="dosubmitAction('frm_action','save');" title="Lưu thông tin"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu thông tin</a>
 	</div>
 </form>
+<script type="text/javascript">
+    $(document).ready(function(){
+        tinymce.init({selector:'#txtdesc'});
+    });
+</script>

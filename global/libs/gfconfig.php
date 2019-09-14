@@ -9,7 +9,7 @@ elseif (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED
 $REQUEST_PROTOCOL = $isSecure ? 'https://' : 'http://';
 
 // define('ROOTHOST',$REQUEST_PROTOCOL.$_SERVER['HTTP_HOST'].'/mydinhTHC/');
-define('ROOTHOST','http://localhost:8000/batdongsan/');
+define('ROOTHOST','http://localhost/batdongsan/');
 define('ROOTHOST_ADMIN',ROOTHOST.'admin/');
 define('WEBSITE',$REQUEST_PROTOCOL.$_SERVER['HTTP_HOST'].'/batdongsan/');
 define('BASEVIRTUAL0',ROOTHOST.'images/');
@@ -38,7 +38,7 @@ define('LIB_PATH',ROOT_PATH.'libs/');
 define('JSC_PATH',ROOT_PATH.'js/');
 define('LOG_PATH',ROOT_PATH.'logs/');
 
-define('MAX_ROWS','10');
+define('MAX_ROWS','20');
 define('MAX_ROWS_ADMIN','10');
 define('TIMEOUT_LOGIN','60');
 define('URL_REWRITE','1');

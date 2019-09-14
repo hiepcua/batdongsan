@@ -28,17 +28,7 @@ class CLS_CATEGORY{
         }
         return $this->pro[$proname];
     }
-    public function getList($where='',$limit=''){
-        $sql="SELECT * FROM `tbl_categories` ".$where.' ORDER BY `name` '.$limit;
-        return $this->objmysql->Query($sql);
-    }
-    public function getInfo($where='',$limit=''){
-        $sql="SELECT * FROM `tbl_categories` WHERE 1=1 ".$where.' ORDER BY `name` '.$limit;
-        $objdata=new CLS_MYSQL();
-        $objdata->Query($sql);
-        $row = $objdata->Fetch_Assoc();
-        return $row;
-    }
+
     public function Num_rows(){
         return $this->objmysql->Num_rows();
     }
@@ -46,7 +36,7 @@ class CLS_CATEGORY{
         return $this->objmysql->Fetch_Assoc();
     }
 
-    function getListCate($parid=0,$level=0){
+    public function getListCate($parid=0, $level=0){
         $sql="SELECT * FROM tbl_categories WHERE `par_id`='$parid' AND `isactive`='1' ";
         $objdata=new CLS_MYSQL();
         $objdata->Query($sql);
@@ -66,6 +56,7 @@ class CLS_CATEGORY{
             $this->getListCate($id,$nextlevel);
         }
     }
+
     public function listTable($strwhere="",$parid=0,$level=0,$rowcount){
         $sql="SELECT * FROM tbl_categories WHERE 1=1 $strwhere AND par_id=$parid ORDER BY `order` ASC";
         $objdata=new CLS_MYSQL();
@@ -106,73 +97,5 @@ class CLS_CATEGORY{
             $this->listTable($strwhere,$ids,$nextlevel,$rowcount);
         }
     }
-    public function getNameById($id){
-        $objdata=new CLS_MYSQL;
-        $sql="SELECT `name` FROM `tbl_categories`  WHERE isactive=1 AND `id` = '$id'";
-        $objdata->Query($sql);
-        $row=$objdata->Fetch_Assoc();
-        return $row['name'];
-    }
-    /* combo box*/
-    public function getListCbItem($getId='', $swhere=''){
-        $sql="SELECT id, name, code FROM tbl_categories ".$swhere." ORDER BY `name` ASC";
-        $objdata=new CLS_MYSQL();
-        $objdata->Query($sql);
-        if($objdata->Num_rows()<=0) return;
-        while($rows=$objdata->Fetch_Assoc()){
-            $id=$rows['id'];
-            $name=$rows['name'];
-            ?>
-            <option value='<?php echo $id;?>' <?php if(isset($getId) && $getId==$id) echo "selected";?>><?php echo $name;?></option>
-        <?php
-        }
-    }
-    public function getListCategory($parid=0,$level=0,$cls='menu'){
-        $sql="SELECT * FROM `tbl_categories` WHERE `par_id`='$parid' AND `isactive`=1 ORDER BY `order` ASC";
-        $objdata=new CLS_MYSQL();
-        $objdata->Query($sql);
-        $char="";
-        if($level!=0){
-            $char.="|";
-			for($i=0;$i<$level;$i++)
-                $char.="--- "; 
-        }
-        if($objdata->Num_rows()>0){
-            echo "<ul class='".$cls."'>";
-            while($r=$objdata->Fetch_Assoc()){
-                $id=$r["id"];
-                $name=$r["name"];
-                echo"<li data-id='$id'><a href='".ROOTHOST_ADMIN."contents/category/$id'>$char $name</a></li>";
-                $nextlevel=$level+1;
-                $this->getListCategory($id,$nextlevel);
-            }
-            echo "</ul>";
-        }
-    }
-	public function getMenuCategory($parid=0,$cls='menu'){
-        $sql="SELECT * FROM `tbl_categories` WHERE `par_id`='$parid' AND `isactive`=1 ORDER BY `order` ASC,id ASC";
-        $objdata=new CLS_MYSQL();
-        $objdata->Query($sql);
-        if($objdata->Num_rows()>0){
-            echo "<ul class='".$cls."'>";
-            while($r=$objdata->Fetch_Assoc()){
-                $id=$r["id"];
-                $name=$r["name"];
-				$icon = '';
-				if($this->getchildCategory($id)>0) $icon ="<i class='fa fa-angle-right pull-right'></i>";
-                echo "<li data-id='$id'><a href='".ROOTHOST_ADMIN."contents/category/$id'>$name $icon</a>";
-                $this->getMenuCategory($id);
-				echo "</li>";
-            }
-            echo "</ul>";
-        }
-    }
-	public function getchildCategory($parid=0){
-		$sql = "SELECT count(id) AS total FROM tbl_categories WHERE `par_id`='$parid' AND `isactive`=1";
-		$objdata=new CLS_MYSQL();
-        $objdata->Query($sql);
-		$r=$objdata->Fetch_Assoc();
-		return $r['total']+0;
-	}
 }
 ?>

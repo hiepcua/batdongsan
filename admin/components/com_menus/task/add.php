@@ -71,3 +71,8 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
 		</div>
 	</div>
 </form>
+<script type="text/javascript">
+    $(document).ready(function(){
+        tinymce.init({selector:'#txtdesc'});
+    });
+</script>
