@@ -1,6 +1,12 @@
 <?php
 defined("ISHOME") or die("Can't acess this page, please come back!");
 ?>
+<style type="text/css">
+    .form-horizontal .form-group{
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+</style>
 <script language="javascript">
     function checkinput(){
         if($("#txt_name").val()==""){
@@ -55,25 +61,61 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
     <form id="frm_action" class="form-horizontal" name="frm_action" method="post" enctype="multipart/form-data">
         <div class="tab-content">
             <div class="tab-pane fade active in" id="info">
-                <div class="form-group">
-                    <div class="col-sm-6 col-md-6">
+                <div class="col-md-9 col-sm-8">
+                    <div class="form-group">
+                        <label>Tiêu đề<small class="cred"> (*)</small><span id="err_name" class="mes-error"></span></label>
+                        <input type="text" name="txt_name" class="form-control" id="txt_name" placeholder="" required>
+                        <div class="clearfix"></div>
+                    </div>
+                    
+                    <div class='form-group'>
+                        <label>Ảnh đại diện</label>
+                        <div class="row">
+                            <div class="col-sm-9 col-md-10">
+                                <input name="txtthumb" type="text" id="file-thumb" size="45" class='form-control' value="" placeholder='Tiêu đề bài viết' />
+                            </div>
+                            <div class="col-sm-3 col-md-2">
+                                <a class="btn btn-primary" href="#" onclick="OpenPopup('<?php echo ROOTHOST_ADMIN;?>extensions/upload_image.php');"><b style="margin-top: 15px">Chọn</b></a>
+                            </div>
+                            <div id="txt_thumb_err" class="mes-error"></div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class='form-group'>
+                        <input type="hidden" name="txt_images[]">
+                        <div id="response_img">
+                            <div class="info-item default">
+                                <img src="<?php echo ROOTHOST_ADMIN;?>images/images.png" class="thumb-default" onclick="add_new_images()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Sapo</label>
+                        <textarea name="txt_sapo" class="form-control" rows="5"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Mô tả</label>
+                        <textarea name="txt_intro" id="txt_intro" class="form-control" rows="5"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Nội dung</label>
+                        <textarea name="txt_fulltext" id="txt_fulltext" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-4">
+                    <div class="form-group">
                         <label>Danh mục đất đai<small class="cred"> (*)</small><span id="err_cate" class="mes-error"></span></label>
                         <select class="form-control" id="cbo_cata" name="cbo_cata" style="width: 100%" required>
                             <option value="">Root</option>
                             <?php $obj_cate->getListCate(0,0); ?>
                         </select>
+                        <div class="clearfix"></div>
                     </div>
-
-                    <div class="col-sm-6 col-md-6">
-                        <label>Tiêu đề<small class="cred"> (*)</small><span id="err_name" class="mes-error"></span></label>
-                        <input type="text" name="txt_name" class="form-control" id="txt_name" placeholder="" required>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="clearfix"></div>
-
-                <div class='form-group'>
-                    <div class="col-sm-6 col-md-6">
+                    <div class='form-group'>
                         <label>Loại hình đất đai<small class="cred"> (*)</small><span id="err_type_of_land" class="mes-error"></span></label>
                         <select class="form-control" id="cbo_type_of_land" name="cbo_type_of_land" style="width: 100%" required>
                             <option value="">Root</option>
@@ -86,53 +128,32 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
                             }
                             ?>
                         </select>
+                        <div class="clearfix"></div>
                     </div>
-
-                    <div class="col-sm-6 col-md-6">
-                        <label>Ảnh đại diện</label>
-                        <div class="row">
-                            <div class="col-sm-9 col-md-10">
-                                <input name="txtthumb" type="text" id="file-thumb" size="45" class='form-control' value="" placeholder='Tiêu đề bài viết' />
-                            </div>
-                            <div class="col-sm-3 col-md-2">
-                                <a class="btn btn-primary" href="#" onclick="OpenPopup('<?php echo ROOTHOST_ADMIN;?>extensions/upload_image.php');"><b style="margin-top: 15px">Chọn</b></a>
-                            </div>
-                            <div id="txt_thumb_err" class="mes-error"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-
-                <div class="form-group">
-                    <div class="col-sm-6 col-md-6">
+                    <div class="form-group">
                         <label>Diện tích<small class="cred"> (*)</small><span id="err_area" class="mes-error"></span></label>
                         <input type="number" name="txt_area" value="" class="form-control" id="txt_area" placeholder="Diện tích đất">
                     </div>
 
-                    <div class="col-sm-6 col-md-6">
+                    <div class="form-group">
                         <label>Giá<small class="cred"> (*)</small><span id="err_price" class="mes-error"></span></label>
                         <input type="number" name="txt_price" value="" class="form-control" id="txt_price" placeholder="Giá">
                     </div>
-                </div>
-                <div class="clearfix"></div>
 
-                <div class='form-group'>
-                    <div class="col-sm-6 col-md-6">
+                    <div class="form-group">
                         <label>Tác giả <span class="cred">*</span></label>
                         <input type="text" name="txt_author" value="<?php echo $_SESSION[MD5($_SERVER['HTTP_HOST']).'_USERLOGIN']['username']; ?>" class="form-control" id="txt_author" readonly placeholder="">
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <div class="col-sm-6 col-md-6">
+                    <div class="form-group">
                         <label>Hiển thị</label>
                         <div>
                             <label class="radio-inline"><input type="radio" value="1" name="opt_isactive" checked>Có</label>
                             <label class="radio-inline"><input type="radio" value="0" name="opt_isactive">Không</label>
                         </div>
                     </div>
-                    
-                    <div class="col-sm-6 col-md-6">
+
+                    <div class="form-group">
                         <label>Nổi bật</label>
                         <div>
                             <label class="radio-inline"><input type="radio" value="1" name="opt_ishot">Có</label>
@@ -140,44 +161,28 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
                         </div>
                     </div>
                 </div>
-                <div class="clearfix"></div>
-
-                <div class="form-group">
-                    <label class="control-label col-md-12"> Sapo</label>
-                    <div class="text_inner">
-                        <textarea name="txt_intro" id="txt_intro" class="form-control" rows="5"></textarea>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label col-md-12"> Nội dung</label>
-                    <div class="text_inner">
-                        <textarea name="txt_fulltext" id="txt_fulltext" class="form-control"></textarea>
-                    </div>
-                </div>
             </div>
 
             <div class="tab-pane fade" id="seo">
-                <div class="tab-pane fade" id="seo">
-                    <div class="col-xs-12">
-                        <div class='form-group'>
-                            <label><strong>Meta Title</strong></label>
-                            <input name="txt_metatitle" type="text" id="txt_metatitle" class='form-control' value="" placeholder='' />
-                        </div>
+                <div class="col-xs-12">
+                    <div class='form-group'>
+                        <label><strong>Meta Title</strong></label>
+                        <input name="txt_metatitle" type="text" id="txt_metatitle" class='form-control' value="" placeholder='' />
+                    </div>
 
-                        <div class='form-group'>
-                            <label><strong>Meta Keyword</strong></label>
-                            <textarea class="form-control" name="txt_metakey" id="txt_metakey" rows="3"></textarea>
-                        </div>
+                    <div class='form-group'>
+                        <label><strong>Meta Keyword</strong></label>
+                        <textarea class="form-control" name="txt_metakey" id="txt_metakey" rows="3"></textarea>
+                    </div>
 
-                        <div class='form-group'>
-                            <label><strong>Meta Description</strong></label>
-                            <textarea class="form-control" name="txt_metadesc" id="txt_metadesc" rows="5"></textarea>
-                        </div>
+                    <div class='form-group'>
+                        <label><strong>Meta Description</strong></label>
+                        <textarea class="form-control" name="txt_metadesc" id="txt_metadesc" rows="5"></textarea>
                     </div>
                 </div>
             </div>
             <input type="submit" name="cmdsave" id="cmdsave" value="Submit" style="display:none;" />
+            <div class="clearfix"></div>
             <div class="text-center toolbar">
                 <div style="height: 20px;"></div>
                 <a class="save btn btn-success" href="#" onclick="dosubmitAction('frm_action','save');" title="Lưu thông tin"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu thông tin</a>
@@ -187,10 +192,26 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
 </div>
 <script type="text/javascript">
     $(document).ready(function(){
-        tinymce.init({selector:'#txt_intro'});
-        tinymce.init({selector:'#txt_fulltext'});
+        tinymce.init({
+            selector:'#txt_intro',
+            height : 300
+        });
+
+        tinymce.init({
+            selector:'#txt_fulltext',
+            height : 500
+        });
 
         $("#cbo_cata").select2();
         $("#cbo_type_of_land").select2();
     });
+
+    function add_new_images(){
+        var html = '';
+        html+='<div class="info-item">';
+        html+='<img src="<?php echo ROOTHOST_ADMIN;?>images/Button-512.png" class="thumb-default">';
+        html+='</div>';
+        console.log('111');
+        $('#response_img').append(html);
+    }
 </script>

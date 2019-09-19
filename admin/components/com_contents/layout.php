@@ -18,10 +18,11 @@ if(isset($_POST["cmdsave"])){
 	$Title 			= isset($_POST['txt_name']) ? addslashes($_POST['txt_name']) : '';
 	$Code 			= un_unicode($_POST['txt_name']);
 	$Author 		= $_SESSION[MD5($_SERVER['HTTP_HOST']).'_USERLOGIN']['username'];
+	$Sapo 			= isset($_POST['txt_sapo']) ? addslashes(htmlentities($_POST['txt_sapo'])) : '';
 	$Intro 			= isset($_POST['txt_intro']) ? addslashes($_POST['txt_intro']) : '';
 	$Fulltext 		= isset($_POST['txt_fulltext']) ? addslashes($_POST['txt_fulltext']) : '';
 	$Thumb 			= isset($_POST['txtthumb']) ? addslashes($_POST['txtthumb']) : '';
-	$date 			= date('Y-m-d H:i:s');
+	$date 			= time();
 
 	$Meta_title 	= isset($_POST['txt_metatitle']) ? addslashes(htmlentities($_POST['txt_metatitle'])) : '';
 	$Meta_key 		= isset($_POST['txt_metakey']) ? addslashes(htmlentities($_POST['txt_metakey'])) : '';
@@ -48,6 +49,7 @@ if(isset($_POST["cmdsave"])){
 		`isactive` 	= '".$isActive."',
 		`title` 	= '".$Title."',
 		`intro` 	= '".$Intro."',
+		`sapo` 		= '".$Sapo."',
 		`fulltext` 	= '".$Fulltext."',
 		`type_of_land_id` = '".$Type_of_land."',
 		`area` 		= '".$Area."',
@@ -74,7 +76,7 @@ if(isset($_POST["cmdsave"])){
 		$Cdate = $date;
 
 		$objmysql->Exec("BEGIN");
-		$sql = "INSERT INTO tbl_contents (`category_id`,`code`,`thumb`,`cdate`,`author`,`ishot`,`isactive`,`title`,`intro`,`fulltext`,`type_of_land_id`,`area`,`price`) VALUES ('".$CategoryID."','".$Code."','".$Thumb."','".$Cdate."','".$Author."','".$isHot."','".$isActive."','".$Title."','".$Intro."', '".$Fulltext."','".$Type_of_land."','".$Area."', '".$Price."')";
+		$sql = "INSERT INTO tbl_contents (`category_id`,`code`,`thumb`,`cdate`,`author`,`ishot`,`isactive`,`title`,`sapo`,`intro`,`fulltext`,`type_of_land_id`,`area`,`price`) VALUES ('".$CategoryID."','".$Code."','".$Thumb."','".$Cdate."','".$Author."','".$isHot."','".$isActive."','".$Title."','".$Sapo."', '".$Intro."', '".$Fulltext."','".$Type_of_land."','".$Area."', '".$Price."')";
 		$result = $objmysql->Exec($sql);
 
 		$sql2 = "INSERT INTO tbl_seo (`title`,`link`,`image`,`meta_title`,`meta_key`,`meta_desc`) VALUES ('".$Title."','".$Link."','".$Thumb."','".$Meta_title."','".$Meta_key."','".$Meta_desc."')";

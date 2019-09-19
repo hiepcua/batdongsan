@@ -907,3 +907,9 @@ td.tbl_actions {
 #txtkeyword{
 	font-weight: 400;
 }
+img.thumb-default {
+    background-color: #eee;
+    width: 100px;
+    height: 100px;
+    padding: 15px;
+}

@@ -40,7 +40,25 @@ if($_SESSION['CUR_PAGE_'.OBJ_PAGE] > ceil($total_rows/MAX_ROWS_ADMIN)){
 $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAGE] : 1;
 // End pagging
 ?>
-
+<style type="text/css">
+    .table-bordered td .title{
+        margin-bottom: 8px;
+    }
+    .table-bordered td .info {
+        font-size: 12px;
+        color: #6b6b6b;
+    }
+    .table-bordered td .info span{
+        border: 1px solid #66666621;
+        border-radius: 10px;
+        padding: 0 6px;
+        background-color: #cccccc38;
+    }
+    .ispay.green {
+        background-color: #5cb85c;
+        color: #FFF;
+    }
+</style>
 <script language="javascript">
     function checkinput(){
         var strids=document.getElementById("txtids");
@@ -99,8 +117,9 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
         <thead>
             <th width="30" align="center">STT</th>
             <th width="30" align="center"><input type="checkbox" name="chkall" id="chkall" value="" onclick="docheckall('chk',this.checked);" /></th>
-            <th>Nhóm tin</th>
             <th>Bài tin</th>
+            <th>Giá</th>
+            <th align="center" width="100">Tình trạng</th>
             <th align="center" width="100">Ngày đăng</th>
             <th align="center" width="70">Lượt xem</th>
             <th width="70" align="center" style="text-align: center;">Sắp xếp
@@ -122,6 +141,8 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
                 $cdate      = date('d-m-Y H:i:sa',strtotime($rows['cdate']));
                 $visited    = number_format($rows['visited']);
                 $order      = number_format($rows['order']);
+                $price      = number_format($rows['price']);
+                $ispay      = (int)$rows['ispay'];
                 if($rows['thumb'] == '')
                     $thumb  = '<img src="'.IMG_DEFAULT.'" alt="'.$title.'" width="60px">';
                 else $thumb = '<img src="'.$rows["thumb"].'" alt="'.$title.'" width="60px">';
@@ -129,6 +150,10 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
                 if($rows['isactive'] == 1) 
                     $icon_active    = "<i class='fa fa-check cgreen' aria-hidden='true'></i>";
                 else $icon_active   = '<i class="fa fa-times-circle-o cred" aria-hidden="true"></i>';
+
+                if($ispay == 1) 
+                    $html_ispay    = "<span class='btn ispay green'>Chưa bán</span>";
+                else $html_ispay   = "<span class='btn ispay'>Đã bán</span>";
 
                 // Get category name
                 $sql_cate = "SELECT name FROM tbl_categories WHERE id = ".$cat_id;
@@ -143,8 +168,14 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
                 echo "<td width='30' align='center'><label>";
                 echo "<input type='checkbox' name='chk' id='chk' onclick=\"docheckonce('chk');\" value='$ids'/>";
                 echo "</label></td>";
-                echo "<td>$category</td>";
-                echo "<td>$title</td>";
+                echo "<td>
+                <div class='title'>$title</div>
+                <div class='info'>
+                <span>".$category."</span>
+                </div>
+                </td>";
+                echo "<td><input class='ajax-price' data-id='".$ids."' onchange=\"ajax_update_price(this)\" type='text' name='txt_price[]' value='".$price."'></td>";
+                echo "<td>$html_ispay</td>";
                 echo "<td>$cdate</td>";
                 echo "<td align='center'>$visited</td>";
 
@@ -171,5 +202,22 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
         </tr>
     </table>
 </div>
-
+<script type="text/javascript">
+    function ajax_update_price(attr){
+        var id = parseInt(attr.getAttribute('data-id'));
+        var price = attr.value;
+        var _price = parseInt(price.replace(/,/g, ''));
+        $.ajax({
+            url : '<?php echo ROOTHOST_ADMIN.'ajaxs/contents/update_price.php' ?>',
+            type : 'POST',
+            data : {
+                'id' : id,
+                'price' : _price,
+            },
+            cache: false,
+            success: function (res) {
+            }
+        })
+    }
+</script>
 <?php //----------------------------------------------?>
