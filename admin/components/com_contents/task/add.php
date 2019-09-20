@@ -9,6 +9,7 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
 </style>
 <script language="javascript">
     function checkinput(){
+        return true;
         if($("#txt_name").val()==""){
             $("#err_name").fadeTo(200,0.1,function(){
                 $(this).html('Vui lòng nhập tên bài viết').fadeTo(900,1);
@@ -83,12 +84,10 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
                     </div>
 
                     <div class='form-group'>
-                        <input type="hidden" name="txt_images">
                         <label>Chọn thêm ảnh<span id="err_images" class="mes-error"></span></label>
                         <div id="response_img">
                             <div class="default">
                                 <img src="<?php echo ROOTHOST_ADMIN;?>images/images.png" class="thumb-default" onclick="OpenPopup('<?php echo ROOTHOST_ADMIN;?>extensions/upload_images.php');">
-                                <!-- <img src="<?php echo ROOTHOST_ADMIN;?>images/images.png" class="thumb-default" onclick="add_new_images()"> -->
                             </div>
                         </div>
                     </div>
@@ -108,6 +107,7 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
                         <textarea name="txt_fulltext" id="txt_fulltext" class="form-control"></textarea>
                     </div>
                 </div>
+
                 <div class="col-md-3 col-sm-4">
                     <div class="form-group">
                         <label>Danh mục đất đai<small class="cred"> (*)</small><span id="err_cate" class="mes-error"></span></label>
@@ -208,13 +208,8 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
         $("#cbo_type_of_land").select2();
     });
 
-    function add_new_images(){
-        alert('111');
-        // var html = '';
-        // html+='<div class="info-item">';
-        // html+='<img src="<?php echo ROOTHOST_ADMIN;?>images/Button-512.png" class="thumb-default">';
-        // html+='</div>';
-        // console.log('111');
-        // $('#response_img').append(html);
+    function images_delete_item(attr){
+        var parent = attr.parentElement.parentElement;
+        parent.remove();
     }
 </script>

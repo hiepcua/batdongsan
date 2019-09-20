@@ -97,6 +97,33 @@ $row_seo    = $objmysql->Fetch_Assoc();
                         </div>
                     </div>
 
+                    <div class='form-group'>
+                        <label>Chọn thêm ảnh<span id="err_images" class="mes-error"></span></label>
+                        <div id="response_img">
+                            <?php
+                            $images = $row['images'];
+                            if($images !== '[]'){
+                                $images = json_decode($images);
+                                foreach ($images as $k => $val) {
+                                    echo '<div class="info-item">
+                                    <input type="hidden" name="txt_images[]" value="'.$val->url.'"/>
+                                    <input type="hidden" name="txt_alt[]" value="'.$val->alt.'"/>
+                                    <img src="'.$val->url.'" width="150px">
+                                    <div class="name">'.$val->alt.'</div>
+                                    <div class="wrap-item-info">
+                                    <div class="del-item" onclick="images_delete_item(this);" title="Xóa"></div>
+                                    <div class="edit-item" data-url="'.$val->url.'" data-alt="'.$val->alt.'" onclick="images_edit_item(this);" title="Đổi tên"></div>
+                                    </div>
+                                    </div>';
+                                }
+                            }
+                            ?>
+                            <div class="default">
+                                <img src="<?php echo ROOTHOST_ADMIN;?>images/images.png" class="thumb-default" onclick="OpenPopup('<?php echo ROOTHOST_ADMIN;?>extensions/upload_images.php');">
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <label>Sapo</label>
                         <textarea name="txt_sapo" class="form-control" rows="5"><?php echo $row['sapo'];?></textarea>
@@ -208,17 +235,53 @@ $row_seo    = $objmysql->Fetch_Assoc();
 </div>
 <script type="text/javascript">
     $(document).ready(function(){
-        tinymce.init({
-            selector:'#txt_intro',
-            height : 300
-        });
+        // tinymce.init({
+        //     selector:'#txt_intro',
+        //     height : 300
+        // });
 
-        tinymce.init({
-            selector:'#txt_fulltext',
-            height : 500
-        });
+        // tinymce.init({
+        //     selector:'#txt_fulltext',
+        //     height : 500
+        // });
         
-        $("#cbo_cata").select2();
-        $("#cbo_type_of_land").select2();
+        // $("#cbo_cata").select2();
+        // $("#cbo_type_of_land").select2();
     });
+
+    function images_delete_item(attr){
+        var parent = attr.parentElement.parentElement;
+        parent.remove();
+    }
+
+    function images_edit_item(attr){
+        var url = attr.getAttribute('data-url')
+        var alt = attr.getAttribute('data-alt')
+        $('#myModalPopup').modal('show');
+        $('#myModalLabel').html('Rename');
+
+        var html = '<div class="form-group">';
+
+        html+= '<div class="form-group">';
+        html+= '<input type="text" id="txt_image_alt" name="txt_image_alt" value="'+ alt +'" class="form-control" placeholder="Nhập tên ảnh"/>';
+        html+= '</div>';
+
+        html+= '<div class="form-group">';
+        html+= '<input type="text" id="txt_image_url" name="txt_image_url" value="'+ url +'" class="form-control" placeholder="Nhập đường dẫn ảnh"/>';
+        html+= '</div>';
+
+        html+= '<div class="text-center">';
+        html+= '<input onclick="save_info_images_item()" type="button" class="btn btn-success" value="Lưu lại"/>';
+        html+= '</div>';
+
+        html+= '<div class="clearfix"></div>';
+        html+= '</div>';
+        $('#data-frm').html(html);
+    }
+
+    function save_info_images_item(){
+        var url = $('#txt_image_url').val();
+        var alt = $('#txt_image_alt').val();
+        alert(alt);
+    }
 </script>

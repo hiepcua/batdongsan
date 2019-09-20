@@ -109,33 +109,25 @@ if(isset($_POST["ok"]))
 		}
 		function insetvideo(){
 			var url = document.getElementById('txturl');
-			window.opener.document.frm_action.txt_images.value = url.value;
+			var alt = document.getElementById('txt_alt');
 
-			var input = document.createElement('input');
-			input.value = url.value;
-			input.type = 'hidden';
-			input.name = 'txt_images';
+			var html = '';
+			html+='<div class="info-item">';
+			html+='<input type="hidden" name="txt_images[]" value="'+ url.value +'"/>';
+			html+='<input type="hidden" name="txt_alt[]" value="'+ alt.value +'"/>';
+			html+='<img src="'+ url.value +'" width="150px">';
+			html+='<div class="name">'+ alt.value +'</div>';
+			html+='<div class="wrap-item-info">';
+			html+='<div class="del-item" onclick="images_delete_item(this);" title="Xóa"></div>';
+			html+='</div>';
+			html+='</div>';
 
-			window.opener.document.getElementById("response_img").appendChild(input);
+			window.opener.document.getElementById("response_img").insertAdjacentHTML('afterbegin', html);
 			window.opener.focus();
 			window.close();
 		}
 
-		function print_images(url){
-			var html = '';
-			html+='<div class="info-item">';
-			html+='<img src="'+ url +'" width="150px">';
-			html+='<div class="name">ảnh đẹp</div>';
-			html+='<div class="wrap-item-info">';
-			html+='<div class="del-item" value="" title="Xóa"></div>';
-			html+='<div class="edit-item" value="" title="Đổi tên"></div>';
-			html+='</div>';
-			html+='</div>';
-			window.opener.document.frm_action.getElementsByClassName('response_img');
-		}
-
-		function selectFile(url)
-		{
+		function selectFile(url){
 			var arrTmp = url.split(".");
 			var sFile_Extension = arrTmp[arrTmp.length-1];
 			var sHTML="";
@@ -202,53 +194,59 @@ if(isset($_POST["ok"]))
 							</td>
 						</tr>
 						<tr>
-							<td align="center"><label><input type="text" name="txturl" id="txturl" style="width:95%;" /></label></td>
+							<td align="center"><label><input type="text" name="txt_alt" id="txt_alt" style="width:95%; margin-bottom: 10px;" placeholder="Tên ảnh"/></label></td>
 						</tr>
-					</table>
-				</form></td>
-				<td style="height:30px;"><form id="frm_filter" name="frm_filter" method="post" action="" style="margin:0px; padding:0px;">
-					<strong>List in</strong>
-					<select name="cbo_dir" id="cbo_dir" onchange="document.frm_filter.submit();">
-						<option value="<?php echo BASE_PATH;?>">images</option>
-						<?php listDir(BASE_PATH,2);?>
-						<script language="javascript">
-							var cbo_dir=document.getElementById("cbo_dir")
-							for(i=0;i<cbo_dir.length;i++)
-								if(cbo_dir[i].value=='<?php echo $cur_dir; ?>')
-							cbo_dir.selectedIndex=i;
-						</script>
-					</select>
-					<label>
-						<input name="txtnewdir" type="text" id="txtnewdir" size="15" />
-					</label>
-					<label>
-						<input type="submit" name="ok" id="button3" value="Create" />
-					</label>
-				</form></td>
-			</tr>
-			<tr>
-				<td valign="top" class="list_file">
-					<div id="dsfile"><table width="100%" border="0" cellspacing="0" cellpadding="3" class="list">
 						<tr>
-							<td width="30" align="center"><strong>STT</strong></td>
-							<td align="center"><strong>Name</strong></td>
-							<td width="50" align="center"><strong>Delete</strong></td>
+							<td align="center"><label><input type="text" name="txturl" id="txturl" style="width:95%;" placeholder="Liên kết ảnh"/></label></td>
 						</tr>
-						<?php listFile($cur_dir);?>
 					</table>
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<form action="" method="post" enctype="multipart/form-data" name="frm_media" id="frm_media">
-					<input type="file" name="txt_video" id="txt_video" />
-					<input type="submit" name="button" id="button" value="Upload" />
-					<input type="button" name="button2" id="button2" value="Insert" onclick="insetvideo();" />
 				</form>
 			</td>
-		</tr>
-	</table>
+			<td style="height:30px;"><form id="frm_filter" name="frm_filter" method="post" action="" style="margin:0px; padding:0px;">
+				<strong>List in</strong>
+				<select name="cbo_dir" id="cbo_dir" onchange="document.frm_filter.submit();">
+					<option value="<?php echo BASE_PATH;?>">images</option>
+					<?php listDir(BASE_PATH,2);?>
+					<script language="javascript">
+						var cbo_dir=document.getElementById("cbo_dir")
+						for(i=0;i<cbo_dir.length;i++)
+							if(cbo_dir[i].value=='<?php echo $cur_dir; ?>')
+						cbo_dir.selectedIndex=i;
+					</script>
+				</select>
+				<label>
+					<input name="txtnewdir" type="text" id="txtnewdir" size="15" />
+				</label>
+				<label>
+					<input type="submit" name="ok" id="button3" value="Create" />
+				</label>
+			</form>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" class="list_file">
+			<div id="dsfile">
+				<table width="100%" border="0" cellspacing="0" cellpadding="3" class="list">
+					<tr>
+						<td width="30" align="center"><strong>STT</strong></td>
+						<td align="center"><strong>Name</strong></td>
+						<td width="50" align="center"><strong>Delete</strong></td>
+					</tr>
+					<?php listFile($cur_dir);?>
+				</table>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<form action="" method="post" enctype="multipart/form-data" name="frm_media" id="frm_media">
+				<input type="file" name="txt_video" id="txt_video" />
+				<input type="submit" name="button" id="button" value="Upload" />
+				<input type="button" name="button2" id="button2" value="Insert" onclick="insetvideo();" />
+			</form>
+		</td>
+	</tr>
+</table>
 
 </body>
 </html>
