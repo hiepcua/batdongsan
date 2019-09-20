@@ -83,10 +83,12 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
                     </div>
 
                     <div class='form-group'>
-                        <input type="hidden" name="txt_images[]">
+                        <input type="hidden" name="txt_images">
+                        <label>Chọn thêm ảnh<span id="err_images" class="mes-error"></span></label>
                         <div id="response_img">
-                            <div class="info-item default">
-                                <img src="<?php echo ROOTHOST_ADMIN;?>images/images.png" class="thumb-default" onclick="add_new_images()">
+                            <div class="default">
+                                <img src="<?php echo ROOTHOST_ADMIN;?>images/images.png" class="thumb-default" onclick="OpenPopup('<?php echo ROOTHOST_ADMIN;?>extensions/upload_images.php');">
+                                <!-- <img src="<?php echo ROOTHOST_ADMIN;?>images/images.png" class="thumb-default" onclick="add_new_images()"> -->
                             </div>
                         </div>
                     </div>
@@ -207,11 +209,12 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
     });
 
     function add_new_images(){
-        var html = '';
-        html+='<div class="info-item">';
-        html+='<img src="<?php echo ROOTHOST_ADMIN;?>images/Button-512.png" class="thumb-default">';
-        html+='</div>';
-        console.log('111');
-        $('#response_img').append(html);
+        alert('111');
+        // var html = '';
+        // html+='<div class="info-item">';
+        // html+='<img src="<?php echo ROOTHOST_ADMIN;?>images/Button-512.png" class="thumb-default">';
+        // html+='</div>';
+        // console.log('111');
+        // $('#response_img').append(html);
     }
 </script>

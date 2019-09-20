@@ -108,8 +108,15 @@ if(isset($_POST["ok"]))
 			document.getElementById("VIDEO").value=url;
 		}
 		function insetvideo(){
-			var url=document.getElementById('txturl');
-			window.opener.document.frm_action.txtthumb.value = url.value;
+			var url = document.getElementById('txturl');
+			window.opener.document.frm_action.txt_images.value = url.value;
+
+			var input = document.createElement('input');
+			input.value = url.value;
+			input.type = 'hidden';
+			input.name = 'txt_images';
+
+			window.opener.document.getElementById("response_img").appendChild(input);
 			window.opener.focus();
 			window.close();
 		}

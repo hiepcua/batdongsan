@@ -912,4 +912,5 @@ img.thumb-default {
     width: 100px;
     height: 100px;
     padding: 15px;
+    cursor: pointer;
 }
