@@ -10,14 +10,12 @@ $objmysql 	= new CLS_MYSQL();
 if(isset($_POST["cmdsave"])){
 	$obj_images = array();
 	foreach ($_POST['txt_images'] as $k => $val) {
-		$tmp = [];
-		$tmp['url'] = $val;
-		$tmp['alt'] = $_POST['txt_alt'][$k];
+		$tmp = (object)array();
+		$tmp->url = $val;
+		$tmp->alt = $_POST['txt_alt'][$k];
 		array_push($obj_images, $tmp);
 	}
 
-	// var_dump(json_encode($obj_images));
-	// exit();
 	$CategoryID 	= isset($_POST['cbo_cata']) ? (int)$_POST['cbo_cata'] : 0;
 	$Type_of_land 	= isset($_POST['cbo_type_of_land']) ? (int)$_POST['cbo_type_of_land'] : 0;
 	$isActive 		= isset($_POST['opt_isactive']) ? (int)$_POST['opt_isactive'] : 0;
@@ -33,6 +31,7 @@ if(isset($_POST["cmdsave"])){
 	$Fulltext 		= isset($_POST['txt_fulltext']) ? addslashes($_POST['txt_fulltext']) : '';
 	$Thumb 			= isset($_POST['txtthumb']) ? addslashes($_POST['txtthumb']) : '';
 	$Images 		= json_encode($obj_images);
+	$Images = mysql_real_escape_string($Images );
 	$date 			= time();
 
 	$Meta_title 	= isset($_POST['txt_metatitle']) ? addslashes(htmlentities($_POST['txt_metatitle'])) : '';
@@ -54,6 +53,7 @@ if(isset($_POST["cmdsave"])){
 		`category_id` = '".$CategoryID."', 
 		`code` 		= '".$Code."',
 		`thumb` 	= '".$Thumb."',
+		`images` 	= '".$Images."',
 		`mdate` 	= '".$Mdate."',
 		`author` 	= '".$Author."',
 		`ishot` 	= '".$isHot."',
@@ -87,7 +87,7 @@ if(isset($_POST["cmdsave"])){
 		$Cdate = $date;
 
 		$objmysql->Exec("BEGIN");
-		$sql = "INSERT INTO tbl_contents (`category_id`,`code`,`thumb`,`images`,`cdate`,`author`,`ishot`,`isactive`,`title`,`sapo`,`intro`,`fulltext`,`type_of_land_id`,`area`,`price`) VALUES ('".$CategoryID."','".$Code."','".$Thumb."','".$Images."','".$Cdate."','".$Author."','".$isHot."','".$isActive."','".$Title."','".$Sapo."', '".$Intro."', '".$Fulltext."','".$Type_of_land."','".$Area."', '".$Price."')";
+		$sql = "INSERT INTO tbl_contents (`category_id`,`code`,`thumb`,`images`,`cdate`,`author`,`ishot`,`isactive`,`title`,`sapo`,`intro`,`fulltext`,`type_of_land_id`,`area`,`price`) VALUES ('".$CategoryID."','".$Code."','".$Thumb."','$Images','".$Cdate."','".$Author."','".$isHot."','".$isActive."','".$Title."','".$Sapo."', '".$Intro."', '".$Fulltext."','".$Type_of_land."','".$Area."', '".$Price."')";
 		$result = $objmysql->Exec($sql);
 
 		$sql2 = "INSERT INTO tbl_seo (`title`,`link`,`image`,`meta_title`,`meta_key`,`meta_desc`) VALUES ('".$Title."','".$Link."','".$Thumb."','".$Meta_title."','".$Meta_key."','".$Meta_desc."')";
@@ -99,7 +99,7 @@ if(isset($_POST["cmdsave"])){
 			$objmysql->Exec('ROLLBACK');
 		}
 	}
-	// echo "<script language=\"javascript\">window.location='".ROOTHOST_ADMIN.COMS."'</script>";
+	echo "<script language=\"javascript\">window.location='".ROOTHOST_ADMIN.COMS."'</script>";
 }
 
 if(isset($_POST["txtaction"]) && $_POST["txtaction"]!=""){

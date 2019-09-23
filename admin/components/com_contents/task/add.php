@@ -9,7 +9,6 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
 </style>
 <script language="javascript">
     function checkinput(){
-        return true;
         if($("#txt_name").val()==""){
             $("#err_name").fadeTo(200,0.1,function(){
                 $(this).html('Vui lòng nhập tên bài viết').fadeTo(900,1);
@@ -209,7 +208,10 @@ defined("ISHOME") or die("Can't acess this page, please come back!");
     });
 
     function images_delete_item(attr){
-        var parent = attr.parentElement.parentElement;
-        parent.remove();
+        var del=confirm("Bạn có chắc muốn xóa ảnh này?");
+        if (del==true){
+            var parent = attr.parentElement.parentElement;
+            parent.remove();
+        }
     }
 </script>

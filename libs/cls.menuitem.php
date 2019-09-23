@@ -17,7 +17,7 @@ class CLS_MENUITEM{
 	}
 	public function getListMenuItem($mnuid,$par_id,$level){
 		$sql="SELECT * FROM `tbl_mnuitems` WHERE `par_id`='$par_id' AND `menu_id`='$mnuid' AND`isactive`='1' ";
-		$objdata=new CLS_MYSQL;
+		$objdata = new CLS_MYSQL();
 		$objdata->Query($sql);
 		if($objdata->Num_rows()<=0)
 			return;
@@ -37,7 +37,7 @@ class CLS_MENUITEM{
 	}
 	public function getLevelChild($parid,$level=1){
 		$sql=" SELECT * FROM tbl_mnuitems WHERE id= $parid AND isactive=1 ";
-		$objdata=new CLS_MYSQL;
+		$objdata = new CLS_MYSQL();
 		$objdata->Query($sql); 
 		if($objdata->Num_rows()>0){
 			$number = $level++;
@@ -60,9 +60,9 @@ class CLS_MENUITEM{
 	}
 	public function ListMenuItem($mnuid=0,$par_id=0,$level=0,$url=''){
 		$sql="SELECT * FROM `tbl_mnuitems` WHERE `par_id`='$par_id' AND `menu_id`='$mnuid' AND`isactive`='1' ORDER BY `order`";
-		$objdata=new CLS_MYSQL(); 
+		$objdata = new CLS_MYSQL();
 		$objdata->Query($sql);
-		if($objdata->Num_rows()<=0)
+		if($objdata->Num_rows() <= 0)
 			return;
 		$style="";$str='';
 		if($level>=1) $str.="<ul class=\"dropdown-menu\">";
@@ -80,29 +80,29 @@ class CLS_MENUITEM{
 					$urllink=$rows['link'];
 				}
 			}
-			else if($rows['viewtype']=='article'){
-				$obj=new CLS_CONTENTS;
-				$obj->getList(" AND id = '".$rows['content_id']."'");
-				$row=$obj->Fetch_Assoc();
+			else if($rows['viewtype'] == 'article'){
+				$sql = "SELECT * FROM tbl_contents WHERE isactive = 1 AND `id`='".$rows['content_id']."'";
+                $this->objmysql->Query($sql);
+                $row = $this->objmysql->Fetch_Assoc();
+
+                $sql = "SELECT * FROM tbl_categories WHERE isactive = 1 AND `id`='".$rows['category_id']."'";
+                $this->objmysql->Query($sql);
+                $row_cate = $this->objmysql->Fetch_Assoc();
 				
-				$obj_cate=new CLS_CATEGORY;
-				$obj_cate->getList("AND id = '".$row['category_id']."' ");
-				$row_cate=$obj_cate->Fetch_Assoc();
-				
-				$url_cat=ROOTHOST.$row_cate['code'].'/';
-				$urllink=$url_cat.$row['code'].'.html';
+				$url_cat = ROOTHOST.$row_cate['code'].'/';
+				$urllink = $url_cat.$row['code'].'.html';
 			}
-			else if($rows['viewtype']=='block'){
-				$obj_cate=new CLS_CATEGORY;
-				$obj_cate->getList("AND id = '".$rows['category_id']."' ");
-				$row_cate=$obj_cate->Fetch_Assoc();
+			else if($rows['viewtype'] == 'block'){
+				$sql = "SELECT * FROM tbl_categories WHERE isactive = 1 AND `id`='".$rows['category_id']."'";
+                $this->objmysql->Query($sql);
+                $row_cate = $this->objmysql->Fetch_Assoc();
 				
-				$urllink=ROOTHOST.$row_cate['code'].'/';
-				if(strpos($url,$urllink)!==false) $cls.=" active";
+				$urllink = ROOTHOST.$row_cate['code'].'/';
+				if(strpos($url, $urllink)!==false) $cls.=" active";
 			}
 
 			$child = $this->ListMenuItem($mnuid,$rows["id"],$level+1,$url);
-			if($url==$urllink) $cls.=" active";
+			if($url == $urllink) $cls.=" active";
 			$cls = $cls!=''?"class='".$cls."'":'';
 
 			$str.="<li $cls>";
@@ -142,32 +142,32 @@ class CLS_MENUITEM{
 					}
 				}
 				else if($rows['viewtype']=='article'){
-					$obj=new CLS_CONTENTS;
-					$obj->getList(" AND id = '".$rows['content_id']."'");
-					$row=$obj->Fetch_Assoc();
-					$urllink=ROOTHOST.LINK_NEWS.'/'.$row['code'].'.html';
+					$sql = "SELECT * FROM tbl_contents WHERE isactive = 1 AND `id`='".$rows['content_id']."'";
+					$this->objmysql->Query($sql);
+					$row = $this->objmysql->Fetch_Assoc();
+					$urllink = ROOTHOST.LINK_NEWS.'/'.$row['code'].'.html';
 				}
 				else if($rows['viewtype']=='block'){
-					$obj=new CLS_CATEGORY;
-					$obj->getList("AND category_id = '".$rows['category_id']."' ");
-					$row_cate=$obj->Fetch_Assoc();
-					$urllink=ROOTHOST.LINK_NEWS.'/'.$row_cate['code'].'/';
+					$sql = "SELECT * FROM tbl_categories WHERE isactive = 1 AND `id`='".$rows['category_id']."'";
+					$this->objmysql->Query($sql);
+					$row_cate = $this->objmysql->Fetch_Assoc();
+					$urllink = ROOTHOST.LINK_NEWS.'/'.$row_cate['code'].'/';
 				}
 
-				$cls='';
-				$cls.=$rows['class'];
+				$cls = '';
+				$cls.= $rows['class'];
 				$child = $this->ListMenuFooter($mnuid,$rows["id"],$level+1);
-				$cls = $cls!=''?"class='".$cls."'":'';
+				$cls = $cls != '' ? "class='".$cls."'" : '';
 
-				$str.="<li $cls>";
+				$str.= "<li $cls>";
 				if(!$child)
-					$str.="<a href='".$urllink."' title='".$rows['name']."'><span>".$rows["name"]."</span></a>";
+					$str.= "<a href='".$urllink."' title='".$rows['name']."'><span>".$rows["name"]."</span></a>";
 				else {
-					$str.="<a class='dropdown-toggle' role='button' aria-haspopup='true'  aria-expanded='false' href='".$urllink."' title='".$rows['name']."'><span>".$rows["name"]."</span><span class='arrow_down'></span></a>";
-					$str.="<span class='bulet-dropdown'></span>";
-					$str.=$child;
+					$str.= "<a class='dropdown-toggle' role='button' aria-haspopup='true'  aria-expanded='false' href='".$urllink."' title='".$rows['name']."'><span>".$rows["name"]."</span><span class='arrow_down'></span></a>";
+					$str.= "<span class='bulet-dropdown'></span>";
+					$str.= $child;
 				}
-				$str.='</li>';
+				$str.= '</li>';
 			}
 			$str.='
 		</ul>';

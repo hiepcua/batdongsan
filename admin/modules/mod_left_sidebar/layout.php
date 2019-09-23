@@ -18,21 +18,7 @@ $objmysql = new CLS_MYSQL();
 			<ul class="sub">
 				<li><a href="<?php echo ROOTHOST_ADMIN;?>contents/add" title="Thêm bài viết"><i class="fa fa-plus" aria-hidden="true"></i> <span>Thêm tin đất đai</span></a></li>
 				<li><a href="<?php echo ROOTHOST_ADMIN;?>contents" title="Ds bài viết"><i class="fa fa-bars" aria-hidden="true"></i> <span>Ds tin đất đai</span></a></li>
-			</ul>
-		</li>
-
-		<li>
-			<div class="title"><i class="fa fa-list" aria-hidden="true"></i> <span>Danh mục đất đai</span></div>
-			<ul class="sub">
-				<li><a href="<?php echo ROOTHOST_ADMIN;?>category/add" title="Thêm nhóm tin"><i class="fa fa-plus" aria-hidden="true"></i> <span>Thêm danh mục đất đai</span></a></li>
 				<li><a href="<?php echo ROOTHOST_ADMIN;?>category" title="Ds nhóm tin"><i class="fa fa-bars" aria-hidden="true"></i> <span>Ds danh mục đất đai</span></a></li>
-			</ul>
-		</li>
-
-		<li>
-			<div class="title"><i class="fa fa-list" aria-hidden="true"></i> <span>Loại hình đất đai</span></div>
-			<ul class="sub">
-				<li><a href="<?php echo ROOTHOST_ADMIN;?>type_of_land/add" title="Thêm loại hình đất"><i class="fa fa-plus" aria-hidden="true"></i> <span>Thêm mới</span></a></li>
 				<li><a href="<?php echo ROOTHOST_ADMIN;?>type_of_land" title="Ds loại hình đất"><i class="fa fa-bars" aria-hidden="true"></i> <span>Ds loại hình đất</span></a></li>
 			</ul>
 		</li>
@@ -45,19 +31,19 @@ $objmysql = new CLS_MYSQL();
 			</ul>
 		</li>
 
-		<li>
+		<!-- <li>
 			<div class="title"><i class="fa fa-list" aria-hidden="true"></i> <span>Menu</span></div>
 			<ul class="sub">
 				<?php 
-				$sql_menu="SELECT * FROM tbl_menus WHERE isactive = 1";
-				$objmysql->Query($sql_menu);
-				while($rows = $objmysql->Fetch_Assoc()){
-					echo "<li><a href=\"".ROOTHOST_ADMIN."mnuitem/".$rows["id"]."\"><i class=\"fa fa-bars\" aria-hidden=\"true\"></i>".$rows["name"]."</a></li>";
-				}
+				// $sql_menu="SELECT * FROM tbl_menus WHERE isactive = 1";
+				// $objmysql->Query($sql_menu);
+				// while($rows = $objmysql->Fetch_Assoc()){
+				// 	echo "<li><a href=\"".ROOTHOST_ADMIN."mnuitem/".$rows["id"]."\"><i class=\"fa fa-bars\" aria-hidden=\"true\"></i>".$rows["name"]."</a></li>";
+				// }
 				?>
 				<li><a href="<?php echo ROOTHOST_ADMIN;?>menus"><i class="fa fa-bars" aria-hidden="true"></i>QL menu</a></li>
 			</ul>
-		</li>
+		</li> -->
 
 		<!-- <li>
 			<div class="title"><i class="fa fa-list" aria-hidden="true"></i> <span>Đối tác</span></div>
@@ -104,24 +90,17 @@ $objmysql = new CLS_MYSQL();
 			<ul class="sub">
 				<li><a href="<?php echo ROOTHOST_ADMIN;?>user/add" title="Thêm mới người dùng"><i class="fa fa-plus" aria-hidden="true"></i> <span>Thêm mới</span></a></li>
 				<li><a href="<?php echo ROOTHOST_ADMIN;?>user" title="Danh sách người dùng"><i class="fa fa-bars" aria-hidden="true"></i> <span>Ds người dùng</span></a></li>
-			</ul>
-		</li>
-
-		<li>
-			<div class="title"><i class="fa fa-users" aria-hidden="true"></i> <span>Qlý nhóm người dùng</span></div>
-			<ul class="sub">
-				<li><a href="<?php echo ROOTHOST_ADMIN;?>user_group/add" title="Thêm mới nhóm người dùng"><i class="fa fa-plus" aria-hidden="true"></i> <span>Thêm mới</span></a></li>
 				<li><a href="<?php echo ROOTHOST_ADMIN;?>user_group" title="Danh sách nhóm người dùng"><i class="fa fa-bars" aria-hidden="true"></i> <span>Ds nhóm người dùng</span></a></li>
 			</ul>
 		</li>
 
-		<li>
+		<!-- <li>
 			<div class="title"><i class="fa fa-users" aria-hidden="true"></i> <span>Qlý module</span></div>
 			<ul class="sub">
 				<li><a href="<?php echo ROOTHOST_ADMIN;?>module/add" title="Thêm mới module"><i class="fa fa-plus" aria-hidden="true"></i> <span>Thêm mới module</span></a></li>
 				<li><a href="<?php echo ROOTHOST_ADMIN;?>module" title="Danh sách module"><i class="fa fa-bars" aria-hidden="true"></i> <span>Ds module</span></a></li>
 			</ul>
-		</li>
+		</li> -->
 
 		<li>
 			<div class="title"><i class="fa fa-cogs" aria-hidden="true"></i> <span>Cấu hình</span></div>

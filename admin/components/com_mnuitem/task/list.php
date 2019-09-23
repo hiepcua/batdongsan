@@ -44,6 +44,17 @@
     // End pagging
 ?>
 
+<script language="javascript">
+    function checkinput(){
+        var strids=document.getElementById("txtids");
+        if(strids.value==""){
+            alert('Bạn chưa lựa chọn đối tượng nào');
+            return false;
+        }
+        return true;
+    }
+</script>
+
 <h1 style="margin: 10px 0;"><?php echo $r_menu['name'];?></h1>
 <div class="com_header color">
     <form id="frm_list" method="get" action="<?php echo ROOTHOST_ADMIN.COMS.'/'.$mnuid;?>">

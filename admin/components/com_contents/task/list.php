@@ -10,15 +10,19 @@ if(isset($_GET['cate'])){
 }
 
 // Khai báo SESSION
-$keyword = isset($_GET['q']) ? addslashes(trim($_GET['q'])) : '';
-$action = isset($_GET['cbo_action']) ? addslashes(trim($_GET['cbo_action'])) : '';
+$keyword    = isset($_GET['q']) ? addslashes(trim($_GET['q'])) : '';
+$cbo_pay    = isset($_GET['cbo_pay']) ? addslashes(trim($_GET['cbo_pay'])) : '';
+$cbo_cate   = isset($_GET['cbo_cate']) ? (int)$_GET['cbo_cate'] : 0;
 
 // Gán strwhere
 if($keyword !== ''){
     $strwhere.=" AND ( `name` like '%$keyword%' )";
 }
-if($action !== '' && $action !== 'all' ){
-    $strwhere.=" AND `isactive` = '$action'";
+if($cbo_pay !== '' && $cbo_pay !== 'all' ){
+    $strwhere.=" AND `ispay` = '$cbo_pay'";
+}
+if($cbo_cate !== 0){
+    $strwhere.=" AND `category_id` = $cbo_cate";
 }
 
 // Begin pagging
@@ -80,17 +84,25 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
 <div class="com_header color">
     <form id="frm_list" method="get" action="<?php echo ROOTHOST_ADMIN.COMS;?>">
         <div class="frm-search-box form-inline pull-left">
-            <label class="mr-sm-2" for="">Từ khóa: </label>
             <input class="form-control" type="text" value="<?php echo $keyword?>" name="q" id="txtkeyword" placeholder="Từ khóa"/>&nbsp;
-            <button type="submit" id="_btnSearch" class="btn btn-success">Tìm kiếm</button>
-            <select name="cbo_action" class="form-control" id="cbo_action">
+
+            <select name="cbo_pay" class="form-control" id="cbo_pay">
                 <option value="all">Tất cả</option>
-                <option value="1">Hiển thị</option>
-                <option value="0">Ẩn</option>
+                <option value="1">Chưa bán</option>
+                <option value="0">Đã bán</option>
                 <script language="javascript">
-                    cbo_Selected('cbo_action','<?php echo $action;?>');
+                    cbo_Selected('cbo_pay','<?php echo $cbo_pay;?>');
                 </script>
             </select>
+
+            <select name="cbo_cate" class="form-control" id="cbo_cate">
+                <option value="0">-- Tất cả --</option>
+                <?php $obj_cate->getListCate(); ?>
+                <script language="javascript">
+                    cbo_Selected('cbo_cate','<?php echo $cbo_cate;?>');
+                </script>
+            </select>
+            <button type="submit" id="_btnSearch" class="btn btn-success">Tìm kiếm</button>
         </div>
     </form>
     <div class="pull-right">

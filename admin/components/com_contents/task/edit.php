@@ -105,14 +105,14 @@ $row_seo    = $objmysql->Fetch_Assoc();
                             if($images !== '[]'){
                                 $images = json_decode($images);
                                 foreach ($images as $k => $val) {
-                                    echo '<div class="info-item">
+                                    echo '<div class="info-item" data-number="'. $k .'">
                                     <input type="hidden" name="txt_images[]" value="'.$val->url.'"/>
                                     <input type="hidden" name="txt_alt[]" value="'.$val->alt.'"/>
-                                    <img src="'.$val->url.'" width="150px">
+                                    <img class="thumb" src="'.$val->url.'" width="150px">
                                     <div class="name">'.$val->alt.'</div>
                                     <div class="wrap-item-info">
                                     <div class="del-item" onclick="images_delete_item(this);" title="Xóa"></div>
-                                    <div class="edit-item" data-url="'.$val->url.'" data-alt="'.$val->alt.'" onclick="images_edit_item(this);" title="Đổi tên"></div>
+                                    <div class="edit-item" data-number="'. $k .'" data-url="'.$val->url.'" data-alt="'.$val->alt.'" onclick="images_edit_item(this);" title="Đổi tên"></div>
                                     </div>
                                     </div>';
                                 }
@@ -139,6 +139,7 @@ $row_seo    = $objmysql->Fetch_Assoc();
                         <textarea name="txt_fulltext" id="txt_fulltext" class="form-control"><?php echo $row['fulltext'];?></textarea>
                     </div>
                 </div>
+
                 <div class="col-md-3 col-sm-4">
                     <div class='form-group'>
                         <label>Danh mục đất đai<small class="cred"> (*)</small><span id="err_cate" class="mes-error"></span></label>
@@ -235,28 +236,33 @@ $row_seo    = $objmysql->Fetch_Assoc();
 </div>
 <script type="text/javascript">
     $(document).ready(function(){
-        // tinymce.init({
-        //     selector:'#txt_intro',
-        //     height : 300
-        // });
+        tinymce.init({
+            selector:'#txt_intro',
+            height : 300
+        });
 
-        // tinymce.init({
-        //     selector:'#txt_fulltext',
-        //     height : 500
-        // });
+        tinymce.init({
+            selector:'#txt_fulltext',
+            height : 500
+        });
         
-        // $("#cbo_cata").select2();
-        // $("#cbo_type_of_land").select2();
+        $("#cbo_cata").select2();
+        $("#cbo_type_of_land").select2();
     });
 
     function images_delete_item(attr){
-        var parent = attr.parentElement.parentElement;
-        parent.remove();
+        var del=confirm("Bạn có chắc muốn xóa ảnh này?");
+        if (del==true){
+            var parent = attr.parentElement.parentElement;
+            parent.remove();
+        }
     }
 
     function images_edit_item(attr){
-        var url = attr.getAttribute('data-url')
-        var alt = attr.getAttribute('data-alt')
+        var url = attr.getAttribute('data-url');
+        var alt = attr.getAttribute('data-alt');
+        var number = attr.getAttribute('data-number');
+
         $('#myModalPopup').modal('show');
         $('#myModalLabel').html('Rename');
 
@@ -271,7 +277,7 @@ $row_seo    = $objmysql->Fetch_Assoc();
         html+= '</div>';
 
         html+= '<div class="text-center">';
-        html+= '<input onclick="save_info_images_item()" type="button" class="btn btn-success" value="Lưu lại"/>';
+        html+= '<input onclick="save_info_images_item('+ number +')" type="button" class="btn btn-success" value="Lưu lại"/>';
         html+= '</div>';
 
         html+= '<div class="clearfix"></div>';
@@ -279,9 +285,22 @@ $row_seo    = $objmysql->Fetch_Assoc();
         $('#data-frm').html(html);
     }
 
-    function save_info_images_item(){
-        var url = $('#txt_image_url').val();
+    function save_info_images_item(number){
         var alt = $('#txt_image_alt').val();
-        alert(alt);
+        var url = $('#txt_image_url').val();
+        var items = $('.info-item');
+        var length = items.length;
+        for(var i = 0; i < length; i++){
+            var num = $('.info-item')[i].getAttribute('data-number');
+            if(num == number){
+                $('.info-item')[i].querySelector('input[name="txt_images[]"]').value = url;
+                $('.info-item')[i].querySelector('input[name="txt_alt[]"]').value = alt;
+                $('.info-item')[i].querySelector('.name').textContent = alt;
+                $('.info-item')[i].querySelector('.thumb').src = url;
+                $('.info-item')[i].querySelector('.edit-item').setAttribute('data-url', url);
+                $('.info-item')[i].querySelector('.edit-item').setAttribute('data-alt', alt);
+            }
+        }
+        $('#myModalPopup').modal('hide');
     }
 </script>

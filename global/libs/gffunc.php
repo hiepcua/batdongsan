@@ -354,4 +354,16 @@ function html2text($Document) {
                 );
   return str_replace($Rules, $Replace, $Document);
 }
+
+function page404(){
+    echo 'trang không tồn tại';
+}
+
+function convert_date($int_date){
+    $str_tmp    = '';
+    $cur_time   = time();
+    $tmp        = $cur_time - $int_date;
+
+    // if()
+}
 ?>
