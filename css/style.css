@@ -259,6 +259,15 @@ a:hover{
 	-o-transform: rotate(-135deg);
 	transform: rotate(-135deg);
 }
+#navbar {
+	position: relative;
+	top: 0; /* Stay on top */
+	width: 100%; /* Full width */
+	transition: top 0.3s; /* Transition effect when sliding down (and up) */
+	overflow: hidden;
+	background-color: #FFFFFF;
+	z-index: 10;
+}
 .wrap-menu {
 	border-bottom: 2px solid #1a3548;
 }
@@ -1155,6 +1164,7 @@ aside.module{
 .sec-category .list-items .item .box-thumb{
 	height: 240px;
 	overflow: hidden;
+	background-color: #eee;
 }
 .sec-category .list-items .item .content {
 	position: relative;
@@ -1367,6 +1377,18 @@ aside.module{
 .page-contents .article .fulltext{}
 .page-contents .article .fulltext img, .page-contents .article .fulltext table{
 	max-width: 100%;
+}
+#big-image{
+	margin-bottom: 15px;
+}
+.list-images{
+	padding: 0;
+	margin: 0;
+}
+.list-images ul li {
+    width: 80px;
+    height: 70px;
+    cursor: pointer;
 }
 /* End Article detail */
 /* Related news */

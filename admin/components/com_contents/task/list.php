@@ -150,7 +150,7 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
                 $ids        = $rows['id'];
                 $cat_id     = $rows['category_id'];
                 $title      = Substring(stripslashes($rows['title']),0,10);
-                $cdate      = date('d-m-Y H:i:sa',strtotime($rows['cdate']));
+                $cdate      = date('d-m-Y H:i:sa', $rows['cdate']);
                 $visited    = number_format($rows['visited']);
                 $order      = number_format($rows['order']);
                 $price      = number_format($rows['price']);
@@ -228,6 +228,7 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
             },
             cache: false,
             success: function (res) {
+                attr.value = res;
             }
         })
     }

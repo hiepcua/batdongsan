@@ -364,6 +364,20 @@ function convert_date($int_date){
     $cur_time   = time();
     $tmp        = $cur_time - $int_date;
 
-    // if()
+    if($tmp >= 604800){
+        $str_tmp = date("d/m/Y", $int_date);
+    }else if( 86400 < $tmp && $tmp < 604800){
+        $tmp = ROUND($tmp / 86400);
+        $str_tmp = $tmp .'<span class="_date"> ngày trước</span>';
+    }else if( 3600 < $tmp && $tmp < 86400){
+        $tmp = round($tmp / 3600);
+        $str_tmp = $tmp .'<span class="_date"> giờ trước</span>';
+    }else if( 60 < $tmp && $tmp <= 3600){
+        $tmp = round($tmp / 60);
+        $str_tmp = $tmp .'<span class="_date"> phút trước</span>';
+    }else if( $tmp <= 60){
+        $str_tmp = $tmp .'<span class="_date"> giây trước</span>';
+    }
+    return $str_tmp;
 }
 ?>

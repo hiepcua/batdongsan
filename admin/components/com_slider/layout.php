@@ -4,31 +4,30 @@ define('COMS','slider');
 define('THIS_COM_PATH',COM_PATH.'com_'.COMS.'/');
 
 // Begin Toolbar
-require_once('libs/cls.slider.php');
 include_once(EXT_PATH.'cls.upload.php');
 $objmysql = new CLS_MYSQL();
-$obj = new CLS_SLIDER();
 $objUpload = new CLS_UPLOAD();
 
 // End toolbar
 if(isset($_POST["cmdsave"])){		
-	$Slogan= addslashes($_POST['txt_slogan']);
-	$Intro=addslashes($_POST['txt_intro']);
-	$Link=addslashes($_POST['txt_link']);
-	$isActive='1';
+	$Slogan 	= addslashes($_POST['txt_slogan']);
+	$Intro 		= addslashes($_POST['txt_intro']);
+	$Link 		= addslashes($_POST['txt_link']);
+	$isActive 	= '1';
     if(isset($_POST["txtthumb"]))
-        $Thumb=addslashes($_POST["txtthumb"]);
+        $Thumb = addslashes($_POST["txtthumb"]);
     if(isset($_POST['txtid'])){
 		$ID = $_POST['txtid'];
 		$sql = "UPDATE `tbl_slider` SET  
-		`slogan`='".$Slogan."',
-		`intro`='".$Intro."',
-		`thumb`='".$Thumb."',
-		`link`='".$Link."'
-		WHERE `id`='".$ID."'";
+		`slogan` 	= '".$Slogan."',
+		`intro` 	= '".$Intro."',
+		`thumb` 	= '".$Thumb."',
+		`link` 		= '".$Link."'
+		WHERE `id` 	= '".$ID."'";
 		$objmysql->Exec($sql);
 	}else{
-		$sql="INSERT INTO `tbl_slider` ( `slogan`, `intro`, `thumb`,`link`, `isactive`) VALUES ('".$Slogan."','".$Intro."','".$Thumb."','".$Link."','".$isActive."')";
+		$sql = "INSERT INTO `tbl_slider` ( `slogan`, `intro`, `thumb`,`link`, `isactive`) VALUES ('".$Slogan."','".$Intro."','".$Thumb."','".$Link."','".$isActive."')";
+		$objmysql->Exec($sql);
 	}
 	echo "<script language=\"javascript\">window.location='".ROOTHOST_ADMIN.COMS."'</script>";
 }

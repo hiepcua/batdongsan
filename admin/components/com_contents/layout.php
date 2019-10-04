@@ -9,11 +9,15 @@ $objmysql 	= new CLS_MYSQL();
 
 if(isset($_POST["cmdsave"])){
 	$obj_images = array();
-	foreach ($_POST['txt_images'] as $k => $val) {
-		$tmp = (object)array();
-		$tmp->url = $val;
-		$tmp->alt = $_POST['txt_alt'][$k];
-		array_push($obj_images, $tmp);
+	$txt_images = isset($_POST['txt_images']) ? addslashes($_POST['txt_images']) : '';
+	
+	if($txt_images !== ''){
+		foreach ($_POST['txt_images'] as $k => $val) {
+			$tmp = (object)array();
+			$tmp->url = $val;
+			$tmp->alt = $_POST['txt_alt'][$k];
+			array_push($obj_images, $tmp);
+		}
 	}
 
 	$CategoryID 	= isset($_POST['cbo_cata']) ? (int)$_POST['cbo_cata'] : 0;

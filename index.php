@@ -30,7 +30,7 @@ global $tmp;global $conf;
 <html language='vi'>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="robots" content="index, follow" />
+	<meta name="robots" content="noindex, nofollow" />
 	<meta property="og:type" content="website" />
 	<meta property="og:author" content='<?php echo $conf->CompanyName; ?>' />
 	<meta property="og:locale" content='vi_VN'/>
@@ -71,15 +71,15 @@ global $tmp;global $conf;
 				<div class="container">
 					<div class="col-left">
 						<ul>
-							<li class="hotline">Hotline:&nbsp&nbsp<a href="tel:+6494461709">123456789</a></li>
-							<li><?php echo "Today is " . date("Y-m-d") . "<br>"; ?></li>
+							<li class="hotline">Hotline:&nbsp&nbsp<a href="tel:<?php echo $conf->Phone;?>"><?php echo $conf->Phone;?></a></li>
+							<li class="current-day"><?php echo "Hôm nay: " . date("d/m/y") . "<br>"; ?></li>
 						</ul>
 					</div>
 					<div class="col-right">
 						<ul class="social">
-							<li><a href="" title="Facebook"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-							<li><a href="" title="Twitter"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-							<li><a href="" title="Youtube"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></li>
+							<li><a href="<?php echo $conf->Facebook;?>" target="_blank" rel="nofollow" title="Facebook"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+							<li><a href="<?php echo $conf->Twitter;?>" target="_blank" rel="nofollow" title="Twitter"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+							<li><a href="<?php echo $conf->Youtube;?>" target="_blank" rel="nofollow" title="Youtube"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></li>
 						</ul>
 						<section id="search">
 							<form class="form-search-header" method="GET" action="<?php echo ROOTHOST;?>tim-kiem">
@@ -97,7 +97,7 @@ global $tmp;global $conf;
 				</a>
 			</div>
 
-			<div class="wrap-menu">
+			<div id="navbar" class="wrap-menu">
 				<div class="container">
 					<div class="navbar-header">
 						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -126,7 +126,7 @@ global $tmp;global $conf;
 								$code 	= $row['code'];
 								$thumb 	= getThumb($row['thumb'], 'img-responsive', '');
 								$views 	= (int)$row['visited'];
-								$cdate 	= date('d/m/Y', $row['cdate']);
+								$cdate 	= convert_date($row['cdate']);
 
 								$sql_cate="SELECT * FROM tbl_categories WHERE isactive=1 AND id=".$row['category_id'];
 								$objdata->Query($sql_cate);
@@ -164,7 +164,7 @@ global $tmp;global $conf;
 									$code 	= $row['code'];
 									$thumb 	= getThumb($row['thumb'], 'img-responsive', '');
 									$views 	= (int)$row['visited'];
-									$cdate 	= date('d/m/Y', $row['cdate']);
+									$cdate 	= convert_date($row['cdate']);
 									$sapo 	= Substring(html_entity_decode(stripslashes($row['sapo'])), 0, 60);
 
 									$sql_cate="SELECT * FROM tbl_categories WHERE isactive=1 AND id=".$row['category_id'];
@@ -206,7 +206,7 @@ global $tmp;global $conf;
 									$code 	= $r_con['code'];
 									$thumb 	= getThumb($r_con['thumb'], 'img-responsive', '');
 									$views 	= (int)$r_con['visited'];
-									$cdate 	= date('d/m/Y', $r_con['cdate']);
+									$cdate 	= convert_date($row['cdate']);
 									$sapo 	= Substring(html_entity_decode(stripslashes($r_con['sapo'])), 0, 60);
 									$link 	= ROOTHOST.$r_cate['code'].'/'.$r_con['code'].'.html';
 
@@ -217,7 +217,7 @@ global $tmp;global $conf;
 									<div class="content">
 									<div class="title"><a href="'.$link.'" title="'.$title.'">'.$title.'</a></div>
 									<div class="info">
-									<span class="date">1h trước</span>';
+									<span class="date">'.$cdate.'</span>';
 									if($views > 0){
 										echo '<span class="views">'.$views.' views</span>';
 									}
@@ -244,7 +244,7 @@ global $tmp;global $conf;
 									$code 	= $row['code'];
 									$thumb 	= getThumb($row['thumb'], 'img-responsive', '');
 									$views 	= (int)$row['visited'];
-									$cdate 	= date('d/m/Y', $row['cdate']);
+									$cdate 	= convert_date($row['cdate']);
 
 									$sql_cate="SELECT * FROM tbl_categories WHERE isactive=1 AND id=".$row['category_id'];
 									$objdata->Query($sql_cate);
@@ -287,7 +287,7 @@ global $tmp;global $conf;
 									$code 	= $row['code'];
 									$thumb 	= getThumb($row['thumb'], 'img-responsive', '');
 									$views 	= (int)$row['visited'];
-									$cdate 	= date('d/m/Y', $row['cdate']);
+									$cdate 	= convert_date($row['cdate']);
 
 									$sql_cate="SELECT * FROM tbl_categories WHERE isactive=1 AND id=".$row['category_id'];
 									$objdata->Query($sql_cate);
@@ -414,6 +414,23 @@ global $tmp;global $conf;
 		$('#frmsearch .fa.fa-search').click(function(){
 			$('#frmsearch').submit();
 		});
+
+		var prevScrollpos = window.pageYOffset;
+		window.onscroll = function() {
+			var currentScrollPos = window.pageYOffset;
+			if(currentScrollPos > 300){
+				if (prevScrollpos > currentScrollPos) {
+					document.getElementById("navbar").style.position = "fixed";
+					document.getElementById("navbar").style.top = "";
+				} else {
+					document.getElementById("navbar").style.position = "relative";
+					document.getElementById("navbar").style.top = "-50px";
+				}
+				prevScrollpos = currentScrollPos;
+			}else{
+				document.getElementById("navbar").style.position = "relative";
+			}
+		}
 	</script>
 </body>
 </html>

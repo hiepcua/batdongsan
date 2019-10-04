@@ -89,7 +89,6 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE] > 0 ? (int)$_SESSION['CUR_PAGE_'.
         <th width="30" align="center"><input type="checkbox" name="chkall" id="chkall" value="" onclick="docheckall('chk',this.checked);" /></th>
         <th>Hình ảnh</th>
         <th>Slogan</th>
-        <th>Giới thiệu</th>
         <th width="70" style="text-align: center;">Sắp xếp
             <a href="javascript:saveOrder()">
                 <i class="fa fa-floppy-o" aria-hidden="true"></i>
@@ -99,8 +98,50 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE] > 0 ? (int)$_SESSION['CUR_PAGE_'.
         <th width="50" align="center">Sửa</th>
         <th width="50" align="center">Xóa</th>
     </tr>
-    <?php 
-    $obj->listTable($strwhere,$cur_page);
+    <?php
+    $star   = ($cur_page - 1) * MAX_ROWS;
+    $leng   = MAX_ROWS;
+    $i      = 0;
+    $sql    = "SELECT tbl_slider.* FROM tbl_slider $strwhere ORDER BY `order` ASC LIMIT $star,$leng";
+    $objmysql->Query($sql); 
+    while($rows = $objmysql->Fetch_Assoc()){
+        $i++;
+        $ids    = $rows['id'];
+        $link   = $rows['link'];
+        $slogan = Substring($rows['slogan'], 0, 10);
+        $img    = $rows['thumb'];
+        $order  = $rows['order'];
+        if($rows['isactive'] == 1) 
+            $icon_active="<i class='fa fa-check cgreen' aria-hidden='true'></i>";
+        else $icon_active='<i class="fa fa-times-circle-o cred" aria-hidden="true"></i>';
+
+        echo "<tr name=\"trow\">";
+        echo "<td width=\"30\" align=\"center\">$i</td>";
+
+        echo "<td width=\"30\" align=\"center\"><input type=\"checkbox\" name=\"chk\" id=\"chk\" onclick=\"docheckonce('chk');\" value=\"$ids\"/></td>";
+
+        echo "<td><img src='$img' class='img-obj pull-left' width='100px'> $link</td>";
+        echo "<td>$slogan</td>";
+
+        echo "<td width=\"50\" align=\"center\"><input type=\"text\" name=\"txt_order\" id=\"txt_order\" value=\"$order\" class=\"order\"></td>";
+        echo "<td align=\"center\">";
+        echo "<a href=\"index.php?com=".COMS."&amp;task=active&amp;id=$ids\">";
+        echo $icon_active;
+        echo "</a>";
+        echo "</td>";
+        echo "<td align=\"center\">";
+        
+        echo "<a href=\"".ROOTHOST_ADMIN.COMS."/edit/$ids\">";
+        echo "<i class='fa fa-edit' aria-hidden='true'></i>";
+        echo "</a>";
+        
+        echo "</td>";
+
+        echo "<td align='center' width='10'><a href='".ROOTHOST_ADMIN.COMS."/delete/$ids' onclick=\" return confirm('Bạn có chắc muốn xóa ?')\">";
+        echo "<i class='fa fa-times-circle cred' aria-hidden='true'></i></a></td>";
+
+        echo "</tr>";
+    }
     ?>
 </table>
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="Footer_list">

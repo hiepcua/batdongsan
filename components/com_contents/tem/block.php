@@ -47,7 +47,7 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
 								$code 	= $r_con['code'];
 								$thumb 	= getThumb($r_con['thumb'], 'img-responsive', '');
 								$views 	= (int)$r_con['visited'];
-								$cdate 	= date('d/m/Y', $r_con['cdate']);
+								$cdate 	= convert_date($r_con['cdate']);
 								$sapo 	= Substring(html_entity_decode(stripslashes($r_con['sapo'])), 0, 60);
 								$link 	= ROOTHOST.$r_cate['code'].'/'.$r_con['code'].'.html';
 								if($i == 1){
@@ -58,7 +58,7 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
 									<div class="content">
 									<div class="title"><a href="'.$link.'" title="'.$title.'">'.$title.'</a></div>
 									<div class="info">
-									<span class="date">1h trước</span>';
+									<span class="date">'.$cdate.'</span>';
 									if($views > 0){
 										echo '<span class="views">'.$views.' views</span>';
 									}
@@ -68,14 +68,14 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
 									</div>
 									</div>';
 								}else{
-									echo '<div class="col-md-6 col-sm-6 item">
+									echo '<div class="col-md-6 col-sm-6 col-xs-6 item">
 									<div class="box-thumb">
 									<a href="'.$link.'" title="'.$title.'">'.$thumb.'</a>
 									</div>
 									<div class="content">
 									<div class="title"><a href="'.$link.'" title="'.$title.'">'.$title.'</a></div>
 									<div class="info">
-									<span class="date">1h trước</span>';
+									<span class="date">'.$cdate.'</span>';
 									if($views > 0){
 										echo '<span class="views">'.$views.' views</span>';
 									}
@@ -110,18 +110,18 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
 								$code 	= $r_con['code'];
 								$thumb 	= getThumb($r_con['thumb'], 'img-responsive', '');
 								$views 	= (int)$r_con['visited'];
-								$cdate 	= date('d/m/Y', $r_con['cdate']);
+								$cdate 	= convert_date($r_con['cdate']);
 								$sapo 	= Substring(html_entity_decode(stripslashes($r_con['sapo'])), 0, 60);
 								$link 	= ROOTHOST.$r_cate_child['code'].'/'.$r_con['code'].'.html';
 
-								echo '<div class="col-md-6 col-sm-6 item">
+								echo '<div class="col-md-6 col-sm-6 col-xs-6 item">
 								<div class="box-thumb">
 								<a href="'.$link.'" title="'.$title.'">'.$thumb.'</a>
 								</div>
 								<div class="content">
 								<div class="title"><a href="'.$link.'" title="'.$title.'">'.$title.'</a></div>
 								<div class="info">
-								<span class="date">1h trước</span>';
+								<span class="date">'.$cdate.'</span>';
 								if($views > 0){
 									echo '<span class="views">'.$views.' views</span>';
 								}
@@ -148,7 +148,7 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
 							$code 	= $row['code'];
 							$thumb 	= getThumb($row['thumb'], 'img-responsive', '');
 							$views 	= (int)$row['visited'];
-							$cdate 	= date('d/m/Y', $row['cdate']);
+							$cdate 	= convert_date($row['cdate']);
 
 							$sql_cate="SELECT * FROM tbl_categories WHERE isactive=1 AND id=".$row['category_id'];
 							$objdata->Query($sql_cate);
@@ -191,7 +191,7 @@ $cur_page=(int)$_SESSION['CUR_PAGE_'.OBJ_PAGE]>0 ? $_SESSION['CUR_PAGE_'.OBJ_PAG
 							$code 	= $row['code'];
 							$thumb 	= getThumb($row['thumb'], 'img-responsive', '');
 							$views 	= (int)$row['visited'];
-							$cdate 	= date('d/m/Y', $row['cdate']);
+							$cdate 	= convert_date($row['cdate']);
 
 							$sql_cate="SELECT * FROM tbl_categories WHERE isactive=1 AND id=".$row['category_id'];
 							$objdata->Query($sql_cate);

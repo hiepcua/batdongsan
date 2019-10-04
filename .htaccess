@@ -1,6 +1,12 @@
 RewriteEngine On
-RewriteRule ^/?$ 								        index.php
+RewriteRule ^trang-chu/?$ index.php
+RewriteRule ^admin/?$ admin/index.php
+RewriteRule ^lien-he/?$ index.php?com=contact
+RewriteRule ^gallery/?$ index.php?com=gallery
+RewriteRule ^gallery/ablum([0-9]*)/?$ index.php?com=gallery&viewtype=block&id=$1
+
 # Contents
+RewriteRule ^tim-kiem/?$ 	           					index.php?com=contents&viewtype=search [QSA]
 RewriteRule ^([0-9a-zA-Z\-]+)/?$                        index.php?com=contents&viewtype=block&code=$1 [QSA]
 RewriteRule ^([0-9a-zA-Z\-]+)/([0-9a-zA-Z\-]+).html/?$  index.php?com=contents&viewtype=article&par_code=$1&code=$2
 

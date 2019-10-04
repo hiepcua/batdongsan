@@ -116,6 +116,8 @@ $row_seo    = $objmysql->Fetch_Assoc();
                                     </div>
                                     </div>';
                                 }
+                            }else{
+                                echo '<input type="hidden" name="txt_images[]" value=""/>';
                             }
                             ?>
                             <div class="default">
